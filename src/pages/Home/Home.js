@@ -1,13 +1,14 @@
 import React from 'react'
+import './styles.scss'
+
 import { Container } from 'react-bootstrap'
+
+import JoinDiscordImage from 'assets/images/join_discord.png'
 
 import Header from 'components/Header'
 import DropList from 'components/Home/DropList'
 import ArtistList from 'components/Home/ArtistList'
-
-import JoinDiscordImage from 'assets/images/join_discord.png'
-
-import './styles.scss'
+import SetList from 'components/Home/SetList'
 
 function Home() {
   return (
@@ -27,9 +28,13 @@ function Home() {
             <p>SHOW OFF YOUR COLLECTIBLES IN BINDERS</p>
             <p>MAKE PURCHASE OR TRADE OFFERS ON NFTS IN OTHER BINDERS</p>
             <p>SELL YOUR COLLECTIBLES IN THE SECONDARY MARKETPLACE</p>
+            <div className="button-wrapper">
+              <div className="button-join">GET STARTED</div>
+            </div>
           </div>
         </div>
         <ArtistList />
+        <SetList />
         {/* About team to start */}
       </Container>
     </div>

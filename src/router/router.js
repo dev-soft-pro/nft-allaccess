@@ -1,19 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// Constans
+// Constants
 import * as ROUTES from 'constants/routes';
-// Login Views
+// Pages
 import Home from 'pages/Home'
-// import Login from 'pages/auth/Login'
-// import ForgotPassword from 'pages/auth/ForgotPassword'
+import Login from 'pages/Login'
+
 
 function router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={'/'} element={<Home />} />
-        {/* <Route path={ROUTES.LOGIN} element={<Login />} />
-        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} /> */}
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.LOGIN} element={<Login />} />
       </Routes>
     </BrowserRouter>
   )

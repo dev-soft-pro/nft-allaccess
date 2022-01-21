@@ -11,27 +11,27 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/effect-coverflow'
 
-import UserAvatar from 'assets/images/avatar.png'
+// import UserAvatar from 'assets/images/avatar.png'
+import SetSample from 'assets/images/featured_edition.png'
 
 import './styles.scss'
 
 SwiperCore.use([EffectCoverflow,Pagination]);
 
-function ArtistList() {
+function SetList() {
   return (
-    <div className="featured-artists">
-      <label className="title">Featured Artists</label>
+    <div className="featured-setlist">
+      <label className="title">Featured Sets</label>
       <Swiper
         grabCursor={true}
-        // centeredSlides={true}
         slidesPerView="auto"
-        className="artist-swiper"
+        className="set-swiper"
       >
         {[...Array(30).keys()].map(key =>
           <SwiperSlide key={key}>
-            <div className="artist-wrapper">
-              <img src={UserAvatar} alt="artist-avatar" className="image-artist-avatar" />
-              <label>Wayne Gretzky</label>
+            <div className="set-wrapper">
+              <img src={SetSample} alt="set-avatar" className="image-set-avatar" />
+              <label>Wayne Gretzky Sapphire Signed Immortal Statue</label>
             </div>
           </SwiperSlide>
         )}
@@ -40,4 +40,4 @@ function ArtistList() {
   )
 }
 
-export default ArtistList;
+export default SetList;

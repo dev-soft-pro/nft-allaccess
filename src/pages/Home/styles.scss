@@ -5,6 +5,7 @@
     justify-content: center;
     img {
       width: 250px;
+      cursor: pointer;
     }
   }
   .how-it-works {
@@ -23,6 +24,17 @@
       }
       p {
         font-size: 20px;
+      }
+      .button-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .button-join {
+          display: inline-flex;
+          padding: 15px 20px;
+          background: #DC0000;
+          cursor: pointer;
+        }
       }
     }
   }
