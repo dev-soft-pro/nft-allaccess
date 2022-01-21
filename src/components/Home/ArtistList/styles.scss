@@ -1,0 +1,30 @@
+.featured-artists {
+  margin: 50px 10%;
+  .title {
+    color: white;
+    font-size: 20px;
+    margin: 0.5rem;
+  }
+  .artist-swiper {
+    .swiper-slide {
+      background-position: center;
+      background-size: cover;
+      width: 5rem;
+      // height: 5rem;
+      margin-right: 20px;
+    }
+    .artist-wrapper {
+      .image-artist-avatar {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid #DC0000;
+      }
+      label {
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+}
