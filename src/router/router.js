@@ -5,6 +5,7 @@ import * as ROUTES from 'constants/routes';
 // Pages
 import Home from 'pages/Home'
 import Login from 'pages/Login'
+import Signup from 'pages/Signup';
 
 
 function router() {
@@ -13,6 +14,7 @@ function router() {
       <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
+        <Route path={ROUTES.REGISTER} element={<Signup />} />
       </Routes>
     </BrowserRouter>
   )
