@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link as RouterLink } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
 import './styles.scss'
@@ -12,7 +12,11 @@ import DropList from 'components/Home/DropList'
 import ArtistList from 'components/Home/ArtistList'
 import SetList from 'components/Home/SetList'
 
+import { Context } from 'Context'
+
 function Home() {
+  const { cookies, isAuth, removeAuth } = useContext(Context);
+
   return (
     <div className="home-container">
       <Header />
@@ -30,11 +34,13 @@ function Home() {
             <p>SHOW OFF YOUR COLLECTIBLES IN BINDERS</p>
             <p>MAKE PURCHASE OR TRADE OFFERS ON NFTS IN OTHER BINDERS</p>
             <p>SELL YOUR COLLECTIBLES IN THE SECONDARY MARKETPLACE</p>
-            <div className="button-wrapper">
-              <RouterLink className="link-join" to={ROUTES.REGISTER}>
-                <div className="button-join">GET STARTED</div>
-              </RouterLink>
-            </div>
+            {!isAuth && (
+              <div className="button-wrapper">
+                <RouterLink className="link-join" to={ROUTES.REGISTER}>
+                  <div className="button-join">GET STARTED</div>
+                </RouterLink>
+              </div>
+            )}
           </div>
         </div>
         <ArtistList />

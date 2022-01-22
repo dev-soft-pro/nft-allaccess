@@ -16,7 +16,11 @@ import AppleIcon from 'assets/images/social/apple.svg'
 
 function Login() {
   const navigate = useNavigate();
-  const { cookies, loading, updateLoadingStatus } = useContext(Context);
+  const {
+    cookies,
+    activateAuth,
+    updateLoadingStatus
+  } = useContext(Context);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +37,7 @@ function Login() {
       formData.append('password', password);
       const response = await fetch(API.LOGIN, OPTIONS.POST_FORM_DATA(formData));
       const data = await response.json();
+      activateAuth(data);
       navigate(ROUTES.HOME, { replace: true });
     } catch (ex) {
       console.log(ex)

@@ -3,20 +3,25 @@ import { useCookies } from 'react-cookie'
 export const Context = createContext()
 
 const Provider = ({ children }) => {
-  const [cookies, setCookies] = useCookies(['userinfo', 'access_token', 'refresh_token'])
+  const [cookies, setCookies, removeCookies] = useCookies(['userinfo', 'access_token', 'refresh_token'])
   const [loading, setLoading] = useState(false);
+  const [isAuth, setAuth] = useState(false);
 
   const value = {
+    isAuth,
     cookies,
     loading,
-    setUserInfo: (info) => {
-      setCookies('userinfo', JSON.stringify(info));
+    activateAuth: (data) => {
+      setAuth(true);
+      setCookies('userinfo', JSON.stringify(data.user));
+      setCookies('access_token', data.access);
+      setCookies('refresh_token', data.refresh);
     },
-    setAccessToken: (token) => {
-      setCookies('access_token', token);
-    },
-    setRefreshToken: (token) => {
-      setCookies('userinfo', token);
+    removeAuth: () => {
+      setAuth(false);
+      removeCookies('userinfo');
+      removeCookies('access_token');
+      removeCookies('refresh_token');
     },
     updateLoadingStatus: (status) => {
       setLoading(status);

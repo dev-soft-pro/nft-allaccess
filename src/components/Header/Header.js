@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import './styles.scss'
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
+
+import { Context } from 'Context'
 
 import {
   Nav,
@@ -14,6 +16,14 @@ import {
 import Logo from 'assets/images/logo.png'
 
 function Header() {
+  const { cookies, isAuth, removeAuth } = useContext(Context);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    removeAuth();
+    navigate(ROUTES.HOME, { replace: true });
+  }
+
   return (
     <Navbar expand="lg" className="header-wrapper">
       <Container>
@@ -22,18 +32,28 @@ function Header() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav.Link className="header-menu">
-            <RouterLink className="link" to="/marketplace">Marketplace</RouterLink>
+          <Nav.Link className="header-menu" href="/marketplace">
+            Marketplace
           </Nav.Link>
-          <Nav.Link className="header-menu">
-            <RouterLink className="link" to="/community">Community</RouterLink>
+          <Nav.Link className="header-menu" href="/community">
+            Community
           </Nav.Link>
-          <Nav.Link className="header-menu">
-            <RouterLink className="link" to="/join">Sign Up</RouterLink>
-          </Nav.Link>
-          <Nav.Link className="header-menu">
-            <RouterLink className="link" to="/login">Log In</RouterLink>
-          </Nav.Link>
+          {isAuth ? (
+            <NavDropdown title={cookies.userinfo.username} id="profile-dropdown" className="header-menu">
+              <NavDropdown.Item>Profile</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={() => handleLogout()}>Log Out</NavDropdown.Item>
+            </NavDropdown>
+          ) : (
+            <>
+              <Nav.Link className="header-menu" href="/join">
+                Sign Up
+              </Nav.Link>
+              <Nav.Link className="header-menu" href="/login">
+                Log In
+              </Nav.Link>
+            </>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
