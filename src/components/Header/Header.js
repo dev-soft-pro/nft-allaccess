@@ -27,7 +27,7 @@ function Header() {
   return (
     <Navbar expand="lg" className="header-wrapper">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img src={Logo} alt="Logo" height={50} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

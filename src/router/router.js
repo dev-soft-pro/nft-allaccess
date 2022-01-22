@@ -6,6 +6,7 @@ import * as ROUTES from 'constants/routes';
 import Home from 'pages/Home'
 import Login from 'pages/Login'
 import Signup from 'pages/Signup';
+import DropDetail from 'pages/DropDetail';
 
 
 function router() {
@@ -15,6 +16,7 @@ function router() {
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.REGISTER} element={<Signup />} />
+        <Route path={ROUTES.DROP_DETAIL} element={<DropDetail />} />
       </Routes>
     </BrowserRouter>
   )

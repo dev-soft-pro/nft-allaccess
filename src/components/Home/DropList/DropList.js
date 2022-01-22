@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, {
@@ -22,6 +23,8 @@ import './styles.scss'
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function DropList() {
+  const navigate = useNavigate();
+
   const [drops, setDrops] = useState([{
     id: 'temp',
     image: TestImage
@@ -40,7 +43,7 @@ function DropList() {
   }, [])
 
   const handleDropClick = (drop) => {
-    console.log(drop);
+    navigate(ROUTES.DROP_DETAIL.replace(':drop_num', drop.drop_num));
   }
 
   return (
@@ -60,7 +63,7 @@ function DropList() {
       loop={true}
     >
       {drops.map(drop =>
-        <SwiperSlide key={`drop-${drop.id}`} onClick={() => handleDropClick(drop)}>
+        <SwiperSlide key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>
           <img src={drop.image} alt="nft" className="image-nft-drop" />
           <div className="drop-desc">{drop.description}</div>
         </SwiperSlide>
