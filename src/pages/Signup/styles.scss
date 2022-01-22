@@ -21,6 +21,7 @@
         display: inline-flex;
         flex-direction: column;
         .social-button {
+          cursor: pointer;
           color: black;
           background: white;
           border-radius: 4px;
@@ -44,6 +45,7 @@
           margin-top: 30px;
         }
         .continue-button {
+          cursor: pointer;
           margin-top: 10px;
           background: #DC0000;
           border-radius: 4px;

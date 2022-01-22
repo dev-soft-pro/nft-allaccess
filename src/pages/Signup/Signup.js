@@ -1,6 +1,9 @@
 import React from 'react'
 import './styles.scss'
 
+import { Link } from "react-router-dom";
+import * as ROUTES from 'constants/routes';
+
 import { Form } from 'react-bootstrap'
 
 import GoogleIcon from 'assets/images/social/google.svg'
@@ -13,8 +16,13 @@ function Signup() {
       <div className="auth-panel-wrapper">
         <div className="auth-panel">
           <h2>Sign Up</h2>
-          <p>Already have an account? <a className="link">Log in</a></p>
+          <p>Already have an account? <Link className="link" to={ROUTES.LOGIN}>Log in</Link></p>
           <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="text" placeholder="Enter username" />
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" />
@@ -42,7 +50,7 @@ function Signup() {
             <Form.Group className="mb-3 confirm-check" controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label={(
                 <label for="formBasicCheckbox">
-                  I agree to the <a className="link">Terms of Service</a> and acknowledge the <a className="link">Privacy Policy</a>.
+                  I agree to the <Link to="/" className="link">Terms of Service</Link> and acknowledge the <Link to="/" className="link">Privacy Policy</Link>.
                 </label>
               )} />
             </Form.Group>

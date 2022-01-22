@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link as RouterLink } from "react-router-dom";
+import * as ROUTES from 'constants/routes';
 import './styles.scss'
 
 import { Container } from 'react-bootstrap'
@@ -29,7 +31,9 @@ function Home() {
             <p>MAKE PURCHASE OR TRADE OFFERS ON NFTS IN OTHER BINDERS</p>
             <p>SELL YOUR COLLECTIBLES IN THE SECONDARY MARKETPLACE</p>
             <div className="button-wrapper">
-              <div className="button-join">GET STARTED</div>
+              <RouterLink className="link-join" to={ROUTES.REGISTER}>
+                <div className="button-join">GET STARTED</div>
+              </RouterLink>
             </div>
           </div>
         </div>

@@ -29,11 +29,18 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
+        .link-join {
+          color: white;
+          text-decoration: none;
+        }
         .button-join {
           display: inline-flex;
           padding: 15px 20px;
           background: #DC0000;
           cursor: pointer;
+          border-radius: 6px;
+          font-size: 22px;
+          font-weight: bold;
         }
       }
     }

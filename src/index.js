@@ -5,9 +5,19 @@ import reportWebVitals from './reportWebVitals';
 import Router from 'router/router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { CookiesProvider } from 'react-cookie';
+
+import Context from './Context';
+import Loading from 'components/Loading';
+
 ReactDOM.render(
   <React.StrictMode>
-    <Router />
+    <CookiesProvider>
+      <Context.Provider>
+        <Router />
+        <Loading />
+      </Context.Provider>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

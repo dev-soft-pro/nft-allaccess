@@ -1,5 +1,12 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './styles.scss'
+
+import { Link } from "react-router-dom";
+import * as ROUTES from 'constants/routes';
+import * as API from 'constants/api';
+import * as OPTIONS from 'services/options';
+import { Context } from 'Context'
 
 import { Form } from 'react-bootstrap'
 
@@ -8,21 +15,52 @@ import FacebookIcon from 'assets/images/social/facebook.svg'
 import AppleIcon from 'assets/images/social/apple.svg'
 
 function Login() {
+  const navigate = useNavigate();
+  const { cookies, loading, updateLoadingStatus } = useContext(Context);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    if (email == '' || password == '') {
+      return;
+    }
+    
+    updateLoadingStatus(true);
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+      const response = await fetch(API.LOGIN, OPTIONS.POST_FORM_DATA(formData));
+      const data = await response.json();
+      navigate(ROUTES.HOME, { replace: true });
+    } catch (ex) {
+      console.log(ex)
+    }
+    updateLoadingStatus(false);
+  }
+
   return (
     <div className="auth-container">
       <div className="auth-panel-wrapper">
         <div className="auth-panel">
           <h2>Sign In</h2>
-          <p>Don't have an account? <a className="link">Sign Up</a></p>
+          <p>Don't have an account? <Link className="link" to={ROUTES.REGISTER}>Sign Up</Link></p>
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)} />
             </Form.Group>
           </Form>
           <p>OR</p>
@@ -39,7 +77,7 @@ function Login() {
               <img src={AppleIcon} alt='apple' />
               <span>Sign in with Apple</span>
             </div>
-            <div className="continue-button">
+            <div className="continue-button" onClick={() => handleLogin()}>
               <span>Continue</span>
             </div>
           </div>
