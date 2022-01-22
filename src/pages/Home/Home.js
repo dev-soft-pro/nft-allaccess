@@ -15,7 +15,7 @@ import SetList from 'components/Home/SetList'
 import { Context } from 'Context'
 
 function Home() {
-  const { cookies, isAuth, removeAuth } = useContext(Context);
+  const { cookies, removeAuth } = useContext(Context);
 
   return (
     <div className="home-container">
@@ -34,7 +34,7 @@ function Home() {
             <p>SHOW OFF YOUR COLLECTIBLES IN BINDERS</p>
             <p>MAKE PURCHASE OR TRADE OFFERS ON NFTS IN OTHER BINDERS</p>
             <p>SELL YOUR COLLECTIBLES IN THE SECONDARY MARKETPLACE</p>
-            {!isAuth && (
+            {!(cookies.isAuth == 'true') && (
               <div className="button-wrapper">
                 <RouterLink className="link-join" to={ROUTES.REGISTER}>
                   <div className="button-join">GET STARTED</div>

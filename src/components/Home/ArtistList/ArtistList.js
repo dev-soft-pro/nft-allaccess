@@ -23,7 +23,6 @@ function ArtistList() {
       <label className="title">Featured Artists</label>
       <Swiper
         grabCursor={true}
-        // centeredSlides={true}
         slidesPerView="auto"
         className="artist-swiper"
       >

@@ -1,0 +1,27 @@
+.pass-list {
+  margin: 50px 10%;
+  .title {
+    color: white;
+    font-size: 20px;
+    margin: 0.5rem;
+  }
+  .pass-swiper {
+    .swiper-slide {
+      background-position: center;
+      background-size: cover;
+      width: 20rem;
+      margin-right: 20px;
+    }
+    .pass-wrapper {
+      .image-pass {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      label {
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+}
