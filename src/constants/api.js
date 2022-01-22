@@ -1,3 +1,5 @@
 export const BASE_URL = 'http://localhost:8000/api/'
 export const LOGIN = BASE_URL + 'auth/login/'
 export const REGISTER = BASE_URL + 'auth/register/'
+export const DROP_LIST = BASE_URL + 'drop/'
+export const DROP_DETAIL = BASE_URL + 'drop/$1'

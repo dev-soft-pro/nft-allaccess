@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, {
@@ -13,11 +13,36 @@ import 'swiper/css/effect-coverflow'
 
 import TestImage from 'assets/images/test.jfif'
 
+import * as ROUTES from 'constants/routes';
+import * as API from 'constants/api';
+import * as OPTIONS from 'services/options';
+
 import './styles.scss'
 
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function DropList() {
+  const [drops, setDrops] = useState([{
+    id: 'temp',
+    image: TestImage
+  }]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchDropList = async () => {
+      const response = await fetch(API.DROP_LIST, OPTIONS.GET);
+      const data = await response.json();
+      setDrops(data);
+      setLoading(true);
+    }
+
+    fetchDropList();
+  }, [])
+
+  const handleDropClick = (drop) => {
+    console.log(drop);
+  }
+
   return (
     <Swiper
       effect="coverflow"
@@ -34,9 +59,10 @@ function DropList() {
       className="drop-swiper"
       loop={true}
     >
-      {[...Array(10).keys()].map(key =>
-        <SwiperSlide key={key}>
-          <img src={TestImage} alt="nft" className="image-nft-drop" />
+      {drops.map(drop =>
+        <SwiperSlide key={`drop-${drop.id}`} onClick={() => handleDropClick(drop)}>
+          <img src={drop.image} alt="nft" className="image-nft-drop" />
+          <div className="drop-desc">{drop.description}</div>
         </SwiperSlide>
       )}
     </Swiper>
