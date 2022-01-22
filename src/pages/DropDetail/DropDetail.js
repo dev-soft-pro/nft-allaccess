@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import './styles.scss'
 
 import * as ROUTES from 'constants/routes';
@@ -14,15 +14,23 @@ function DropDetail() {
   const { drop_num } = useParams();
 
   const [drop, setDrop] = useState(undefined);
+  const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDrop = async () => {
-      const response = await fetch(API.DROP_DETAIL.replace('$1', drop_num), OPTIONS.GET);
-      const data = await response.json();
-      setDrop(data);
-      setLoading(false);
-      console.log(data);
+      try {
+        let response = await fetch(API.DROP_DETAIL.replace('$1', drop_num), OPTIONS.GET);
+        let dropData = await response.json();
+        setDrop(dropData);
+        response = await fetch(API.ALL_PASS, OPTIONS.GET);
+        let dataPasses = await response.json();
+        const matchedPass = dataPasses.find(p => p.drop_num == dropData.drop_num)
+        setPass(matchedPass);
+        setLoading(false);
+      } catch (ex) {
+        console.log(ex);
+      }
     }
     fetchDrop();
   }, [])
@@ -47,6 +55,11 @@ function DropDetail() {
               {formatDate(drop.public_start)}
             </p>
           </div>
+          {pass && (<div className="buy-button-wrapper">
+            <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
+              <div className="button-join">Buy Pass</div>
+            </Link>
+          </div>)}
         </div>
       )}
     </div>

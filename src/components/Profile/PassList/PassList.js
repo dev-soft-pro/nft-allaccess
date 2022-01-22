@@ -63,7 +63,9 @@ function PassList(props) {
           )}
         </Swiper>
         ) : (
-          <ClipLoader color={'#ffffff'} loading={loading} size={35} />
+          <div>
+            <ClipLoader color={'#ffffff'} loading={loading} size={35} />
+          </div>
         )}
     </div>
   )

@@ -8,6 +8,7 @@ import Login from 'pages/Login'
 import Signup from 'pages/Signup';
 import DropDetail from 'pages/DropDetail';
 import Profile from 'pages/Profile';
+import PassBuy from 'pages/PassBuy';
 
 function router() {
   return (
@@ -18,6 +19,7 @@ function router() {
         <Route path={ROUTES.REGISTER} element={<Signup />} />
         <Route path={ROUTES.DROP_DETAIL} element={<DropDetail />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
+        <Route path={ROUTES.PASS_DETAIL} element={<PassBuy />} />
       </Routes>
     </BrowserRouter>
   )
