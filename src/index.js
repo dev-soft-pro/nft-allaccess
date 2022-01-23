@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import Router from 'router/router';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,12 +10,19 @@ import { CookiesProvider } from 'react-cookie';
 import Context from './Context';
 import Loading from 'components/Loading';
 
+import { ChakraProvider } from "@chakra-ui/react";
+import { DAppProvider } from "@usedapp/core";
+
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Context.Provider>
-        <Router />
-        <Loading />
+        <DAppProvider config={{}}>
+          <ChakraProvider>
+            <Router />
+            <Loading />
+          </ChakraProvider>
+        </DAppProvider>
       </Context.Provider>
     </CookiesProvider>
   </React.StrictMode>,

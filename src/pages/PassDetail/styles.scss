@@ -1,0 +1,35 @@
+.pass-detail-container {
+  padding: 0 1rem;
+  .pass-info-container {
+    margin-top: 5rem;
+    color: white;
+    display: flex;
+    .pass-info {
+      padding: 0 1rem;
+      div {
+        margin-top: 1rem;
+      }
+      .buynow {
+        display: flex;
+        flex-direction: row;
+        .link-join {
+          color: white;
+          text-decoration: none;
+        }
+        .button-join {
+          display: inline-flex;
+          padding: 5px 20px;
+          background: #DC0000;
+          cursor: pointer;
+          border-radius: 6px;
+          font-size: 22px;
+          font-weight: bold;
+        }
+      }
+      .bottom-wrapper {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

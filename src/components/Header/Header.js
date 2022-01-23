@@ -17,7 +17,6 @@ import Logo from 'assets/images/logo.png'
 
 function Header() {
   const { cookies, removeAuth } = useContext(Context);
-  console.log(cookies.isAuth)
   const navigate = useNavigate();
 
   const handleLogout = () => {
