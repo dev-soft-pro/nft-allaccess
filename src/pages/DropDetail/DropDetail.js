@@ -25,7 +25,7 @@ function DropDetail() {
         setDrop(dropData);
         response = await fetch(API.ALL_PASS, OPTIONS.GET);
         let dataPasses = await response.json();
-        const matchedPass = dataPasses.find(p => p.drop_num == dropData.drop_num)
+        const matchedPass = dataPasses.find(p => p.drop_num.drop_num == dropData.drop_num)
         setPass(matchedPass);
         setLoading(false);
       } catch (ex) {

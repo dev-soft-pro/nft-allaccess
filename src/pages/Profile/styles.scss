@@ -2,5 +2,9 @@
   .connect-button-wrapper {
     display: flex;
     justify-content: center;
+    color: white;
+    button:hover {
+      background: #DC0000A0;
+    }
   }
 }

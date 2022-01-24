@@ -1,53 +1,49 @@
+import React, { useContext } from 'react';
 import { Button, Box, Text } from "@chakra-ui/react";
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 
+import { Context } from "Context";
 
 export default function ConnectButton() {
-  const { activateBrowserWallet, account } = useEthers();
-  const etherBalance = useEtherBalance(account);
-
-  function handleConnectWallet() {
-    activateBrowserWallet();
-  }
-
-  return account ? (
-    <Box
-      display="inline-flex"
+  const { walletState, connectWallet, disconnect } = useContext(Context);
+  return !walletState.provider ? (
+    <Button
+      variant="solid"
+      size="md"
+      opacity="{1}"
+      textAlign="center"
+      display="flex"
+      flexDirection="row"
+      justifyContent="center"
       alignItems="center"
-      background="gray.700"
-      borderRadius="xl"
-      py="0"
+      backgroundColor="#DC0000"
+      overflow="hidden"
+      borderRadius="lg"
+      borderColor="white"
+      onClick={ () => connectWallet() }
     >
-      <Box px="3">
-        <Text color="white" fontSize="md">
-          {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} ETH
-        </Text>
-      </Box>
-      <Button
-        bg="gray.800"
-        border="1px solid transparent"
-        _hover={{
-          border: "1px",
-          borderStyle: "solid",
-          borderColor: "blue.400",
-          backgroundColor: "gray.700",
-        }}
-        borderRadius="xl"
-        m="1px"
-        px={3}
-        height="38px"
-      >
-        <Text color="white" fontSize="md" fontWeight="medium" mr="2">
-          {account &&
-            `${account.slice(0, 6)}...${account.slice(
-              account.length - 4,
-              account.length
-            )}`}
-        </Text>
-      </Button>
-    </Box>
+      Connect Wallet
+    </Button>
   ) : (
-    <Button onClick={handleConnectWallet}>Connect to a wallet</Button>
-  );
+    <Button
+      variant="solid"
+      size="md"
+      opacity="{1}"
+      textAlign="center"
+      display="flex"
+      flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
+      backgroundColor="#DC0000"
+      overflow="hidden"
+      borderRadius="lg"
+      onClick={() => disconnect()} >
+      {
+        String(walletState.address.substring(0, 6)) +
+        "..." +
+        String(walletState.address.substring(38))
+      }
+  </Button>
+  )
 }

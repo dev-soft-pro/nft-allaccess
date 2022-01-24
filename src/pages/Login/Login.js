@@ -10,9 +10,9 @@ import { Context } from 'Context'
 
 import { Form } from 'react-bootstrap'
 
-import GoogleIcon from 'assets/images/social/google.svg'
-import FacebookIcon from 'assets/images/social/facebook.svg'
-import AppleIcon from 'assets/images/social/apple.svg'
+import GoogleIcon from 'assets/images/social/google.png'
+import FacebookIcon from 'assets/images/social/facebook.png'
+import AppleIcon from 'assets/images/social/apple.png'
 
 function Login() {
   const navigate = useNavigate();

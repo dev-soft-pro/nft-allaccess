@@ -1,22 +1,29 @@
-.pass-detail-container {
+.buy-detail-container {
   padding: 0 1rem;
-  .pass-info-container {
-    
-  }
-  .card-wrapper {
+  
+  .tab-wrapper {
     display: flex;
-    .rccs {
-      margin: 0 1rem;
-    }
-    .input-wrapper {
-      width: 320px;
-      .split {
+    justify-content: center;
+    background: linear-gradient(90deg,rgb(0,0,0) 0%,rgb(21,20,20) 50%,rgb(0,0,0) 100%);
+    .chakra-tabs {
+      color: white;
+      max-width: 640px;
+      .card-wrapper {
         display: flex;
-        input:first-child {
-          margin-right: 0.5rem;
+        min-width: 640px;
+        .rccs {
+          margin: 0 1rem;
         }
-        input:not(:first-child) {
-          margin-left: 0.5rem;
+        .input-wrapper {
+          .split {
+            display: flex;
+            input:first-child {
+              margin-right: 0.5rem;
+            }
+            input:not(:first-child) {
+              margin-left: 0.5rem;
+            }
+          }
         }
       }
     }

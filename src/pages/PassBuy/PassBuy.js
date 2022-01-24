@@ -1,31 +1,47 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from '@chakra-ui/react'
 import './styles.scss'
 
-import * as ROUTES from 'constants/routes';
-import * as API from 'constants/api';
-import * as OPTIONS from 'services/options';
 import Header from 'components/Header';
+import { Context } from 'Context';
 
 import moment from 'moment';
 
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
-import MaskInput from 'react-maskinput';
 
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Nav, TabPane } from 'react-bootstrap'
+
+import { v4 as uuidv4 } from 'uuid'
+import * as CardApi from 'services/cardsApi'
+
+import openPGP from 'services/openpgp'
+
+import * as ROUTES from 'constants/routes';
+import * as API from 'constants/api';
+import * as OPTIONS from 'services/options';
 
 function PassBuy() {
   const { pass_id } = useParams();
+  const { buyPassCrypto } = useContext(Context);
 
-  // const [drop, setDrop] = useState(undefined);
   const [pass, setPass] = useState(undefined);
-  const [loading, setLoading] = useState(true);
-  const [cvc, setCvc] = useState('');
-  const [expiry, setExpiry] = useState('');
   const [focus, setFocus] = useState('');
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [cardInfo, setCardInfo] = useState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+    address: '',
+    postal: '',
+    city: '',
+    district: '',
+    country: '',
+    email: ''
+  })
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -39,67 +55,212 @@ function PassBuy() {
         console.log(ex);
       }
     }
+    console.log('fetchDrop');
     fetchDrop();
   }, [])
 
   const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
+
+  const makeCreateCardCall = async () => {
+    const payload = {
+      idempotencyKey: uuidv4(),
+      expMonth: parseInt(cardInfo.expiry.substr(0, 2)),
+      expYear: parseInt(`20${cardInfo.expiry.substr(2, 2)}`),
+      keyId: '',
+      encryptedData: '',
+      billingDetails: {
+        line1: cardInfo.address,
+        line2: undefined,
+        city: cardInfo.city,
+        district: cardInfo.district,
+        postalCode: cardInfo.postal,
+        country: cardInfo.country,
+        name: cardInfo.name,
+      },
+      metadata: {
+        phoneNumber: undefined,
+        email: cardInfo.email,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1',
+      },
+    }
+    const publicKey = await CardApi.getPCIPublicKey()
+    
+    const cardDetails = {
+      number: cardInfo.number.replace(/ /g,''),
+      cvv: cardInfo.cvc,
+    }
+    
+    const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+    const { encryptedMessage, keyId } = encryptedData
+
+    payload.keyId = keyId
+    payload.encryptedData = encryptedMessage
+
+    const card = await CardApi.createCard(payload)
+    return card
+  }
+
+  const makeChargeCall = async (card_id) => {
+    const amountDetail = {
+      amount: pass.price,
+      currency: 'USD',
+    }
+    const sourceDetails = {
+      id: card_id,
+      type: 'card',
+    }
+
+    const payload = {
+      idempotencyKey: uuidv4(),
+      amount: amountDetail,
+      verification: 'cvv',
+      source: sourceDetails,
+      description: '',
+      channel: '',
+      metadata: {
+        phoneNumber: undefined,
+        email: cardInfo.email,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1',
+      },
+    }
+
+    try {
+      const cardDetails = { cvv: cardInfo.cvc }
+      const publicKey = await CardApi.getPCIPublicKey()
+      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+
+      payload.encryptedData = encryptedData.encryptedMessage
+      payload.keyId = encryptedData.keyId
+      const payment = await CardApi.createPayment(payload)
+
+      console.log(payment)
+    } catch (err) {
+
+    } finally {
+
+    }
+  }
+
+  const handleBuy = async (e) => {
+    e.preventDefault();
+    // buyPassCrypto();
+    const card = await makeCreateCardCall();
+    if (card && card.id) {
+      await makeChargeCall(card.id);
+    }
+  }
   
   return (
-    <div className="pass-detail-container">
+    <div className="buy-detail-container">
       <Header />
-      {pass && (
-        <div className="pass-info-container">
-          
-        </div>
-      )}
-      <div className="card-wrapper">
-        <Cards
-          cvc={cvc}
-          expiry={expiry}
-          focused={focus}
-          name={name}
-          number={number}
-        />
-        <Form className="input-wrapper">
-          <Form.Group className="mb-3">
-            <Form.Control
-              type="tel"
-              name="number"
-              placeholder="Card Number"
-              maxLength={16}
-              onChange={(e) => setNumber(e.target.value)}
-              onFocus={(e) => setFocus(e.target.name)} />
-          </Form.Group>
+      <div className="tab-wrapper">
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Tabs>
+            <TabList>
+              <Tab>Card</Tab>
+              <Tab>Crypto</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <div className="card-wrapper">
+                  <Form className="input-wrapper">
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="tel"
+                        name="number"
+                        placeholder="Card Number"
+                        onChange={(e) => setCardInfo(prev => ({...prev, number: e.target.value.trim()}))}
+                        onFocus={(e) => setFocus(e.target.name)} />
+                    </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Control
-              type="tel"
-              name="name"
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-              onFocus={(e) => setFocus(e.target.name)} />
-          </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="tel"
+                        name="name"
+                        placeholder="Name"
+                        onChange={(e) => setCardInfo(prev => ({...prev, name: e.target.value}))}
+                        onFocus={(e) => setFocus(e.target.name)} />
+                    </Form.Group>
 
-          <Form.Group className="mb-3 split">
-            <Form.Control
-              type="tel"
-              name="expire"
-              placeholder="Expire"
-              maxLength={4}
-              onChange={(e) => setExpiry(e.target.value)}
-              onFocus={(e) => setFocus(e.target.name)} />
-            <Form.Control
-              type="tel"
-              name="cvc"
-              placeholder="CVC"
-              maxLength={3}
-              onChange={(e) => setCvc(e.target.value)}
-              onFocus={(e) => setFocus(e.target.name)} />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
+                    <Form.Group className="mb-3 split">
+                      <Form.Control
+                        type="tel"
+                        name="expire"
+                        placeholder="Expire"
+                        maxLength={5}
+                        onChange={(e) => setCardInfo(prev => ({...prev, expiry: e.target.value.replace('/', '')}))}
+                        onFocus={(e) => setFocus(e.target.name)} />
+                      <Form.Control
+                        type="tel"
+                        name="cvc"
+                        placeholder="CVC"
+                        maxLength={3}
+                        onChange={(e) => setCardInfo(prev => ({...prev, cvc: e.target.value}))}
+                        onFocus={(e) => setFocus(e.target.name)} />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3 pt-3">
+                      <Form.Control
+                        type="text"
+                        placeholder="Address"
+                        onChange={(e) => setCardInfo(prev => ({...prev, address: e.target.value}))} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="text"
+                        placeholder="Postal Code"
+                        onChange={(e) => setCardInfo(prev => ({...prev, postal: e.target.value}))} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="text"
+                        placeholder="City"
+                        onChange={(e) => setCardInfo(prev => ({...prev, city: e.target.value}))} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="text"
+                        placeholder="District"
+                        onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="text"
+                        placeholder="Country Code"
+                        onChange={(e) => setCardInfo(prev => ({...prev, country: e.target.value}))} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="email"
+                        placeholder="Email"
+                        onChange={(e) => setCardInfo(prev => ({...prev, email: e.target.value}))} />
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit" onClick={handleBuy}>
+                      Submit
+                    </Button>
+                  </Form>
+                  <Cards
+                    cvc={cardInfo.cvc}
+                    expiry={cardInfo.expiry}
+                    focused={focus}
+                    name={cardInfo.name}
+                    number={cardInfo.number}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="card-wrapper">
+
+                </div>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        )}
       </div>
     </div>
   )

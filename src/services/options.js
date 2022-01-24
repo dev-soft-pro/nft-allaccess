@@ -32,10 +32,10 @@ export const POST_AUTH = (body, token) => {
   return {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    body: body
+    body: JSON.stringify(body)
   }
 }
 
