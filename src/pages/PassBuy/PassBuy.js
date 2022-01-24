@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from '@chakra-ui/react'
 import { Form, Button } from 'react-bootstrap'
 import Cards from 'react-credit-cards';
@@ -18,7 +18,8 @@ import './styles.scss'
 
 function PassBuy() {
   const { pass_id } = useParams();
-  const { walletState, connectWallet, buyPassCrypto } = useContext(Context);
+  const navigate = useNavigate();
+  const { cookies, walletState, connectWallet, buyPassCrypto } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [focus, setFocus] = useState('');
@@ -32,6 +33,7 @@ function PassBuy() {
     city: '',
     district: '',
     country: '',
+    phone: '',
     email: ''
   })
 
@@ -43,11 +45,14 @@ function PassBuy() {
         let response = await fetch(API.PASS_DETAIL.replace('$1', pass_id), OPTIONS.GET);
         let passData = await response.json();
         setPass(passData);
-        setLoading(false);
-        console.log(passData);
+        response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
+          { pass_id: pass_id }, cookies.access_token
+        ))
+        let pendingResult = await response.json();
       } catch (ex) {
         console.log(ex);
       }
+      setLoading(false);
     }
     console.log('fetchDrop');
     fetchDrop();
@@ -72,7 +77,7 @@ function PassBuy() {
         name: cardInfo.name,
       },
       metadata: {
-        phoneNumber: undefined,
+        phoneNumber: cardInfo.phone,
         email: cardInfo.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1',
@@ -97,7 +102,8 @@ function PassBuy() {
 
   const makeChargeCall = async (card_id) => {
     const amountDetail = {
-      amount: pass.price,
+      // amount: pass.price,
+      amount: 75,
       currency: 'USD',
     }
     const sourceDetails = {
@@ -113,7 +119,7 @@ function PassBuy() {
       description: '',
       channel: '',
       metadata: {
-        phoneNumber: undefined,
+        phoneNumber: cardInfo.phone,
         email: cardInfo.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1',
@@ -129,11 +135,29 @@ function PassBuy() {
       payload.keyId = encryptedData.keyId
       const payment = await CardApi.createPayment(payload)
 
-      console.log(payment)
+      if (payment.data.source) {
+        purchasePass();
+      }
     } catch (err) {
 
     } finally {
 
+    }
+  }
+
+  const purchasePass = async () => {
+    let response = await fetch(API.PURCHASE_PASS, OPTIONS.POST_AUTH(
+      { pass_id: pass_id }, cookies.access_token
+    ))
+    const result = await response.json();
+    if (result == "success") {
+      navigate(ROUTES.PROFILE, {replace: true});
+    } else {
+      response = await fetch(API.PASS_UNSET_PENDING, OPTIONS.POST_AUTH(
+        { pass_id: pass_id }, cookies.access_token
+      ))
+      let pendingResult = await response.json();
+      navigate(ROUTES.HOME, { replace: true })
     }
   }
 
@@ -147,8 +171,9 @@ function PassBuy() {
   }
 
   const handleCryptoBuy = async (e) => {
+    if (!pass) return;
     e.preventDefault();
-    buyPassCrypto();
+    buyPassCrypto(pass.price);
   }
   
   return (
@@ -237,6 +262,12 @@ function PassBuy() {
                         type="email"
                         placeholder="Email"
                         onChange={(e) => setCardInfo(prev => ({...prev, email: e.target.value}))} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="tel"
+                        placeholder="Phone Number"
+                        onChange={(e) => setCardInfo(prev => ({...prev, phone: e.target.value}))} />
                     </Form.Group>
 
                     <Button variant="primary" type="submit" onClick={handleBuy}>

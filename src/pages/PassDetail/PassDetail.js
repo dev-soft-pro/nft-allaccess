@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import './styles.scss'
 
 import * as ROUTES from 'constants/routes';
@@ -10,11 +10,13 @@ import Header from 'components/Header';
 
 import moment from 'moment';
 import { Spinner } from '@chakra-ui/react';
+import { Context } from 'Context'
 
 function PassDetail() {
   const { pass_id } = useParams();
+  const navigate = useNavigate();
+  const { cookies } = useContext(Context);
 
-  // const [drop, setDrop] = useState(undefined);
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +33,10 @@ function PassDetail() {
     }
     fetchDrop();
   }, [])
+
+  const handleBuy = async () => {
+    navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
+  }
   
   return (
     <div className="pass-detail-container">
@@ -47,9 +53,9 @@ function PassDetail() {
               </div>
               <div className="amount-info"></div>
               <div className="buynow">
-                <Link className="link-join" to={ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id)}>
+                <div className="link-join" onClick={handleBuy}>
                   <div className="button-join">Buy Pass</div>
-                </Link>
+                </div>
               </div>
               <div className="bottom-wrapper">
                 <div className="owner-info">Contract: {pass.contract}</div>

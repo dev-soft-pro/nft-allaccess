@@ -7,9 +7,12 @@ import Web3 from "web3";
 
 export const Context = createContext()
 import abiJson from 'assets/usdc-abi.json'
+// import abiJson from 'assets/matic-abi.json'
 
-const USDC_CONTRACT_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
-const USDC_RECEIVE_ADDRESS = '0x0bd0d6f4b322a07e03b7f57e6b3fc3c01f2b2ef3'
+const USDC_CONTRACT_ADDRESS = '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e'
+const USDC_RECEIVE_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
+
+// const USDC_CONTRACT_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
 const Provider = ({ children }) => {
   const [cookies, setCookies, removeCookies] = useCookies(['isAuth', 'userinfo', 'access_token', 'refresh_token'])
@@ -76,19 +79,24 @@ const Provider = ({ children }) => {
     } catch(error) {}
   },[walletState.provider]);
 
-  const buyPassCrypto = useCallback(async () => {
+  const buyPassCrypto = useCallback(async (price) => {
     try {
       if (walletState.provider) {
         const web3 = walletState.web3Provider;
-        
-        const contract = new web3.eth.Contract(
-          abiJson, 
-          USDC_CONTRACT_ADDRESS, 
-          { from: walletState.address, gas: 100000 }
-        );
-        contract.methods.transferOwnership(USDC_RECEIVE_ADDRESS)
-        .call()
-        .then(t => console.log('t')).catch(console.error);
+        const contract = new web3.eth.Contract(abiJson, USDC_CONTRACT_ADDRESS);
+        // console.log(contract)
+        const amount = price;
+        const tx = {
+          from: walletState.address,
+          to: USDC_RECEIVE_ADDRESS,
+          data: contract.methods.transfer(USDC_RECEIVE_ADDRESS, web3.utils.toBN(amount)).encodeABI()
+        }
+        web3.eth.sendTransaction(tx).then(res => {
+          console.log("res", res);
+        }).catch(err => {
+          console.log("err", err);
+        })
+        // This code was written and tested using web3 version 1.0.0-beta.26
       }
     } catch(error) {
       console.log(error);

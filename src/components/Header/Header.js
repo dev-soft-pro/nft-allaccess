@@ -25,7 +25,7 @@ function Header() {
   }
 
   return (
-    <Navbar expand="lg" className="header-wrapper">
+    <Navbar expand="lg" className="header-wrapper" variant="dark">
       <Container>
         <Navbar.Brand onClick={() => navigate(ROUTES.HOME)}>
           <img src={Logo} alt="Logo" height={50} />
