@@ -19,24 +19,22 @@ import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
 import './styles.scss'
+import { Spinner } from '@chakra-ui/react';
 
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function DropList() {
   const navigate = useNavigate();
 
-  const [drops, setDrops] = useState([{
-    id: 'temp',
-    image: TestImage
-  }]);
-  const [loading, setLoading] = useState(false);
+  const [drops, setDrops] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDropList = async () => {
       const response = await fetch(API.DROP_LIST, OPTIONS.GET);
       const data = await response.json();
       setDrops(data);
-      setLoading(true);
+      setLoading(false);
     }
 
     fetchDropList();
@@ -46,7 +44,9 @@ function DropList() {
     navigate(ROUTES.DROP_DETAIL.replace(':drop_num', drop.drop_num));
   }
 
-  return (
+  return loading ? (
+    <Spinner color='white' />
+  ) : (
     <Swiper
       effect="coverflow"
       grabCursor={true}

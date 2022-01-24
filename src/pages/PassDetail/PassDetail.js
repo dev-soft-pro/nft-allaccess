@@ -9,6 +9,7 @@ import * as OPTIONS from 'services/options';
 import Header from 'components/Header';
 
 import moment from 'moment';
+import { Spinner } from '@chakra-ui/react';
 
 function PassDetail() {
   const { pass_id } = useParams();
@@ -24,38 +25,40 @@ function PassDetail() {
         let passData = await response.json();
         setPass(passData);
         setLoading(false);
-        console.log(passData);
       } catch (ex) {
         console.log(ex);
       }
     }
     fetchDrop();
   }, [])
-
-  const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
   
   return (
     <div className="pass-detail-container">
       <Header />
-      {pass && (<div className="pass-info-container">
-        <img src={pass.image} alt="pass-img" />
-        <div className="pass-info">
-          <div className="mint-info">
-            Info on collection details and general pack or card details <br/>
-            95 / 100 minted
-          </div>
-          <div className="amount-info"></div>
-          <div className="buynow">
-            <Link className="link-join" to={ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id)}>
-              <div className="button-join">Buy Pass</div>
-            </Link>
-          </div>
-          <div className="bottom-wrapper">
-            <div className="owner-info">Contract: {pass.contract}</div>
-            <div className="owner-info">Holder: {pass.holder}</div>
-          </div>
-        </div>
-      </div>)}
+      <div className="pass-info-container">
+        {loading ? (
+          <Spinner color='white' />
+        ) : (
+          <>
+            <img src={pass.image} alt="pass-img" />
+            <div className="pass-info">
+              <div className="mint-info">
+                Price: ${pass.price}
+              </div>
+              <div className="amount-info"></div>
+              <div className="buynow">
+                <Link className="link-join" to={ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id)}>
+                  <div className="button-join">Buy Pass</div>
+                </Link>
+              </div>
+              <div className="bottom-wrapper">
+                <div className="owner-info">Contract: {pass.contract}</div>
+                <div className="owner-info">Holder: {pass.holder}</div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }
