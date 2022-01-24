@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
-import './styles.scss'
-
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from 'react-google-login';
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
@@ -13,6 +12,10 @@ import GoogleIcon from 'assets/images/social/google.png'
 import FacebookIcon from 'assets/images/social/facebook.png'
 import AppleIcon from 'assets/images/social/apple.png'
 
+import GoogleAuth from 'assets/google-auth.json'
+
+import './styles.scss'
+
 function Signup() {
   const navigate = useNavigate();
   const { updateLoadingStatus, activateAuth } = useContext(Context);
@@ -22,11 +25,7 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [agreed, setAgreed] = useState(false);
 
-  const handleJoin = async () => {
-    if (username == '' || email == '' || password == '' || !agreed) {
-      return;
-    }
-
+  const joinRequest = async (username, email, password) => {
     updateLoadingStatus(true);
     try {
       const formData = new FormData();
@@ -41,6 +40,20 @@ function Signup() {
       console.log(ex)
     }
     updateLoadingStatus(false);
+  }
+
+  const handleJoin = async () => {
+    if (username == '' || email == '' || password == '' || !agreed) {
+      return;
+    }
+    joinRequest(username, email, password);
+  }
+
+  const responseGoogle = async (res) => {
+    if (res) {
+      const profile = res.profileObj
+      joinRequest(profile.name, profile.email, profile.googleId)
+    }
   }
 
   return (
@@ -76,10 +89,18 @@ function Signup() {
           </Form>
           <p>OR</p>
           <div className="button-wrapper">
-            <div className="social-button">
-              <img src={GoogleIcon} alt='google' />
-              <span>Sign up with Google</span>
-            </div>
+            <GoogleLogin
+              clientId={GoogleAuth.web.client_id}
+              render={renderProps => (
+                <div className="social-button" onClick={renderProps.onClick}>
+                  <img src={GoogleIcon} alt='google' />
+                  <span>Sign up with Google</span>
+                </div>
+              )}
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
             <div className="social-button">
               <img src={FacebookIcon} alt='google' />
               <span>Sign up with Facebook</span>

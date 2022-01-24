@@ -1,0 +1,15 @@
+{
+  "web":{
+    "client_id":"174969493560-sun5hgp2osd1jio4a8cl8334is9pr3lc.apps.googleusercontent.com",
+    "project_id":"lexical-aquifer-336506",
+    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+    "token_uri":"https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret":"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",
+    "javascript_origins":[
+      "http://localhost",
+      "http://localhost:3000",
+      "http://localhost:8080"
+    ]
+  }
+}
