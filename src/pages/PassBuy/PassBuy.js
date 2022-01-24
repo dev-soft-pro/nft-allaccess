@@ -102,8 +102,8 @@ function PassBuy() {
 
   const makeChargeCall = async (card_id) => {
     const amountDetail = {
-      // amount: pass.price,
-      amount: 75,
+      amount: pass.price,
+      // amount: 75,
       currency: 'USD',
     }
     const sourceDetails = {
