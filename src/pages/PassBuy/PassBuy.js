@@ -1,30 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from '@chakra-ui/react'
-import './styles.scss'
-
-import Header from 'components/Header';
-import { Context } from 'Context';
-
-import moment from 'moment';
-
+import { Form, Button } from 'react-bootstrap'
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
-
-import { Form, Button, Nav, TabPane } from 'react-bootstrap'
-
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid'
-import * as CardApi from 'services/cardsApi'
 
-import openPGP from 'services/openpgp'
-
+import { Context } from 'Context';
+import Header from 'components/Header';
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
+import * as CardApi from 'services/cardsApi'
+import openPGP from 'services/openpgp'
+import './styles.scss'
 
 function PassBuy() {
   const { pass_id } = useParams();
-  const { buyPassCrypto } = useContext(Context);
+  const { walletState, connectWallet, buyPassCrypto } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [focus, setFocus] = useState('');
@@ -151,13 +145,18 @@ function PassBuy() {
       await makeChargeCall(card.id);
     }
   }
+
+  const handleCryptoBuy = async (e) => {
+    e.preventDefault();
+    buyPassCrypto();
+  }
   
   return (
     <div className="buy-detail-container">
       <Header />
       <div className="tab-wrapper">
         {loading ? (
-          <Spinner />
+          <Spinner color="white" />
         ) : (
           <Tabs>
             <TabList>
@@ -255,7 +254,15 @@ function PassBuy() {
               </TabPanel>
               <TabPanel>
                 <div className="card-wrapper">
-
+                  {!walletState.provider ? (
+                    <Button variant="primary" type="submit" onClick={() => connectWallet()}>
+                      Connect Wallet
+                    </Button>
+                  ) : (
+                    <Button variant="primary" type="submit" onClick={handleCryptoBuy}>
+                      Pay Now
+                    </Button>
+                  )}
                 </div>
               </TabPanel>
             </TabPanels>

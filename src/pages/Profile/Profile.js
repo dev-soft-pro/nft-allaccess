@@ -18,7 +18,6 @@ function Profile() {
       <div className="connect-button-wrapper">
         <ConnectButton />
       </div>
-      <Button onClick={() => buyPassCrypto()}>Test</Button>
     </div>
   )
 }

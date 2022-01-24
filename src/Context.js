@@ -8,7 +8,7 @@ import Web3 from "web3";
 export const Context = createContext()
 import abiJson from 'assets/usdc-abi.json'
 
-const USDC_CONTRACT_ADDRESS = '0x2d7882bedcbfddce29ba99965dd3cdf7fcb10a1e'
+const USDC_CONTRACT_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
 const USDC_RECEIVE_ADDRESS = '0x0bd0d6f4b322a07e03b7f57e6b3fc3c01f2b2ef3'
 
 const Provider = ({ children }) => {
@@ -86,9 +86,9 @@ const Provider = ({ children }) => {
           USDC_CONTRACT_ADDRESS, 
           { from: walletState.address, gas: 100000 }
         );
-        contract.methods.transfer(USDC_RECEIVE_ADDRESS, 1)
+        contract.methods.transferOwnership(USDC_RECEIVE_ADDRESS)
         .call()
-        .then(console.log).catch(console.error);
+        .then(t => console.log('t')).catch(console.error);
       }
     } catch(error) {
       console.log(error);
