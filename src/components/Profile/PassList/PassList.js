@@ -29,19 +29,33 @@ const override = css`
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function PassList(props) {
-  const { cookies } = useContext(Context);
+  const { cookies, updateAuthToken } = useContext(Context);
 
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const refreshToken = async () => {
+    const response = await fetch(API.REFRESH, OPTIONS.POST({
+      refresh: cookies.refresh_token
+    }))
+    const data = await response.json();
+    return data.access;
+  }
+
+  const loadPassesCall = async (token) => {
+    const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(token));
+    const data = await response.json();
+    return data;
+  }
+
   useEffect(() => {
-    const loadPasses = async () => {
-      const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(cookies.access_token));
-      const data = await response.json();
-      setPassList(data);
+    const init = async () => {
+      const access_token = await refreshToken();
+      const authPasses = await loadPassesCall(access_token);
+      setPassList(authPasses);
       setLoading(false);
     }
-    loadPasses();
+    init();
   }, []);
 
   return (
@@ -54,10 +68,10 @@ function PassList(props) {
           className="pass-swiper"
         >
           {passlist.map(pass =>
-            <SwiperSlide key={pass.pass_id}>
+            <SwiperSlide key={`pass-${pass.pass_id}`}>
               <div className="pass-wrapper">
-                <img src={pass.image} alt="pass-avatar" className="image-pass" />
-                <label>Contract: {pass.contract}</label>
+                <img src={pass.image.image} alt="pass-avatar" className="image-pass" />
+                <label>Pass ID: {pass.pass_id}</label>
               </div>
             </SwiperSlide>
           )}

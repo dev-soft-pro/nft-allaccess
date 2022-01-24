@@ -14,8 +14,11 @@ export const createCard = async (payload) => {
   const url = BASE_URL + '/v1/cards';
   const response = await fetch(url, OPTIONS.POST_AUTH(payload, CIRCLE_API_KEY));
   const data = await response.json();
-  console.log(data);
-  return data.data;
+  if (response.status !== 200) {
+    return data;
+  } else {
+    return data.data;
+  }
 }
 
 export const createPayment = async (payload) => {

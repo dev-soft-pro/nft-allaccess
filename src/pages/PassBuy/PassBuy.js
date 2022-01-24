@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, useToast } from '@chakra-ui/react'
 import { Form, Button } from 'react-bootstrap'
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
@@ -19,7 +19,8 @@ import './styles.scss'
 function PassBuy() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const { cookies, walletState, connectWallet, buyPassCrypto } = useContext(Context);
+  const { cookies, walletState, connectWallet } = useContext(Context);
+  const toast = useToast();
 
   const [pass, setPass] = useState(undefined);
   const [focus, setFocus] = useState('');
@@ -39,23 +40,57 @@ function PassBuy() {
 
   const [loading, setLoading] = useState(true);
 
+  const refreshToken = async () => {
+    const response = await fetch(API.REFRESH, OPTIONS.POST({
+      refresh: cookies.refresh_token
+    }))
+    const data = await response.json();
+    return data.access;
+  }
+
+  const fetchDrop = async (id) => {
+    try {
+      const response = await fetch(API.PASS_DETAIL.replace('$1', id), OPTIONS.GET);
+      if (response.status != 200) {
+        navigate(ROUTES.HOME, { replace: true });
+      }
+      const passData = await response.json();
+      return passData;
+    } catch (err) {
+      console.log(err);
+      navigate(ROUTES.HOME, { replace: true })
+    }
+  }
+
+  const setPending = async (id, token) => {
+    const response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
+      { pass_id: id }, token
+    ))
+    const result = await response.json();
+    return result;
+  }
+
+  const unsetPending = async (id, token) => {
+    const response = await fetch(API.PASS_UNSET_PENDING, OPTIONS.POST_AUTH(
+      { pass_id: id }, token
+    ))
+    const result = await response.json();
+    return result;
+  }
+
   useEffect(() => {
-    const fetchDrop = async () => {
+    const init = async () => {
       try {
-        let response = await fetch(API.PASS_DETAIL.replace('$1', pass_id), OPTIONS.GET);
-        let passData = await response.json();
+        const passData = await fetchDrop(pass_id);
         setPass(passData);
-        response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
-          { pass_id: pass_id }, cookies.access_token
-        ))
-        let pendingResult = await response.json();
+        const auth_token = await refreshToken();
+        setPending(pass_id, auth_token);
       } catch (ex) {
         console.log(ex);
       }
       setLoading(false);
     }
-    console.log('fetchDrop');
-    fetchDrop();
+    init();
   }, [])
 
   const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
@@ -97,13 +132,23 @@ function PassBuy() {
     payload.encryptedData = encryptedMessage
 
     const card = await CardApi.createCard(payload)
-    return card
+    if (card.code) {
+      toast({
+        title: 'Card Error',
+        description: card.message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+      processFailure();
+      return undefined;
+    }
+    return card.data
   }
 
   const makeChargeCall = async (card_id) => {
     const amountDetail = {
       amount: pass.price,
-      // amount: 75,
       currency: 'USD',
     }
     const sourceDetails = {
@@ -126,35 +171,28 @@ function PassBuy() {
       },
     }
 
-    try {
-      const cardDetails = { cvv: cardInfo.cvc }
-      const publicKey = await CardApi.getPCIPublicKey()
-      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+    const cardDetails = { cvv: cardInfo.cvc }
+    const publicKey = await CardApi.getPCIPublicKey()
+    const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
 
-      payload.encryptedData = encryptedData.encryptedMessage
-      payload.keyId = encryptedData.keyId
-      const payment = await CardApi.createPayment(payload)
+    payload.encryptedData = encryptedData.encryptedMessage
+    payload.keyId = encryptedData.keyId
+    const payment = await CardApi.createPayment(payload)
 
-      if (payment.data.source) {
-        purchasePass();
-      }
-    } catch (err) {
-
-    } finally {
-
-    }
+    return payment;
   }
 
   const purchasePass = async () => {
+    const token = await refreshToken();
     let response = await fetch(API.PURCHASE_PASS, OPTIONS.POST_AUTH(
-      { pass_id: pass_id }, cookies.access_token
+      { pass_id: pass_id }, token
     ))
     const result = await response.json();
-    if (result == "success") {
+    if (result.result == "success") {
       navigate(ROUTES.PROFILE, {replace: true});
     } else {
       response = await fetch(API.PASS_UNSET_PENDING, OPTIONS.POST_AUTH(
-        { pass_id: pass_id }, cookies.access_token
+        { pass_id: pass_id }, token
       ))
       let pendingResult = await response.json();
       navigate(ROUTES.HOME, { replace: true })
@@ -163,17 +201,61 @@ function PassBuy() {
 
   const handleBuy = async (e) => {
     e.preventDefault();
-    // buyPassCrypto();
-    const card = await makeCreateCardCall();
-    if (card && card.id) {
-      await makeChargeCall(card.id);
+    try {
+      const card = await makeCreateCardCall();
+      if (card && card.id) {
+        const payment = await makeChargeCall(card.id);
+        if (payment.data.source) {
+          purchasePass();
+        } else {
+          processFailure();
+        }
+      }
+    } catch (err) {
+      console.log(err)
+      processFailure();
+    }
+  }
+
+  const buyPassCrypto = async (price) => {
+    try {
+      if (walletState.provider) {
+        const web3 = walletState.web3Provider;
+        const contract = new web3.eth.Contract(abiJson, USDC_CONTRACT_ADDRESS);
+        const amount = price;
+        const tx = {
+          from: walletState.address,
+          to: USDC_RECEIVE_ADDRESS,
+          data: contract.methods.transfer(USDC_RECEIVE_ADDRESS, web3.utils.toBN(amount)).encodeABI()
+        };
+        web3.eth.sendTransaction(tx).then(res => {
+          console.log('success')
+          // processSuccess();
+        }).catch(err => {
+          processFailure();
+        });
+      }
+    } catch(error) {
+      console.log(error);
+      processFailure();
     }
   }
 
   const handleCryptoBuy = async (e) => {
     if (!pass) return;
     e.preventDefault();
-    buyPassCrypto(pass.price);
+    const res = await buyPassCrypto(pass.price);
+    console.log(res);
+    if (res.code) {
+      console.log(message);
+      processFailure();
+    }
+  }
+
+  const processFailure = async () => {
+    const token = await refreshToken();
+    unsetPending(pass_id, token);
+    navigate(ROUTES.HOME, { replace: true });
   }
   
   return (

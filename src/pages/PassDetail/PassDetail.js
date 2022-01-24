@@ -46,7 +46,7 @@ function PassDetail() {
           <Spinner color='white' />
         ) : (
           <>
-            <img src={pass.image} alt="pass-img" />
+            <img src={pass.image.image} alt="pass-img" />
             <div className="pass-info">
               <div className="mint-info">
                 Price: ${pass.price}

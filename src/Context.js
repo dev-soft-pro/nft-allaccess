@@ -50,7 +50,7 @@ const Provider = ({ children }) => {
   };
   const web3Modal = new Web3Modal(
   {
-    network: "binance",
+    network: "polygon",
     cacheProvider: true,
     providerOptions
   });
@@ -78,30 +78,6 @@ const Provider = ({ children }) => {
       window.location.reload();
     } catch(error) {}
   },[walletState.provider]);
-
-  const buyPassCrypto = useCallback(async (price) => {
-    try {
-      if (walletState.provider) {
-        const web3 = walletState.web3Provider;
-        const contract = new web3.eth.Contract(abiJson, USDC_CONTRACT_ADDRESS);
-        // console.log(contract)
-        const amount = price;
-        const tx = {
-          from: walletState.address,
-          to: USDC_RECEIVE_ADDRESS,
-          data: contract.methods.transfer(USDC_RECEIVE_ADDRESS, web3.utils.toBN(amount)).encodeABI()
-        }
-        web3.eth.sendTransaction(tx).then(res => {
-          console.log("res", res);
-        }).catch(err => {
-          console.log("err", err);
-        })
-        // This code was written and tested using web3 version 1.0.0-beta.26
-      }
-    } catch(error) {
-      console.log(error);
-    }
-  }, [walletState.provider])
 
   useEffect(() => {
     if (walletState.provider?.on)
@@ -152,14 +128,16 @@ const Provider = ({ children }) => {
       removeCookies('access_token', { path: '/' });
       removeCookies('refresh_token', { path: '/' });
     },
+    updateAuthToken: (data) => {
+      setCookies('access_token', data.access, { path: '/' });
+    },
     updateLoadingStatus: (status) => {
       setLoading(status);
     },
     walletState,
     setWalletState,
     connectWallet,
-    disconnect,
-    buyPassCrypto
+    disconnect
   }
 
   return (
