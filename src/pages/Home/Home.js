@@ -44,7 +44,7 @@ function Home() {
           </div>
         </div>
         <ArtistList />
-        <SetList />
+        {/* <SetList /> */}
         {/* About team to start */}
       </Container>
     </div>
