@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Form } from 'react-bootstrap'
 import { GoogleLogin } from 'react-google-login';
+import { useToast } from '@chakra-ui/react'
 import './styles.scss'
 
 import * as ROUTES from 'constants/routes';
@@ -22,6 +23,7 @@ function Login() {
     activateAuth,
     updateLoadingStatus
   } = useContext(Context);
+  const toast = useToast();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,8 +36,19 @@ function Login() {
       formData.append('password', password);
       const response = await fetch(API.LOGIN, OPTIONS.POST_FORM_DATA(formData));
       const data = await response.json();
-      activateAuth(data);
-      navigate(ROUTES.HOME, { replace: true });
+      if (response.status === 200) {
+        activateAuth(data);
+        navigate(ROUTES.HOME, { replace: true });
+      } else {
+        toast({
+          position: 'top',
+          title: 'Authentication Error',
+          description: data.detail,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
     } catch (ex) {
       console.log(ex)
     }

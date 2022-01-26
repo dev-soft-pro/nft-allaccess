@@ -1,7 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, useToast } from '@chakra-ui/react'
-import { Form, Button } from 'react-bootstrap'
+import { 
+  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Spinner,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalFooter
+} from '@chakra-ui/react'
+import { Form } from 'react-bootstrap'
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import moment from 'moment';
@@ -16,6 +30,7 @@ import * as OPTIONS from 'services/options';
 import * as CardApi from 'services/cardsApi'
 import openPGP from 'services/openpgp'
 import './styles.scss'
+import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 
 function PassBuy() {
   const { pass_id } = useParams();
@@ -23,7 +38,8 @@ function PassBuy() {
   const {
     cookies,
     walletState,
-    connectWallet
+    connectWallet,
+    updateLoadingStatus
   } = useContext(Context);
   const toast = useToast();
 
@@ -44,6 +60,8 @@ function PassBuy() {
   })
 
   const [loading, setLoading] = useState(true);
+  const [isFinished, setIsFinished] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
 
   const refreshToken = async () => {
     const response = await fetch(API.REFRESH, OPTIONS.POST({
@@ -83,11 +101,20 @@ function PassBuy() {
     return result;
   }
 
+  const revealPass = async (id, token) => {
+    const response = await fetch(API.REVEAL_PASS, OPTIONS.POST_AUTH(
+      { pass_id: id }, token
+    ))
+    const result = await response.json();
+    return result;
+  }
+
   useEffect(() => {
     const init = async () => {
       try {
         const passData = await fetchDrop(pass_id);
         setPass(passData);
+        setIsRevealed(passData.revealed != 0)
         const auth_token = await refreshToken();
         setPending(pass_id, auth_token);
       } catch (ex) {
@@ -97,8 +124,6 @@ function PassBuy() {
     }
     init();
   }, [])
-
-  const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
 
   const makeCreateCardCall = async () => {
     const payload = {
@@ -139,6 +164,7 @@ function PassBuy() {
     const card = await CardApi.createCard(payload)
     if (card.code) {
       toast({
+        position: 'top',
         title: 'Card Error',
         description: card.message,
         status: 'error',
@@ -193,19 +219,36 @@ function PassBuy() {
       { pass_id: pass_id }, token
     ))
     const result = await response.json();
+    updateLoadingStatus(false)
     if (result.result == "success") {
-      navigate(ROUTES.PROFILE, {replace: true});
+      setIsFinished(true);
     } else {
-      response = await fetch(API.PASS_UNSET_PENDING, OPTIONS.POST_AUTH(
-        { pass_id: pass_id }, token
-      ))
-      let pendingResult = await response.json();
-      navigate(ROUTES.HOME, { replace: true })
+      processFailure()
     }
+  }
+
+  const processFailureWithMessage = (msg) => {
+    toast({
+      position: 'top',
+      title: 'Crypto Error',
+      description: msg,
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
+    processFailure();
+  }
+
+  const processFailure = async () => {
+    updateLoadingStatus(false)
+    const token = await refreshToken();
+    unsetPending(pass_id, token);
+    navigate(ROUTES.HOME, { replace: true });
   }
 
   const handleBuy = async (e) => {
     e.preventDefault();
+    updateLoadingStatus(true)
     try {
       const card = await makeCreateCardCall();
       if (card && card.id) {
@@ -247,7 +290,9 @@ function PassBuy() {
           if (res === true) {
             contract.methods.transfer(USDC_RECEIVE_ADDRESS, price * 10 ^ 18)
             .call()
-            .then(res => console.log(res))
+            .then(res => {
+              purchasePass();
+            })
             .catch(err => {
               processFailureWithMessage(err.message)
             })
@@ -260,22 +305,17 @@ function PassBuy() {
       processFailure()
     }
   }
-
-  const processFailureWithMessage = (msg) => {
-    toast({
-      title: 'Crypto Error',
-      description: msg,
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    })
-    processFailure();
+  
+  const confirmRevealPass = async () => {
+    const token = await refreshToken()
+    const res = await revealPass(pass_id, token)
+    if (res.result == 'success') {
+      setIsRevealed(true);
+    }
   }
 
-  const processFailure = async () => {
-    const token = await refreshToken();
-    unsetPending(pass_id, token);
-    navigate(ROUTES.HOME, { replace: true });
+  const skipRevealPass = () => {
+    navigate(ROUTES.PROFILE, {replace: true});
   }
   
   return (
@@ -372,7 +412,7 @@ function PassBuy() {
                         onChange={(e) => setCardInfo(prev => ({...prev, phone: e.target.value}))} />
                     </Form.Group>
 
-                    <Button variant="primary" type="submit" onClick={handleBuy}>
+                    <Button colorScheme="red" type="submit" onClick={handleBuy}>
                       Submit
                     </Button>
                   </Form>
@@ -388,11 +428,11 @@ function PassBuy() {
               <TabPanel>
                 <div className="card-wrapper">
                   {!walletState.provider ? (
-                    <Button variant="primary" type="submit" onClick={() => connectWallet()}>
+                    <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
                       Connect Wallet
                     </Button>
                   ) : (
-                    <Button variant="primary" type="submit" onClick={handleCryptoBuy}>
+                    <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
                       Pay Now
                     </Button>
                   )}
@@ -402,6 +442,34 @@ function PassBuy() {
           </Tabs>
         )}
       </div>
+      <Modal isOpen={isFinished}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Successfully purchased</ModalHeader>
+          <ModalBody>
+            {pass && isRevealed && (
+              <video loop autoPlay={true}>
+                <source src={pass.reveal_vid.reveal_vid} />
+              </video>
+            )}
+            {pass && !isRevealed && (
+              <video loop autoPlay={true}>
+                <source src={pass.image.image} />
+              </video>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            {!isRevealed ? (
+              <>
+                <Button colorScheme='red' mr={3} onClick={confirmRevealPass}>Reveal</Button>
+                <Button variant='ghost' onClick={skipRevealPass}>Skip</Button>
+              </>
+            ) : (
+              <Button variant='ghost' onClick={skipRevealPass}>Close</Button>
+            )}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   )
 }

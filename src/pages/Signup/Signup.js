@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from 'react-google-login';
+import { useToast } from '@chakra-ui/react'
+import { Form } from 'react-bootstrap'
+
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 import { Context } from 'Context'
-
-import { Form } from 'react-bootstrap'
 
 import GoogleIcon from 'assets/images/social/google.png'
 import FacebookIcon from 'assets/images/social/facebook.png'
@@ -19,6 +20,7 @@ import './styles.scss'
 function Signup() {
   const navigate = useNavigate();
   const { updateLoadingStatus, activateAuth } = useContext(Context);
+  const toast = useToast();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -34,8 +36,19 @@ function Signup() {
       formData.append('password', password);
       const response = await fetch(API.REGISTER, OPTIONS.POST_FORM_DATA(formData));
       const data = await response.json();
-      activateAuth(data);
-      navigate(ROUTES.HOME, { replace: true });
+      if (response.status === 200) {
+        activateAuth(data);
+        navigate(ROUTES.HOME, { replace: true });
+      } else {
+        toast({
+          position: 'top',
+          title: 'Authentication Error',
+          description: data.detail,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
     } catch (ex) {
       console.log(ex)
     }

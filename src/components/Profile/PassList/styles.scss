@@ -9,12 +9,12 @@
     .swiper-slide {
       background-position: center;
       background-size: cover;
-      width: 20rem;
+      width: auto;
       margin-right: 20px;
     }
     .pass-wrapper {
       video {
-        max-width: 360px;
+        width: 360px;
         border: 1px solid white;
       }
       .image-pass {

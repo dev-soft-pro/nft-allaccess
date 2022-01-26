@@ -70,10 +70,10 @@ function PassList(props) {
           {passlist.map(pass =>
             <SwiperSlide key={`pass-${pass.pass_id}`}>
               <div className="pass-wrapper">
-                <video loop autoPlay>
-                  <source src={pass.image.image} />
-                </video>
                 <label>Pass ID: {pass.pass_id}</label>
+                <video loop autoPlay={true}>
+                  <source src={pass.revealed ? pass.reveal_vid.reveal_vid : pass.image.image} />
+                </video>
               </div>
             </SwiperSlide>
           )}
