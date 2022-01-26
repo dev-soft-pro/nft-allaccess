@@ -9,8 +9,8 @@ export const Context = createContext()
 import abiJson from 'assets/usdc-abi.json'
 // import abiJson from 'assets/matic-abi.json'
 
-const USDC_CONTRACT_ADDRESS = '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e'
-const USDC_RECEIVE_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
+export const USDC_CONTRACT_ADDRESS = '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e'
+export const USDC_RECEIVE_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
 
 // const USDC_CONTRACT_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
@@ -50,10 +50,36 @@ const Provider = ({ children }) => {
   };
   const web3Modal = new Web3Modal(
   {
-    network: "polygon",
+    network: "mainnet",
     cacheProvider: true,
     providerOptions
   });
+
+  const buyPassCrypto = async (price) => {
+    try {
+      if (walletState.provider) {
+        const web3 = walletState.web3Provider;
+        // await window.ethereum.enable();
+        const contract = new web3.eth.Contract(abiJson, USDC_CONTRACT_ADDRESS, {
+          from: walletState.address,
+          gas: 100000
+        });
+        const resApprove = await contract.methods.approve(
+          USDC_RECEIVE_ADDRESS,
+          price * 10 ^ 18
+        ).call()
+        if (resApprove === true) {
+          contract.methods.transfer(
+            USDC_RECEIVE_ADDRESS,
+            price * 10 ^ 18
+          ).call().then(res => console.log(res)).catch(err => console.log(err))
+          // return true;
+        }
+      }
+    } catch(error) {
+      return false;
+    }
+  }
 
   const connectWallet = useCallback(async () =>
   {
@@ -137,7 +163,8 @@ const Provider = ({ children }) => {
     walletState,
     setWalletState,
     connectWallet,
-    disconnect
+    disconnect,
+    buyPassCrypto
   }
 
   return (

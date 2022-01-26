@@ -11,8 +11,8 @@
     padding: 2rem 0;
     .auth-panel {
       color: white;
-      width: 640px;
-      max-width: 90%;
+      width: auto;
+      min-width: 360px;
       text-align: center;
       form {
         text-align: left;

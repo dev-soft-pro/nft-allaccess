@@ -7,7 +7,8 @@ import 'react-credit-cards/es/styles-compiled.css';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid'
 
-import { Context } from 'Context';
+import { Context, USDC_CONTRACT_ADDRESS, USDC_RECEIVE_ADDRESS } from 'Context';
+import abiJson from 'assets/usdc-abi.json'
 import Header from 'components/Header';
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
@@ -19,7 +20,11 @@ import './styles.scss'
 function PassBuy() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const { cookies, walletState, connectWallet } = useContext(Context);
+  const {
+    cookies,
+    walletState,
+    connectWallet
+  } = useContext(Context);
   const toast = useToast();
 
   const [pass, setPass] = useState(undefined);
@@ -217,39 +222,54 @@ function PassBuy() {
     }
   }
 
-  const buyPassCrypto = async (price) => {
+  const handleCryptoBuy = async (e) => {
+    if (!pass) return;
+    e.preventDefault();
     try {
-      if (walletState.provider) {
-        const web3 = walletState.web3Provider;
-        const contract = new web3.eth.Contract(abiJson, USDC_CONTRACT_ADDRESS);
-        const amount = price;
-        const tx = {
-          from: walletState.address,
-          to: USDC_RECEIVE_ADDRESS,
-          data: contract.methods.transfer(USDC_RECEIVE_ADDRESS, web3.utils.toBN(amount)).encodeABI()
-        };
-        web3.eth.sendTransaction(tx).then(res => {
-          console.log('success')
-          // processSuccess();
-        }).catch(err => {
-          processFailure();
-        });
-      }
-    } catch(error) {
-      console.log(error);
+      buyPassCrypto(pass.price);
+    } catch (err) {
       processFailure();
     }
   }
 
-  const handleCryptoBuy = async (e) => {
-    if (!pass) return;
-    e.preventDefault();
-    const res = await buyPassCrypto(pass.price);
-    console.log(res);
-    if (res.code) {
-      console.log(message);
-      processFailure();
+  const buyPassCrypto = async (price) => {
+    try {
+      if (walletState.provider) {
+        const web3 = walletState.web3Provider;
+        const contract = new web3.eth.Contract(abiJson, USDC_CONTRACT_ADDRESS, {
+          from: walletState.address,
+          gas: 100000
+        });
+        contract.methods.approve(
+          USDC_RECEIVE_ADDRESS,
+          price * 10 ^ 18
+        ).call().then(res => {
+          if (res === true) {
+            contract.methods.transfer(USDC_RECEIVE_ADDRESS, price * 10 ^ 18)
+            .call()
+            .then(res => console.log(res))
+            .catch(err => {
+              processFailureWithMessage(err.message)
+            })
+          }
+        }).catch(err => {
+          processFailureWithMessage(err.message)
+        })
+      }
+    } catch(error) {
+      processFailure()
     }
+  }
+
+  const processFailureWithMessage = (msg) => {
+    toast({
+      title: 'Crypto Error',
+      description: msg,
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
+    processFailure();
   }
 
   const processFailure = async () => {

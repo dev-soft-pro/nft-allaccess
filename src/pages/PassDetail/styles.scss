@@ -5,14 +5,24 @@
     color: white;
     display: flex;
     justify-content: center;
-    .pass-info {
+    padding: 1rem;
+    @media only screen and (max-width: 640px) {  
+      flex-direction: column;
+    }
+    video {
+      max-width: 360px;
+      border: 1px solid white;
+    }
+    .pass-detail-info {
       padding: 0 1rem;
-      div {
-        margin-top: 1rem;
+      .mint-info {
+        margin-top: 0.5rem;
+        font-size: 20px;
       }
       .buynow {
         display: flex;
         flex-direction: row;
+        margin-top: 0.5rem;
         .link-join {
           color: white;
           text-decoration: none;

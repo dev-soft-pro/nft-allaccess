@@ -8,11 +8,22 @@
     .chakra-tabs {
       color: white;
       max-width: 640px;
+      @media only screen and (max-width: 640px) {
+        width: 100%;
+      }
       .card-wrapper {
         display: flex;
         min-width: 640px;
+        @media only screen and (max-width: 640px) {  
+          flex-direction: column-reverse;
+          min-width: 100%;
+          max-width: 360px;
+        }
         .rccs {
           margin: 0 1rem;
+          @media only screen and (max-width: 640px) { 
+            margin: 0 0 1rem 0;
+          }
         }
         .input-wrapper {
           .split {

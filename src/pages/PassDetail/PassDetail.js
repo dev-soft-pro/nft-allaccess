@@ -46,20 +46,17 @@ function PassDetail() {
           <Spinner color='white' />
         ) : (
           <>
-            <img src={pass.image.image} alt="pass-img" />
-            <div className="pass-info">
+            <video loop autoPlay>
+              <source src={pass.image.image} />
+            </video>
+            <div className="pass-detail-info">
               <div className="mint-info">
                 Price: ${pass.price}
               </div>
-              <div className="amount-info"></div>
               <div className="buynow">
                 <div className="link-join" onClick={handleBuy}>
                   <div className="button-join">Buy Pass</div>
                 </div>
-              </div>
-              <div className="bottom-wrapper">
-                <div className="owner-info">Contract: {pass.contract}</div>
-                <div className="owner-info">Holder: {pass.holder}</div>
               </div>
             </div>
           </>
