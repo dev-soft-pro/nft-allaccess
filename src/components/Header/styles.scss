@@ -1,5 +1,8 @@
 .header-wrapper {
   background-color: black !important;
+  .navbar-brand {
+    cursor: pointer;
+  }
   .header-menu {
     color: white;
     font-size: 1.3rem;

@@ -31,6 +31,7 @@ import * as CardApi from 'services/cardsApi'
 import openPGP from 'services/openpgp'
 import './styles.scss'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader';
+import Page from 'components/Page';
 
 function PassBuy() {
   const { pass_id } = useParams();
@@ -319,158 +320,159 @@ function PassBuy() {
   }
   
   return (
-    <div className="buy-detail-container">
-      <Header />
-      <div className="tab-wrapper">
-        {loading ? (
-          <Spinner color="white" />
-        ) : (
-          <Tabs>
-            <TabList>
-              <Tab>Card</Tab>
-              <Tab>Crypto</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <div className="card-wrapper">
-                  <Form className="input-wrapper">
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="tel"
-                        name="number"
-                        placeholder="Card Number"
-                        onChange={(e) => setCardInfo(prev => ({...prev, number: e.target.value.trim()}))}
-                        onFocus={(e) => setFocus(e.target.name)} />
-                    </Form.Group>
+    <Page>
+      <div className="buy-detail-container">
+        <div className="tab-wrapper">
+          {loading ? (
+            <Spinner color="white" />
+          ) : (
+            <Tabs>
+              <TabList>
+                <Tab>Card</Tab>
+                <Tab>Crypto</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <div className="card-wrapper">
+                    <Form className="input-wrapper">
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="tel"
+                          name="number"
+                          placeholder="Card Number"
+                          onChange={(e) => setCardInfo(prev => ({...prev, number: e.target.value.trim()}))}
+                          onFocus={(e) => setFocus(e.target.name)} />
+                      </Form.Group>
 
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="tel"
-                        name="name"
-                        placeholder="Name"
-                        onChange={(e) => setCardInfo(prev => ({...prev, name: e.target.value}))}
-                        onFocus={(e) => setFocus(e.target.name)} />
-                    </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="tel"
+                          name="name"
+                          placeholder="Name"
+                          onChange={(e) => setCardInfo(prev => ({...prev, name: e.target.value}))}
+                          onFocus={(e) => setFocus(e.target.name)} />
+                      </Form.Group>
 
-                    <Form.Group className="mb-3 split">
-                      <Form.Control
-                        type="tel"
-                        name="expire"
-                        placeholder="Expire"
-                        maxLength={5}
-                        onChange={(e) => setCardInfo(prev => ({...prev, expiry: e.target.value.replace('/', '')}))}
-                        onFocus={(e) => setFocus(e.target.name)} />
-                      <Form.Control
-                        type="tel"
-                        name="cvc"
-                        placeholder="CVC"
-                        maxLength={3}
-                        onChange={(e) => setCardInfo(prev => ({...prev, cvc: e.target.value}))}
-                        onFocus={(e) => setFocus(e.target.name)} />
-                    </Form.Group>
+                      <Form.Group className="mb-3 split">
+                        <Form.Control
+                          type="tel"
+                          name="expire"
+                          placeholder="Expire"
+                          maxLength={5}
+                          onChange={(e) => setCardInfo(prev => ({...prev, expiry: e.target.value.replace('/', '')}))}
+                          onFocus={(e) => setFocus(e.target.name)} />
+                        <Form.Control
+                          type="tel"
+                          name="cvc"
+                          placeholder="CVC"
+                          maxLength={3}
+                          onChange={(e) => setCardInfo(prev => ({...prev, cvc: e.target.value}))}
+                          onFocus={(e) => setFocus(e.target.name)} />
+                      </Form.Group>
 
-                    <Form.Group className="mb-3 pt-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="Address"
-                        onChange={(e) => setCardInfo(prev => ({...prev, address: e.target.value}))} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="Postal Code"
-                        onChange={(e) => setCardInfo(prev => ({...prev, postal: e.target.value}))} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="City"
-                        onChange={(e) => setCardInfo(prev => ({...prev, city: e.target.value}))} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="District"
-                        onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="Country Code"
-                        onChange={(e) => setCardInfo(prev => ({...prev, country: e.target.value}))} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="email"
-                        placeholder="Email"
-                        onChange={(e) => setCardInfo(prev => ({...prev, email: e.target.value}))} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="tel"
-                        placeholder="Phone Number"
-                        onChange={(e) => setCardInfo(prev => ({...prev, phone: e.target.value}))} />
-                    </Form.Group>
+                      <Form.Group className="mb-3 pt-3">
+                        <Form.Control
+                          type="text"
+                          placeholder="Address"
+                          onChange={(e) => setCardInfo(prev => ({...prev, address: e.target.value}))} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="text"
+                          placeholder="Postal Code"
+                          onChange={(e) => setCardInfo(prev => ({...prev, postal: e.target.value}))} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="text"
+                          placeholder="City"
+                          onChange={(e) => setCardInfo(prev => ({...prev, city: e.target.value}))} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="text"
+                          placeholder="District"
+                          onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="text"
+                          placeholder="Country Code"
+                          onChange={(e) => setCardInfo(prev => ({...prev, country: e.target.value}))} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="email"
+                          placeholder="Email"
+                          onChange={(e) => setCardInfo(prev => ({...prev, email: e.target.value}))} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          type="tel"
+                          placeholder="Phone Number"
+                          onChange={(e) => setCardInfo(prev => ({...prev, phone: e.target.value}))} />
+                      </Form.Group>
 
-                    <Button colorScheme="red" type="submit" onClick={handleBuy}>
-                      Submit
-                    </Button>
-                  </Form>
-                  <Cards
-                    cvc={cardInfo.cvc}
-                    expiry={cardInfo.expiry}
-                    focused={focus}
-                    name={cardInfo.name}
-                    number={cardInfo.number}
-                  />
-                </div>
-              </TabPanel>
-              <TabPanel>
-                <div className="card-wrapper">
-                  {!walletState.provider ? (
-                    <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
-                      Connect Wallet
-                    </Button>
-                  ) : (
-                    <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
-                      Pay Now
-                    </Button>
-                  )}
-                </div>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        )}
+                      <Button colorScheme="red" type="submit" onClick={handleBuy}>
+                        Submit
+                      </Button>
+                    </Form>
+                    <Cards
+                      cvc={cardInfo.cvc}
+                      expiry={cardInfo.expiry}
+                      focused={focus}
+                      name={cardInfo.name}
+                      number={cardInfo.number}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel>
+                  <div className="card-wrapper">
+                    {!walletState.provider ? (
+                      <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
+                        Connect Wallet
+                      </Button>
+                    ) : (
+                      <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
+                        Pay Now
+                      </Button>
+                    )}
+                  </div>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          )}
+        </div>
+        <Modal isOpen={isFinished}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Successfully purchased</ModalHeader>
+            <ModalBody>
+              {pass && isRevealed && (
+                <video loop autoPlay={true} muted={true} playsInline={true}>
+                  <source src={pass.reveal_vid.reveal_vid} />
+                </video>
+              )}
+              {pass && !isRevealed && (
+                <video loop autoPlay={true} muted={true} playsInline={true}>
+                  <source src={pass.image.image} />
+                </video>
+              )}
+            </ModalBody>
+            <ModalFooter>
+              {!isRevealed ? (
+                <>
+                  <Button colorScheme='red' mr={3} onClick={confirmRevealPass}>Reveal</Button>
+                  <Button variant='ghost' onClick={skipRevealPass}>Skip</Button>
+                </>
+              ) : (
+                <Button variant='ghost' onClick={skipRevealPass}>Close</Button>
+              )}
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </div>
-      <Modal isOpen={isFinished}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Successfully purchased</ModalHeader>
-          <ModalBody>
-            {pass && isRevealed && (
-              <video loop autoPlay={true}>
-                <source src={pass.reveal_vid.reveal_vid} />
-              </video>
-            )}
-            {pass && !isRevealed && (
-              <video loop autoPlay={true}>
-                <source src={pass.image.image} />
-              </video>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            {!isRevealed ? (
-              <>
-                <Button colorScheme='red' mr={3} onClick={confirmRevealPass}>Reveal</Button>
-                <Button variant='ghost' onClick={skipRevealPass}>Skip</Button>
-              </>
-            ) : (
-              <Button variant='ghost' onClick={skipRevealPass}>Close</Button>
-            )}
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </div>
+    </Page>
   )
 }
 

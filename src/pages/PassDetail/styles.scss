@@ -15,9 +15,13 @@
     }
     .pass-detail-info {
       padding: 0 1rem;
-      .mint-info {
+      .info-row {
         margin-top: 0.5rem;
         font-size: 20px;
+        span:not(:first-child) {
+          margin-left: 0.25rem;
+          color: #DC0000;
+        }
       }
       .buynow {
         display: flex;

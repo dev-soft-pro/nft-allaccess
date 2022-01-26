@@ -3,6 +3,16 @@
 	src: local('engschrift'), url('./assets/engschrift.otf') format('opentype');
 }
 
+html,
+body,
+#root,
+.page-wrapper
+ {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
   font-family: engschrift;

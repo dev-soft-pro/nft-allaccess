@@ -71,7 +71,7 @@ function PassList(props) {
             <SwiperSlide key={`pass-${pass.pass_id}`}>
               <div className="pass-wrapper">
                 <label>Pass ID: {pass.pass_id}</label>
-                <video loop autoPlay={true}>
+                <video loop autoPlay={true} muted={true} playsInline={true}>
                   <source src={pass.revealed ? pass.reveal_vid.reveal_vid : pass.image.image} />
                 </video>
               </div>

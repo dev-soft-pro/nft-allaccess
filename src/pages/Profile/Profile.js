@@ -7,18 +7,20 @@ import ConnectButton from 'components/Buttons/ConnectButton';
 
 import { Context } from 'Context'
 import { Button } from '@chakra-ui/button';
+import Page from 'components/Page';
 
 function Profile() {
   const { buyPassCrypto } = useContext(Context)
 
   return (
-    <div className="profile-container">
-      <Header />
-      <PassList />
-      <div className="connect-button-wrapper">
-        <ConnectButton />
+    <Page>
+      <div className="profile-container">
+        <PassList />
+        <div className="connect-button-wrapper">
+          <ConnectButton />
+        </div>
       </div>
-    </div>
+    </Page>
   )
 }
 

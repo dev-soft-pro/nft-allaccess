@@ -11,6 +11,7 @@ import { Context } from 'Context';
 
 import moment from 'moment';
 import { Spinner } from '@chakra-ui/spinner';
+import Page from 'components/Page';
 
 function DropDetail() {
   const { drop_num } = useParams();
@@ -41,35 +42,36 @@ function DropDetail() {
   const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
   
   return (
-    <div className="drop-detail-container">
-      <Header />
-      <div className="drop-info">
-        {loading ? (
-          <Spinner color='white' />
-        ) : (
-          <>
-            <h2>{drop.edition}</h2>
-            <div className="drop-image-container">
-              <img src={drop.image} alt="drop-image" />
-              <p>{drop.description}</p>
-            </div>
-            <div className="drop-info-detail">
-              <p>
-                Early Access<br />
-                {formatDate(drop.presale_start)} ~ {formatDate(drop.presale_end)}<br />
-                Public<br />
-                {formatDate(drop.public_start)}
-              </p>
-            </div>
-            {cookies.isAuth == 'true' && pass && (<div className="buy-button-wrapper">
-              <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
-                <div className="button-join">Buy Pass</div>
-              </Link>
-            </div>)}
-          </>
-        )}
+    <Page>
+      <div className="drop-detail-container">
+        <div className="drop-info">
+          {loading ? (
+            <Spinner color='white' />
+          ) : (
+            <>
+              <h2>{drop.edition}</h2>
+              <div className="drop-image-container">
+                <img src={drop.image} alt="drop-image" />
+                <p>{drop.description}</p>
+              </div>
+              <div className="drop-info-detail">
+                <p>
+                  Early Access<br />
+                  {formatDate(drop.presale_start)} ~ {formatDate(drop.presale_end)}<br />
+                  Public<br />
+                  {formatDate(drop.public_start)}
+                </p>
+              </div>
+              {cookies.isAuth == 'true' && pass && (<div className="buy-button-wrapper">
+                <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
+                  <div className="button-join">Buy Pass</div>
+                </Link>
+              </div>)}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </Page>
   )
 }
 

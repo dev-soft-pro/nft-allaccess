@@ -1,6 +1,5 @@
 .auth-container {
   width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +17,7 @@
         text-align: left;
       }
       .button-wrapper {
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
         .social-button {
           cursor: pointer;
@@ -39,7 +38,6 @@
           }
           span {
             align-self: center;
-            margin-left: 50px;
           }
         }
         .continue-button {
