@@ -41,11 +41,27 @@ function Signup() {
       if (response.status === 201) {
         activateAuth(data);
         navigate(ROUTES.HOME, { replace: true });
+      } else if (response.status === 406) {
+        Object.keys(data.error).map(key => {
+          console.log(data.error[key])
+        })
+        data.error.map(err => {
+          const key = Object.keys(err)[0];
+          const message = err[key];
+          toast({
+            position: 'top',
+            title: key,
+            description: message,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          })
+        })
       } else {
         toast({
           position: 'top',
-          title: 'Authentication Error',
-          description: data.detail,
+          title: 'Unknown Error',
+          description: '',
           status: 'error',
           duration: 9000,
           isClosable: true,
@@ -117,14 +133,6 @@ function Signup() {
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
               />
-              <div className="social-button">
-                <img src={FacebookIcon} alt='google' />
-                <span>Sign up with Facebook</span>
-              </div>
-              <div className="social-button">
-                <img src={AppleIcon} alt='apple' />
-                <span>Sign up with Apple</span>
-              </div>
               <Form.Group className="mb-3 confirm-check" controlId="formBasicCheckbox">
                 <Form.Check
                   type="checkbox"

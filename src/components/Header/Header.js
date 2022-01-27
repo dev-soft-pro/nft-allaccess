@@ -18,7 +18,6 @@ import Logo from 'assets/images/logo.png'
 function Header() {
   const { cookies, removeAuth } = useContext(Context);
   const navigate = useNavigate();
-  console.log(cookies)
 
   const handleLogout = () => {
     removeAuth();
@@ -40,7 +39,7 @@ function Header() {
             Community
           </Nav.Link>
           {cookies.isAuth == 'true' && cookies.userinfo ? (
-            <NavDropdown title={cookies.userinfo.username} id="profile-dropdown" className="header-menu">
+            <NavDropdown title={`${cookies.userinfo.username} / Point: ${cookies.userinfo.points}`} id="profile-dropdown" className="header-menu">
               <NavDropdown.Item onClick={() => navigate(ROUTES.PROFILE)}>Profile</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={() => handleLogout()}>Log Out</NavDropdown.Item>

@@ -109,14 +109,6 @@ function Login() {
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
               />
-              <div className="social-button">
-                <img src={FacebookIcon} alt='facebook' />
-                <span>Sign in with Facebook</span>
-              </div>
-              <div className="social-button">
-                <img src={AppleIcon} alt='apple' />
-                <span>Sign in with Apple</span>
-              </div>
               <div className="continue-button" onClick={() => handleLogin()}>
                 <span>Continue</span>
               </div>
