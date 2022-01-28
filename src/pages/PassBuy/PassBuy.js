@@ -125,7 +125,7 @@ function PassBuy() {
         setPass(passData);
         setIsRevealed(passData.revealed != 0)
         const auth_token = await refreshToken();
-        // setPending(pass_id, auth_token);
+        setPending(pass_id, auth_token);
       } catch (ex) {
         console.log(ex);
       }
@@ -304,16 +304,16 @@ function PassBuy() {
             })
             .catch(err => {
               console.log(err, 1)
-              // processFailureWithMessage(err.message)
+              processFailureWithMessage(err.message)
             })
           }
         }).catch(err => {
           console.log(err.message, 2)
-          // processFailureWithMessage(err.message)
+          processFailureWithMessage(err.message)
         })
       }
     } catch(error) {
-      // processFailure()
+      processFailure()
     }
   }
   
@@ -401,19 +401,19 @@ function PassBuy() {
                       <Form.Group className="mb-3">
                         {(cardInfo.country == 'US' || cardInfo.country == 'CA') ? (
                           <Form.Select
-                            aria-label="Default select example"
                             onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
                             value={cardInfo.district}>
                             <option value="">Select District</option>
                             {provinces[cardInfo.country].map(ct => 
-                              <option value={ct.value}>{ct.text}</option>
+                              <option value={ct.value} key={`district-${ct.value}`}>{ct.text}</option>
                             )}
                           </Form.Select>
                         ) : (
                           <Form.Control
                             type="text"
                             placeholder="District"
-                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
+                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
+                            disabled={cardInfo.country == ''} />
                         )}
                       </Form.Group>
                       <Form.Group className="mb-3">
@@ -447,6 +447,9 @@ function PassBuy() {
                         Submit
                       </Button>
                     </Form>
+                    <div>
+                    <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
+                    <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
                     <Cards
                       cvc={cardInfo.cvc}
                       expiry={cardInfo.expiry}
@@ -454,6 +457,7 @@ function PassBuy() {
                       name={cardInfo.name}
                       number={cardInfo.number}
                     />
+                    </div>
                   </div>
                 </TabPanel>
                 <TabPanel>

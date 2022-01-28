@@ -1,28 +1,108 @@
 .drop-detail-container {
+  color: white;
+  text-align: center;
+  background: #323232;
+  margin: 4rem 14rem 9rem 14rem;
+  p{
+    font-size: 1.5rem;
+  }
+
+
   .drop-info {
     margin-top: 5rem;
     color: white;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-align: center;
-    .buy-button-wrapper {
-      display: flex;
-      flex-direction: row;
-      margin-top: 1rem;
-      .link-join {
-        color: white;
-        text-decoration: none;
+    justify-content: center;
+
+
+      .drop-left{
+        margin: 0 3em 0 3em;
       }
-      .button-join {
-        display: inline-flex;
-        padding: 5px 20px;
-        background: #DC0000;
-        cursor: pointer;
-        border-radius: 6px;
-        font-size: 22px;
-        font-weight: bold;
+      .drop-right{
+        margin: 0 3em 0 3em;
+        h1{
+          font-size: 2.5rem;
+        }
+        h2{
+          font-size: 2rem;
+          font-weight: bold;
+        }
+        p{
+          font-size: 1.5rem;
+        }
+        input{
+          color:black;
+          text-align: center;
+          width: 2rem;
+          margin-left: 1em;
+        }
+        .drop-info-quantity{
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+        }
+
+
+
+
+        .button-join {
+          display: inline-flex;
+          padding: 5px 20px;
+          background: #DC0000;
+          cursor: pointer;
+          border-radius: 6px;
+          font-size: 22px;
+          font-weight: bold;
+          margin-top:1em;
+        }
+
+        .button-join:hover{
+          color: white;
+          background: #b60000;
+        }
+
+
+
+
+
+
+
+
+
+
+
+        .buy-button-wrapper {
+          display: flex;
+          flex-direction: row;
+          margin-top: 1rem;
+          .link-join {
+            color: white;
+            text-decoration: none;
+          }
+          .button-join {
+            display: inline-flex;
+            padding: 5px 20px;
+            background: #DC0000;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 22px;
+            font-weight: bold;
+          }
+
       }
+      
+
+
+
+
+    
     }
+  }
+
+  .drop-info-detail-bottom{
+    padding: 4em 10em 4em 10em;
   }
 }

@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     padding: 2rem 0;
+    font-size:1.2rem;
     .auth-panel {
       color: white;
       width: auto;
@@ -43,6 +44,9 @@
         .confirm-check {
           margin-top: 30px;
         }
+        strong:hover{
+          color:#dc0000;
+        }
         .continue-button {
           cursor: pointer;
           margin-top: 10px;
@@ -60,6 +64,9 @@
         .social-button:not(:first-child) {
           margin-top: 20px;
         }
+        
+
+
       }
     }
   }

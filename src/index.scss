@@ -11,6 +11,8 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  width: 100%;
+  margin-top: 37px;
 }
 
 body {
@@ -20,6 +22,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: black !important;
   color: white;
+  overflow-x: hidden;
   div, p, a, label, span {
     font-family: engschrift;
   }

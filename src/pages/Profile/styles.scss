@@ -1,10 +1,35 @@
 .profile-container {
-  .connect-button-wrapper {
+  width:100%;
+  .profile-slider{
+    width: 100%;
+    height: fit-content;
     display: flex;
-    justify-content: center;
-    color: white;
-    button:hover {
-      background: #DC0000A0;
+    justify-content: space-around;
+    align-items: center;
+    padding-block: 1rem;
+    color: #fff;
+    flex-direction: column;
+    .profile-image{
+      width:250px;
+      aspect-ratio: 1;
+      img{
+        width:100%;
+      }
     }
   }
+  .profile-bottom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 1em;
+  }
+  .textFix{
+    text-align: center;
+  }
+  button:hover{
+    background-color: #aa0909;
+    
+  }
 }
+

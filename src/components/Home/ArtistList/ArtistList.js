@@ -20,6 +20,8 @@ import * as OPTIONS from 'services/options';
 import './styles.scss'
 import { Spinner } from '@chakra-ui/spinner';
 
+
+
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function ArtistList() {
@@ -36,7 +38,11 @@ function ArtistList() {
   useEffect(() => {
     initData();
   }, []);
-
+  let atester = 0;
+  if (athletes != undefined) {
+    atester++;
+  }
+  if (atester > 3){
   return loading ? (
     <Spinner color='white' />
   ) : (
@@ -58,6 +64,25 @@ function ArtistList() {
       </Swiper>
     </div>
   )
+  }else{
+    return loading ? (
+      <Spinner color='white' />
+    ) : (
+    <div className="artist-less">    
+    <label className="title">Featured Athletes</label>
+    <div className="artist-less-wrapper">
+        {athletes.map(athlete =>
+          <div className="artist-less-box" key={`athlete-${athlete.id}`}>
+            <div className="artist-wrapper">
+              <img src={athlete.image} alt="artist-avatar" className="image-artist-avatar" />
+              <label>{athlete.name}</label>
+            </div>
+          </div>
+        )}
+    </div>
+    </div>
+    )
+  }
 }
 
 export default ArtistList;

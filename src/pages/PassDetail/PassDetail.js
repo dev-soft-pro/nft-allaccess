@@ -38,6 +38,13 @@ function PassDetail() {
   const handleBuy = async () => {
     navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
   }
+  //add ifsold variable here "true or false"
+  function checkIfSoldOut(ifsold){
+    if(!ifsold){
+      return "buynow_disabled";
+    }
+    return "buynow";
+  }
   
   return (
     <Page>
@@ -59,7 +66,8 @@ function PassDetail() {
                   <span>Smart Contract: <a style={{color: '#DC0000'}} href={`https://polygonscan.com/token/${pass.contract}`}>Here</a></span>
                   </div>
                 <div className="info-row">
-                  <span>Mint Number:</span><span>{pass.token_id}</span>
+                  {/* ADD TOTAL MINTED */}
+                  <span>Mint Number:</span><span>{pass.token_id} / 14</span>
                 </div>
                 <div className="info-row">
                   <span>Price:</span><span>${pass.price}</span>
@@ -77,9 +85,9 @@ function PassDetail() {
                 <div className="info-row">
                   <span>Description:</span><span>{pass.drop_num.description}</span>
                 </div>
-                <div className="buynow">
+                <div className={checkIfSoldOut(true)}>
                   <div className="link-join" onClick={handleBuy}>
-                    <div className="button-join">Buy Now</div>
+                    <div className="button-join">Buy Pass</div>
                   </div>
                 </div>
               </div>

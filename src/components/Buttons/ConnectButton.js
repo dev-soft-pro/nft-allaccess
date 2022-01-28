@@ -13,6 +13,7 @@ export default function ConnectButton() {
       size="md"
       opacity="{1}"
       textAlign="center"
+      textColor="white"
       display="flex"
       flexDirection="row"
       justifyContent="center"

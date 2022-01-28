@@ -27,10 +27,24 @@ function Signup() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordV, setPasswordV] = useState('');
   const [agreed, setAgreed] = useState(false);
 
   const joinRequest = async (username, email, password) => {
     updateLoadingStatus(true);
+     if (password !== passwordV) {
+       toast({
+         title: 'Passwords do not match',
+         description: 'Please try again',
+         status: 'error',
+         duration: 5000,
+         isClosable: true,
+       });
+       updateLoadingStatus(false);
+       return;
+     }
+    
+
     try {
       const formData = new FormData();
       formData.append('username', username);
@@ -74,9 +88,16 @@ function Signup() {
   }
 
   const handleJoin = async () => {
-    if (username == '' || email == '' || password == '' || !agreed) {
-      return;
-    }
+     if (username == undefined && email == undefined && password == undefined && passwordV == undefined && agreed == false) {
+       toast({
+         title: 'Please fill in all fields',
+         description: 'Please try again',
+         status: 'error',
+         duration: 5000,
+         isClosable: true,
+       });
+       return;
+     }
     joinRequest(username, email, password);
   }
 
@@ -118,6 +139,20 @@ function Signup() {
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)} />
               </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Re Enter Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => setPasswordv(e.target.value)} />
+              </Form.Group>
+              
+
+
+
+
+
+
             </Form>
             <p>OR</p>
             <div className="button-wrapper">
@@ -138,7 +173,7 @@ function Signup() {
                   type="checkbox"
                   label={(
                   <Form.Label htmlFor="formBasicCheckbox">
-                    I agree to the <Link to="/" className="link">Terms of Service</Link> and acknowledge the <Link to="/" className="link">Privacy Policy</Link>.
+                    I agree to the <Link to="/" className="link"><strong>Terms of Service</strong></Link> and acknowledge the <Link to="/" className="link"><strong>Privacy Policy</strong></Link>.
                   </Form.Label>
                   )} 
                   onChange={(e) => setAgreed(e.target.checked) } />

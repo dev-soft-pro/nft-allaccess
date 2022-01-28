@@ -1,5 +1,6 @@
 .drop-swiper {
   margin-top: 50px;
+  position: relative;
   .swiper-slide {
     background-position: center;
     background-size: cover;
@@ -16,6 +17,101 @@
       position: absolute;
       bottom: 1rem;
       font-weight: bold;
+    }
+    .buttons-wrapper{
+      position:absolute;
+      bottom:0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 0 70px;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      z-index: 90;
+      a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 30px;
+        width: fit-content;
+        cursor: pointer;
+        background: #DC0000;
+        transition: .3s ease-in-out;
+        font-size: 1rem;
+        border-radius: 6px;
+      }
+      a:hover {
+        background: #aa0909;
+      }
+      .btn_carrousel_buy_disabled{
+        display: none;
+      }
+    }
+  }
+}
+
+.drop-less-wrapper{
+  width: 100%;
+  padding:1.5rem .75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  gap:.5rem;
+  flex-wrap: wrap;
+  .drop-less-box{
+    width: 400px;
+    height: 270px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    img{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+    .drop-desc {
+      color: white;
+      font-weight: bold;
+      position: absolute;
+      top: .5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 1.5rem;
+      text-shadow: 1px 1px 1px black;
+    }
+    .buttons-wrapper{
+      position:absolute;
+      bottom:0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 0 70px;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      z-index: 90;
+      a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 30px;
+        width: fit-content;
+        cursor: pointer;
+        background: #DC0000;
+        transition: .3s ease-in-out;
+        font-size: 1rem;
+        border-radius: 6px;
+      }
+      a:hover {
+        background: #aa0909;
+      }
+      .btn_carrousel_buy_disabled{
+        display: none;
+      }
     }
   }
 }

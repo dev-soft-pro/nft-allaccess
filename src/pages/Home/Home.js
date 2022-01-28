@@ -22,11 +22,10 @@ function Home() {
     <Page>
       <div className="home-container">
         <Container>
-          <DropList />
-          {/* Join Discord */}
-          <div className="join-discord-wrapper">
-            <img src={JoinDiscordImage} alt="join-discord" />
+          <div className="video-slider">
+            <video src="https://storage.googleapis.com/all_access_nft_bucket/assets/Copy%20of%20Logo%20trailer%20official%20-%20HD%201080p.mov" loop={true} autoPlay={true} muted={true} alt="Video"></video>
           </div>
+          <DropList />          
           <ArtistList />
           <div className="how-it-works">
             <div className="how-it-works-container">

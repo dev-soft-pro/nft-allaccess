@@ -12,6 +12,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/css/effect-coverflow'
 
+import moment from 'moment';
+
 import TestImage from 'assets/images/test.jfif'
 
 import * as ROUTES from 'constants/routes';
@@ -19,7 +21,7 @@ import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
 import './styles.scss'
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, useControllableState } from '@chakra-ui/react';
 
 SwiperCore.use([EffectCoverflow,Pagination]);
 
@@ -36,14 +38,32 @@ function DropList() {
       setDrops(data);
       setLoading(false);
     }
-
+    
     fetchDropList();
   }, [])
-
+  
   const handleDropClick = (drop) => {
     navigate(ROUTES.DROP_DETAIL.replace(':drop_num', drop.drop_num));
+  } 
+ 
+  let tester = 0;
+  if (drops != undefined) {
+    tester++;
   }
 
+  const checkBuyingDate = (drop) => {
+    const now = moment();
+    const startdropDate = moment(drop.presale_start);
+    const enddropDate = moment(drop.presale_end);
+    if (now.isBetween(startdropDate, enddropDate)) {
+      return "btn_carrousel_buy";
+    } else {
+      return "btn_carrousel_buy_disabled";
+    }
+  }
+
+  console.log(tester);
+  if (tester > 3) {
   return loading ? (
     <Spinner color='white' />
   ) : (
@@ -62,14 +82,47 @@ function DropList() {
       className="drop-swiper"
       loop={true}
     >
-      {drops.map(drop =>
-        <SwiperSlide key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>
-          <img src={drop.image} alt="nft" className="image-nft-drop" />
-          <div className="drop-desc">{drop.description}</div>
-        </SwiperSlide>
+    {drops.map(drop =>
+      <SwiperSlide>
+        <img src={drop.image} alt="nft" className="image-nft-drop" />
+        <div className="drop-desc">{drop.description}</div>
+        <div className="buttons-wrapper">
+          <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
+          <a className={checkBuyingDate(drop)} href="#">Buy Now</a>
+        </div>
+      </SwiperSlide>
       )}
     </Swiper>
   )
+}else{
+  return loading ? (
+    <Spinner color='white' />
+  ) : (
+    <div className="drop-less-wrapper">
+      {drops.map(drop =>
+      <div className="drop-less-box" key={`drop-${drop.drop_num}`}>
+        <img src={drop.image} alt="nft" className="image-nft-drop" />
+        <div className="drop-desc">{drop.description}</div>
+        <div className="buttons-wrapper">
+          <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
+          <a className={checkBuyingDate(drop)} href="#">Buy Now</a>
+        </div>
+      </div>)}
+    </div>
+  )
+}
+  //return loading ? (
+    //  <Spinner color='white' />
+    //) : (
+    //  drops.map(drop =>
+    //        <div className="no_carrousel_slider">
+    //          <img src={drop.image} alt="nft" className="image-nft-drop" />
+    //          <div className="drop-desc">{drop.description}</div>
+    //          <a className="btn_carrousel" href="#">Learn More</a>
+    //          <a className="btn_carrousel_buy" href="#">Buy Now</a>
+    //        </div>
+    //    )
+    //)
 }
 
 export default DropList;

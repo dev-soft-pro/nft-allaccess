@@ -11,7 +11,6 @@
       background-size: cover;
       width: 5rem;
       // height: 5rem;
-      margin-right: 20px;
     }
     .artist-wrapper {
       text-align: center;
@@ -27,5 +26,49 @@
         text-align: center;
       }
     }
+  }
+}
+.artist-less{
+  position: relative;
+  .title{
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    width: 100%;
+    transform:translate(-50%);
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
+.artist-less-wrapper{
+  width: 100%;
+  padding: 3rem .75rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  color: #fff;
+  .artist-less-box{
+    width:100px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    cursor: pointer;
+    img{
+      width: 100%;
+      border-radius: 50%;
+      border: 2px solid #DC0000;
+    }
+    label{
+      font-size: 1rem;
+      font-weight: bold;
+      position: absolute;
+      bottom:-2rem;
+      left:50%;
+      transform: translate(-50%);
+      width: fit-content;
+    }
+
   }
 }
