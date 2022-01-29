@@ -24,17 +24,20 @@ function Home() {
         <Container>
           <div className="video-slider">
             <video src="https://storage.googleapis.com/all_access_nft_bucket/assets/Copy%20of%20Logo%20trailer%20official%20-%20HD%201080p.mov" loop={true} autoPlay={true} muted={true} alt="Video"></video>
+            <div className="video-slider-text">
+             <p className="video-slider-text-large-p">It’s a new era for unique collectables and we are about to change the way people collect, invest and redeem real world rewards. All Access provides premium NFT collectibles and brings the latest in collectable NFT’s to life.</p>
+             <p>All Access will bridge the gap between blockchain and real world utility.</p>
+            </div>
           </div>
           <DropList />          
-          <ArtistList />
           <div className="how-it-works">
             <div className="how-it-works-container">
               <h2>How It Works</h2>
-              <p>COLLECT LIMITED-EDITION NFTS</p>
-              <p>GAIN ACCESS TO EXCLUSIVE EVENTS AND MEMORABILIA</p>
-              <p>SHOW OFF YOUR COLLECTIBLES IN BINDERS</p>
-              <p>MAKE PURCHASE OR TRADE OFFERS ON NFTS IN OTHER BINDERS</p>
-              <p>SELL YOUR COLLECTIBLES IN THE SECONDARY MARKETPLACE</p>
+              <p>Buy cases and packs to earn All Access Points(AAPs)</p>
+              <p>Crack open your case or pack to redeem more AAPs</p>
+              <p>Redeem AAPs in the All Access Zone for crazy merch and unique experiences</p>
+              <p>Maintain your collection on our platform or transfer to your favorite Polygon wallet</p>
+              <p>Buy and sell on the marketplace(coming soon)</p>
               {!(cookies.isAuth == 'true') && (
                 <div className="button-wrapper">
                   <RouterLink className="link-join" to={ROUTES.REGISTER}>

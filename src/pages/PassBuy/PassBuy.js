@@ -23,9 +23,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Context, USDC_CONTRACT_ADDRESS, USDC_RECEIVE_ADDRESS } from 'Context';
 import abiJson from 'assets/usdc-abi.json'
-import countries from 'assets/countries.json'
-import usProvinces from 'assets/provinces_us.json'
-import usCanada from 'assets/provinces_ca.json'
 import Header from 'components/Header';
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
@@ -37,22 +34,16 @@ import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 import Page from 'components/Page';
 
 function PassBuy() {
-  const provinces = {
-    'US': usProvinces,
-    'CA': usCanada,
-  }
-
+  const { pass_id } = useParams();
   const navigate = useNavigate();
   const {
     cookies,
     walletState,
     connectWallet,
-    updateLoadingStatus,
+    updateLoadingStatus
   } = useContext(Context);
   const toast = useToast();
 
-  const [pass_id, setPassID] = useState(undefined)
-  const [amount, setAmount] = useState(0)
   const [pass, setPass] = useState(undefined);
   const [focus, setFocus] = useState('');
   const [cardInfo, setCardInfo] = useState({
@@ -68,6 +59,10 @@ function PassBuy() {
     phone: '',
     email: ''
   })
+
+  //if (pass != undefined) {
+  //  console.log(pass);
+  //}
 
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
@@ -97,7 +92,7 @@ function PassBuy() {
 
   const setPending = async (id, token) => {
     const response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
-      { pass_id: id, num_requested: amount.toString() }, token
+      { pass_id: id }, token
     ))
     const result = await response.json();
     return result;
@@ -120,16 +115,8 @@ function PassBuy() {
   }
 
   useEffect(() => {
-    if (cookies.checkout_pass) {
-      setPassID(cookies.checkout_pass.pass_id)
-      setAmount(cookies.checkout_pass.amount);
-    }
-  }, [cookies])
-
-  useEffect(() => {
     const init = async () => {
       try {
-        const pass_id = cookies.checkout_pass.pass_id
         const passData = await fetchDrop(pass_id);
         setPass(passData);
         setIsRevealed(passData.revealed != 0)
@@ -140,9 +127,8 @@ function PassBuy() {
       }
       setLoading(false);
     }
-    if (pass_id)
-      init();
-  }, [pass_id])
+    init();
+  }, [])
 
   const makeCreateCardCall = async () => {
     const payload = {
@@ -313,12 +299,10 @@ function PassBuy() {
               purchasePass();
             })
             .catch(err => {
-              console.log(err, 1)
               processFailureWithMessage(err.message)
             })
           }
         }).catch(err => {
-          console.log(err.message, 2)
           processFailureWithMessage(err.message)
         })
       }
@@ -409,36 +393,16 @@ function PassBuy() {
                           onChange={(e) => setCardInfo(prev => ({...prev, city: e.target.value}))} />
                       </Form.Group>
                       <Form.Group className="mb-3">
-                        {(cardInfo.country == 'US' || cardInfo.country == 'CA') ? (
-                          <Form.Select
-                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
-                            value={cardInfo.district}>
-                            <option value="">Select District</option>
-                            {provinces[cardInfo.country].map(ct => 
-                              <option value={ct.value} key={`district-${ct.value}`}>{ct.text}</option>
-                            )}
-                          </Form.Select>
-                        ) : (
-                          <Form.Control
-                            type="text"
-                            placeholder="District"
-                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
-                            disabled={cardInfo.country == ''} />
-                        )}
+                        <Form.Control
+                          type="text"
+                          placeholder="District"
+                          onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
                       </Form.Group>
                       <Form.Group className="mb-3">
-                        <Form.Select
-                          aria-label="Default select example"
-                          onChange={(e) => setCardInfo(prev => ({
-                            ...prev,
-                            country: e.target.value,
-                            district: e.target.value == 'US' || e.target.value == 'US' ? '' : prev.district
-                          }))}>
-                          <option value="">Select Country</option>
-                          {countries.map(ct => 
-                            <option key={`country-${ct.value}`} value={ct.value}>{ct.text}</option>
-                          )}
-                        </Form.Select>
+                        <Form.Control
+                          type="text"
+                          placeholder="Country Code"
+                          onChange={(e) => setCardInfo(prev => ({...prev, country: e.target.value}))} />
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Control
@@ -471,16 +435,21 @@ function PassBuy() {
                   </div>
                 </TabPanel>
                 <TabPanel>
-                  <div className="card-wrapper">
-                    {!walletState.provider ? (
-                      <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
-                        Connect Wallet
-                      </Button>
-                    ) : (
-                      <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
-                        Pay Now
-                      </Button>
-                    )}
+                  <div className="crypto-nft">
+                      <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
+                      <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
+                    
+
+
+                      {!walletState.provider ? (
+                        <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
+                          Connect Wallet
+                        </Button>
+                      ) : (
+                        <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
+                          Pay Now
+                        </Button>
+                      )}
                   </div>
                 </TabPanel>
               </TabPanels>

@@ -15,13 +15,7 @@ export const USDC_RECEIVE_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
 // const USDC_CONTRACT_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
 const Provider = ({ children }) => {
-  const [cookies, setCookies, removeCookies] = useCookies([
-    'isAuth',
-    'userinfo',
-    'access_token',
-    'refresh_token',
-    'checkout_pass'
-  ])
+  const [cookies, setCookies, removeCookies] = useCookies(['isAuth', 'userinfo', 'access_token', 'refresh_token'])
   const [loading, setLoading] = useState(false);
 
   const initialState =
@@ -41,7 +35,8 @@ const Provider = ({ children }) => {
   const rpc = 'https://rpc-mumbai.maticvigil.com/';
   const providerOptions =
   {
-    walletconnect: {
+    walletconnect:
+    {
       package: WalletConnectProvider,
       options:
       {
@@ -164,12 +159,6 @@ const Provider = ({ children }) => {
     },
     updateLoadingStatus: (status) => {
       setLoading(status);
-    },
-    setPassCheckout: (data) => {
-      setCookies('checkout_pass', JSON.stringify(data), { path: '/' })
-    },
-    clearPassCheckout: (data) => {
-      removePassCheckout('checkout_pass', JSON.stringify(data), { path: '/' })
     },
     walletState,
     setWalletState,

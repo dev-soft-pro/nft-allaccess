@@ -1,14 +1,28 @@
-$primary-color: #DC0000;
 .pass-detail-container {
   padding: 0 1rem;
+
+  .pass-info{
+    font-size:2rem;
+    color:white;
+    text-align: center;
+  }
+
+
   .pass-info-container {
     margin-top: 5rem;
     color: white;
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-    @media only screen and (max-width: 640px) {  
+    background-color: #212121;
+    margin:2em 3em;
+    padding: 1rem 2rem;;   
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    place-items: center;
+    gap:1rem;
+    @media only screen and (max-width: 1060px) {  
+      display:flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
     video {
       max-width: 360px;
@@ -16,21 +30,67 @@ $primary-color: #DC0000;
     }
     .pass-detail-info {
       padding: 0 1rem;
+      background-color: #212121 ;
+      display: grid;
+      place-items: center;
+      h1{
+        font-size: 2em;
+      }
+      .pass-detail-info{
+        display:grid;
+        place-items: center;
+      }
+      .header-pass{
+        background:#383838 !important;
+        width: 100%;
+        padding: 2rem;
+
+      }
       .info-row {
         margin-top: 0.5rem;
         font-size: 20px;
         display: flex;
         align-items: center;
-        span:not(:last-child) {
-          margin-right: 0.25rem;
-        }
-        span:not(:first-child) {
-          color: $primary-color;
-        }
-        .input-amount {
-          width: 100px;
+        justify-content: space-around;
+        gap: 1rem;
+        width: 100%;
+        span {
+          margin-left: 0.25rem;
+          color: #DC0000;
         }
       }
+      .button-join {
+        z-index: 1;
+        display: inline-flex;
+        padding: 5px 20px;
+        background: #DC0000; 
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 22px;
+        font-weight: bold;
+      }   
+      .button-join:hover {
+        background: #b60101;
+        color: white;
+      }
+
+      .button-join-but{
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+        background: #DC0000 !important;
+        color: #fff;
+        border-radius: 6px;
+        transition: .3s ease-in-out;
+        font-size: 1.7rem;
+        font-weight: bold;
+        cursor: pointer;
+        &:hover{
+          background: #b60101 !important;
+          color: #fff;
+        }
+      }
+
       .buynow {
         display: flex;
         flex-direction: row;
@@ -39,15 +99,7 @@ $primary-color: #DC0000;
           color: white;
           text-decoration: none;
         }
-        .button-join {
-          display: inline-flex;
-          padding: 5px 20px;
-          background: $primary-color;
-          cursor: pointer;
-          border-radius: 6px;
-          font-size: 22px;
-          font-weight: bold;
-        }
+        
       }
       .buynow_disabled{
         display: none;
@@ -56,6 +108,22 @@ $primary-color: #DC0000;
         display: flex;
         justify-content: space-between;
       }
+      .grabbed-data{
+        z-index: 0;
+      }
     }
   }
+}
+
+.desc-fix{
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  padding: 1rem;
+  color: #fff !important;
+  grid-column: 1/3;
+  @media screen and (max-width: 1060px) {
+    grid-column: none;
+  }
+  
 }

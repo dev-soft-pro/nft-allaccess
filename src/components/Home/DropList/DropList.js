@@ -61,8 +61,6 @@ function DropList() {
       return "btn_carrousel_buy_disabled";
     }
   }
-
-  console.log(tester);
   if (tester > 3) {
   return loading ? (
     <Spinner color='white' />
@@ -83,27 +81,27 @@ function DropList() {
       loop={true}
     >
     {drops.map(drop =>
-      <SwiperSlide>
-        <img src={drop.image} alt="nft" className="image-nft-drop" />
-        <div className="drop-desc">{drop.description}</div>
-        <div className="buttons-wrapper">
-          <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
-          <a className={checkBuyingDate(drop)} href="#">Buy Now</a>
-        </div>
-      </SwiperSlide>
+          <SwiperSlide >
+            <img src={drop.image} alt="nft" className="image-nft-drop" />
+            <div className="drop-desc">{drop.title}</div>
+            <div class="buttons-wrapper">
+              <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
+              <a className={checkBuyingDate(drop)} href="#">Buy Now</a>
+            </div>
+          </SwiperSlide>
       )}
     </Swiper>
   )
-}else{
+}else{  
   return loading ? (
     <Spinner color='white' />
   ) : (
     <div className="drop-less-wrapper">
       {drops.map(drop =>
-      <div className="drop-less-box" key={`drop-${drop.drop_num}`}>
+      <div className="drop-less-box">
         <img src={drop.image} alt="nft" className="image-nft-drop" />
-        <div className="drop-desc">{drop.description}</div>
-        <div className="buttons-wrapper">
+        <div className="drop-desc">{drop.title}</div>
+        <div class="buttons-wrapper">
           <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
           <a className={checkBuyingDate(drop)} href="#">Buy Now</a>
         </div>
