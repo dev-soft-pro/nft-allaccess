@@ -86,8 +86,7 @@ function PassDetail() {
                     <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
                   </>
-                )}
-                
+                )}               
                 <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
                   <div className="info-row" onClick={handleBuy}>
                     <div className="button-join-but">Buy Pass</div>

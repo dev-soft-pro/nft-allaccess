@@ -34,6 +34,10 @@ import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 import Page from 'components/Page';
 
 function PassBuy() {
+  const provinces = {
+    'US': usProvinces,
+    'CA': usCanada,
+  }
   const { pass_id } = useParams();
   const navigate = useNavigate();
   const {

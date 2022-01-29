@@ -78,7 +78,6 @@ function DropDetail() {
             </>
           )}
         </div>
-        
       </div>
     </Page>
   )
