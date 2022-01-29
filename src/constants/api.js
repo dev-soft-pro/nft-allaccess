@@ -1,6 +1,6 @@
 
-// export const BASE_URL = 'http://localhost:8000/api/'
-export const BASE_URL = 'https://all-access-nft-backend-whwlc.ondigitalocean.app/api/'
+export const BASE_URL = 'http://localhost:8000/api/'
+// export const BASE_URL = 'https://all-access-nft-backend-whwlc.ondigitalocean.app/api/'
 export const LOGIN = BASE_URL + 'auth/login/'
 export const REGISTER = BASE_URL + 'auth/register/'
 export const REFRESH = BASE_URL + 'auth/refresh/'
