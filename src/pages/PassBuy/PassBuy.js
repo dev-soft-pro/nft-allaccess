@@ -23,6 +23,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Context, USDC_CONTRACT_ADDRESS, USDC_RECEIVE_ADDRESS } from 'Context';
 import abiJson from 'assets/usdc-abi.json'
+import countries from 'assets/countries.json'
+import usProvinces from 'assets/provinces_us.json'
+import usCanada from 'assets/provinces_ca.json'
 import Header from 'components/Header';
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
@@ -38,6 +41,7 @@ function PassBuy() {
     'US': usProvinces,
     'CA': usCanada,
   }
+
   const { pass_id } = useParams();
   const navigate = useNavigate();
   const {
@@ -303,10 +307,12 @@ function PassBuy() {
               purchasePass();
             })
             .catch(err => {
+              console.log(err, 1)
               processFailureWithMessage(err.message)
             })
           }
         }).catch(err => {
+          console.log(err.message, 2)
           processFailureWithMessage(err.message)
         })
       }
@@ -397,16 +403,36 @@ function PassBuy() {
                           onChange={(e) => setCardInfo(prev => ({...prev, city: e.target.value}))} />
                       </Form.Group>
                       <Form.Group className="mb-3">
-                        <Form.Control
-                          type="text"
-                          placeholder="District"
-                          onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
+                        {(cardInfo.country == 'US' || cardInfo.country == 'CA') ? (
+                          <Form.Select
+                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
+                            value={cardInfo.district}>
+                            <option value="">Select District</option>
+                            {provinces[cardInfo.country].map(ct => 
+                              <option value={ct.value} key={`district-${ct.value}`}>{ct.text}</option>
+                            )}
+                          </Form.Select>
+                        ) : (
+                          <Form.Control
+                            type="text"
+                            placeholder="District"
+                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
+                            disabled={cardInfo.country == ''} />
+                        )}
                       </Form.Group>
                       <Form.Group className="mb-3">
-                        <Form.Control
-                          type="text"
-                          placeholder="Country Code"
-                          onChange={(e) => setCardInfo(prev => ({...prev, country: e.target.value}))} />
+                        <Form.Select
+                          aria-label="Default select example"
+                          onChange={(e) => setCardInfo(prev => ({
+                            ...prev,
+                            country: e.target.value,
+                            district: e.target.value == 'US' || e.target.value == 'US' ? '' : prev.district
+                          }))}>
+                          <option value="">Select Country</option>
+                          {countries.map(ct => 
+                            <option key={`country-${ct.value}`} value={ct.value}>{ct.text}</option>
+                          )}
+                        </Form.Select>
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Control

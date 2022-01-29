@@ -72,8 +72,21 @@
         .buy-button-wrapper {
           display: flex;
           flex-direction: row;
-          justify-content: center;
-        }
+          margin-top: 1rem;
+          .link-join {
+            color: white;
+            text-decoration: none;
+          }
+          .button-join {
+            display: inline-flex;
+            padding: 5px 20px;
+            background: #DC0000;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 22px;
+            font-weight: bold;
+          }
+      }
     
     }
   }
