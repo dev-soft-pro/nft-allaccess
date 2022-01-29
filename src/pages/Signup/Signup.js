@@ -144,15 +144,8 @@ function Signup() {
                 <Form.Control
                   type="password"
                   placeholder="Password"
-                  onChange={(e) => setPasswordv(e.target.value)} />
+                  onChange={(e) => setPasswordV(e.target.value)} />
               </Form.Group>
-              
-
-
-
-
-
-
             </Form>
             <p>OR</p>
             <div className="button-wrapper">
@@ -168,15 +161,13 @@ function Signup() {
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
               />
-              <Form.Group className="mb-3 confirm-check" controlId="formBasicCheckbox">
+              <Form.Group className="mb-3 confirm-check" controlId="agreeCheckbox">
                 <Form.Check
                   type="checkbox"
-                  label={(
-                  <Form.Label htmlFor="formBasicCheckbox">
-                    I agree to the <Link to="/" className="link"><strong>Terms of Service</strong></Link> and acknowledge the <Link to="/" className="link"><strong>Privacy Policy</strong></Link>.
-                  </Form.Label>
-                  )} 
                   onChange={(e) => setAgreed(e.target.checked) } />
+                <Form.Label>
+                  I agree to the <Link to="/" className="link"><strong>Terms of Service</strong></Link> and acknowledge the <Link to="/" className="link"><strong>Privacy Policy</strong></Link>.
+                </Form.Label>
               </Form.Group>
               <div className="continue-button" onClick={() => handleJoin()}>
                 <span>Continue</span>

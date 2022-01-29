@@ -10,16 +10,24 @@ import { RARITY_TITLES } from 'constants/rarity';
 import Page from 'components/Page'
 
 import moment from 'moment';
-import { Spinner } from '@chakra-ui/react';
+import {
+  Spinner,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper
+} from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const { cookies } = useContext(Context);
+  const { setPassCheckout } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -36,7 +44,11 @@ function PassDetail() {
   }, [])
 
   const handleBuy = async () => {
-    navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
+    setPassCheckout({
+      pass_id: pass_id,
+      amount: amount
+    })
+    navigate(ROUTES.PASS_BUY)
   }
   //add ifsold variable here "true or false"
   function checkIfSoldOut(ifsold){
@@ -82,6 +94,20 @@ function PassDetail() {
                   </div>
                   </>
                 )}
+                <div className="info-row">
+                  <span>Amount: </span>
+                  <NumberInput
+                    defaultValue={1}
+                    min={1}
+                    className="input-amount"
+                    onChange={(v) => setAmount(Number(v))} >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </div>
                 <div className="info-row">
                   <span>Description:</span><span>{pass.drop_num.description}</span>
                 </div>

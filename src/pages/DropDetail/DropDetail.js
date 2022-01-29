@@ -6,7 +6,6 @@ import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
-import Header from 'components/Header';
 import { Context } from 'Context';
 
 import moment from 'moment';
@@ -68,17 +67,11 @@ function DropDetail() {
                   </p>
                   <p>1 / 12 Minted</p>
                 </div>
-
-
-            
-
                 {cookies.isAuth == 'true' && pass && (<div className="buy-button-wrapper">
                   <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
                     <div className="button-join">Buy Pass</div>
                   </Link>
                 </div>)}
-
-                
               </div>
             </>
           )}

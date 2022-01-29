@@ -42,16 +42,17 @@ function PassBuy() {
     'CA': usCanada,
   }
 
-  const { pass_id } = useParams();
   const navigate = useNavigate();
   const {
     cookies,
     walletState,
     connectWallet,
-    updateLoadingStatus
+    updateLoadingStatus,
   } = useContext(Context);
   const toast = useToast();
 
+  const [pass_id, setPassID] = useState(undefined)
+  const [amount, setAmount] = useState(0)
   const [pass, setPass] = useState(undefined);
   const [focus, setFocus] = useState('');
   const [cardInfo, setCardInfo] = useState({
@@ -96,7 +97,7 @@ function PassBuy() {
 
   const setPending = async (id, token) => {
     const response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
-      { pass_id: id }, token
+      { pass_id: id, num_requested: amount.toString() }, token
     ))
     const result = await response.json();
     return result;
@@ -119,8 +120,16 @@ function PassBuy() {
   }
 
   useEffect(() => {
+    if (cookies.checkout_pass) {
+      setPassID(cookies.checkout_pass.pass_id)
+      setAmount(cookies.checkout_pass.amount);
+    }
+  }, [cookies])
+
+  useEffect(() => {
     const init = async () => {
       try {
+        const pass_id = cookies.checkout_pass.pass_id
         const passData = await fetchDrop(pass_id);
         setPass(passData);
         setIsRevealed(passData.revealed != 0)
@@ -131,8 +140,9 @@ function PassBuy() {
       }
       setLoading(false);
     }
-    init();
-  }, [])
+    if (pass_id)
+      init();
+  }, [pass_id])
 
   const makeCreateCardCall = async () => {
     const payload = {

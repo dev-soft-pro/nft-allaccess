@@ -1,3 +1,4 @@
+$primary-color: #DC0000;
 .pass-detail-container {
   padding: 0 1rem;
   .pass-info-container {
@@ -18,9 +19,16 @@
       .info-row {
         margin-top: 0.5rem;
         font-size: 20px;
+        display: flex;
+        align-items: center;
+        span:not(:last-child) {
+          margin-right: 0.25rem;
+        }
         span:not(:first-child) {
-          margin-left: 0.25rem;
-          color: #DC0000;
+          color: $primary-color;
+        }
+        .input-amount {
+          width: 100px;
         }
       }
       .buynow {
@@ -34,7 +42,7 @@
         .button-join {
           display: inline-flex;
           padding: 5px 20px;
-          background: #DC0000;
+          background: $primary-color;
           cursor: pointer;
           border-radius: 6px;
           font-size: 22px;
