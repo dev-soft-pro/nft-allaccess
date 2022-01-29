@@ -10,7 +10,14 @@ import { RARITY_TITLES } from 'constants/rarity';
 import Page from 'components/Page'
 
 import moment from 'moment';
-import { Spinner } from '@chakra-ui/react';
+import {
+  Spinner,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
@@ -19,6 +26,8 @@ function PassDetail() {
   const { cookies } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
+  const [amount, setAmount] = useState(1);
+  const [maxAmount, setMaxAmount] = useState(5);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -78,6 +87,17 @@ function PassDetail() {
                     </div>
                     <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
+                  <div className="info-row">
+                    <div>Amout: 
+                    <NumberInput min={1} max={maxAmount} defaultValue={1}>
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                    </div>
+                  </div>
                   </>
                 )}
                 {pass.revealed == 1 && (
@@ -86,12 +106,11 @@ function PassDetail() {
                     <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
                   </>
-                )}               
+                )}
                 <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
                   <div className="info-row" onClick={handleBuy}>
                     <div className="button-join-but">Buy Pass</div>
                   </div>
-
                 </div>
               </div>
               <div className="desc-fix">

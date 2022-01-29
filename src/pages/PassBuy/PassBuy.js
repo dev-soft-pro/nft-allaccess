@@ -100,7 +100,10 @@ function PassBuy() {
 
   const setPending = async (id, token) => {
     const response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
-      { pass_id: id }, token
+      {
+        drop_num: id,
+        num_requested: "2",
+      }, token
     ))
     const result = await response.json();
     return result;
@@ -129,7 +132,7 @@ function PassBuy() {
         setPass(passData);
         setIsRevealed(passData.revealed != 0)
         const auth_token = await refreshToken();
-        setPending(pass_id, auth_token);
+        setPending(passData.drop_num.drop_num, auth_token);
       } catch (ex) {
         console.log(ex);
       }
