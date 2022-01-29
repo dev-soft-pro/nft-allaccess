@@ -65,34 +65,40 @@ function Header() {
           </div>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav.Link className="header-menu" href="/marketplace">
-            Marketplace
-          </Nav.Link>
-          <Nav.Link className="header-menu" href="/community">
-            Community
-          </Nav.Link>
-          <Nav.Link className="header-menu" href="/about-us">
-            About Us
-          </Nav.Link>
-          
+        <Navbar.Collapse id="basic-navbar-nav" >
+          <div className="navbar-left">
+            <Nav.Link className="header-menu" href="/marketplace">
+              Marketplace
+            </Nav.Link>
+            <Nav.Link className="header-menu" href="/community">
+              Community
+            </Nav.Link>
+            <Nav.Link className="header-menu" href="/about-us">
+              About Us
+            </Nav.Link>
+          </div>
+          <div className="navbar-right">
           {cookies.isAuth == 'true' && cookies.userinfo ? (
             <>
-            <div className="social-icons">
-              <a target="_blank" href="#"><img src={FacebookIco} alt="Facebook"/></a>
-              <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
-              <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
-              <a target="_blank" href="#"><img src={DiscordIco} alt="Discord"/></a>
-            </div>
             <div className="user-info">
               <img src={EmptyProfile} alt="Profile Image" id="profile-tiny"/>
-              <NavDropdown title={`${cookies.userinfo.username} / Points: ${cookies.userinfo.points}`} id="profile-dropdown" className="header-menu">
+              <NavDropdown title={cookies.userinfo.username} id="profile-dropdown" className="header-menu">
                 <NavDropdown.Item onClick={() => navigate(ROUTES.PROFILE)}>Profile</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={() => handleLogout()}>Log Out</NavDropdown.Item>
                 
               </NavDropdown>
+              <div className="md-1">
+                <p>Points: {cookies.userinfo.points}</p>
+              </div>
+              
             </div>
+              <div className="social-icons">
+                <a target="_blank" href="#"><img src={FacebookIco} alt="Facebook"/></a>
+                <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
+                <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
+                <a target="_blank" href="#"><img src={DiscordIco} alt="Discord"/></a>
+              </div>
             </>
           ) : (
             <>
@@ -111,7 +117,7 @@ function Header() {
             </>
             
           )}
-        
+          </div>
         </Navbar.Collapse>
         
       </Container>

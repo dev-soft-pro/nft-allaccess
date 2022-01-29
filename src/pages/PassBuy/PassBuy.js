@@ -42,17 +42,16 @@ function PassBuy() {
     'CA': usCanada,
   }
 
+  const { pass_id } = useParams();
   const navigate = useNavigate();
   const {
     cookies,
     walletState,
     connectWallet,
-    updateLoadingStatus,
+    updateLoadingStatus
   } = useContext(Context);
   const toast = useToast();
 
-  const [pass_id, setPassID] = useState(undefined)
-  const [amount, setAmount] = useState(0)
   const [pass, setPass] = useState(undefined);
   const [focus, setFocus] = useState('');
   const [cardInfo, setCardInfo] = useState({
@@ -68,6 +67,10 @@ function PassBuy() {
     phone: '',
     email: ''
   })
+
+  //if (pass != undefined) {
+  //  console.log(pass);
+  //}
 
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
@@ -97,7 +100,7 @@ function PassBuy() {
 
   const setPending = async (id, token) => {
     const response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
-      { pass_id: id, num_requested: amount.toString() }, token
+      { pass_id: id }, token
     ))
     const result = await response.json();
     return result;
@@ -120,16 +123,8 @@ function PassBuy() {
   }
 
   useEffect(() => {
-    if (cookies.checkout_pass) {
-      setPassID(cookies.checkout_pass.pass_id)
-      setAmount(cookies.checkout_pass.amount);
-    }
-  }, [cookies])
-
-  useEffect(() => {
     const init = async () => {
       try {
-        const pass_id = cookies.checkout_pass.pass_id
         const passData = await fetchDrop(pass_id);
         setPass(passData);
         setIsRevealed(passData.revealed != 0)
@@ -140,9 +135,8 @@ function PassBuy() {
       }
       setLoading(false);
     }
-    if (pass_id)
-      init();
-  }, [pass_id])
+    init();
+  }, [])
 
   const makeCreateCardCall = async () => {
     const payload = {
@@ -471,16 +465,21 @@ function PassBuy() {
                   </div>
                 </TabPanel>
                 <TabPanel>
-                  <div className="card-wrapper">
-                    {!walletState.provider ? (
-                      <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
-                        Connect Wallet
-                      </Button>
-                    ) : (
-                      <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
-                        Pay Now
-                      </Button>
-                    )}
+                  <div className="crypto-nft">
+                      <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
+                      <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
+                    
+
+
+                      {!walletState.provider ? (
+                        <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
+                          Connect Wallet
+                        </Button>
+                      ) : (
+                        <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
+                          Pay Now
+                        </Button>
+                      )}
                   </div>
                 </TabPanel>
               </TabPanels>

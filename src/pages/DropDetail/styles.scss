@@ -8,7 +8,7 @@
   }
 
 
-  .drop-info {
+  .drop-info-inner {
     margin-top: 5rem;
     color: white;
     display: flex;
@@ -20,9 +20,14 @@
 
       .drop-left{
         margin: 0 3em 0 3em;
+
+        .drop-image-container{
+        max-width: 500px;
+        }
+
       }
       .drop-right{
-        margin: 0 3em 0 3em;
+        margin: 0 3em 0 0;
         h1{
           font-size: 2.5rem;
         }
@@ -64,16 +69,6 @@
           background: #b60000;
         }
 
-
-
-
-
-
-
-
-
-
-
         .buy-button-wrapper {
           display: flex;
           flex-direction: row;
@@ -91,18 +86,53 @@
             font-size: 22px;
             font-weight: bold;
           }
-
       }
-      
-
-
-
-
     
     }
   }
 
   .drop-info-detail-bottom{
     padding: 4em 10em 4em 10em;
+  }
+
+  
+  
+ 
+    
+
+}
+// Responsive Tablet
+
+
+@media only screen and (max-width: 1200px) { 
+
+  .drop-detail-container {
+    text-align: center;
+    margin: 4rem 2rem 9rem 2rem;
+    .drop-info-inner{
+      flex-direction: column;
+      .drop-right{
+        margin: 0 0 0 0;
+      }
+
+    }
+    .drop-info-detail-bottom{
+      padding: 4em 5em 4em 5em;
+    }
+  }
+}
+
+//responsive mobile
+@media only screen and (max-width: 600px) { 
+  .drop-detail-container {
+    margin: 4rem 1rem 9rem 1rem;
+    text-align: center;
+
+    .drop-info-inner{
+      flex-direction: column;
+    }
+    .drop-info-detail-bottom{
+      padding: 4em 2em 4em 2em;
+    }
   }
 }

@@ -8,24 +8,50 @@
   
   .video-slider{
     width: 100vw;
-    height: 600px;
-    padding: 0;
+    padding: 0 7%;
     margin: 0;
-    position: relative;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:1rem;
+    @media screen and (max-width: 800px) {
+      display: block;
+    }
     video {
-      position: absolute;
-      top: 50%;
-      left: 0;
       width: 100%;
-      transform: translate(0, -50%);
       padding: 0;
       margin: 0;
+    }
+    .video-slider-text{
+      display:grid;
+      place-items: center;
+      gap: .5rem 0;
+      color: #fff;
+      font-size: 1.2em;
+      padding: 1rem;
+      @media screen and (max-width: 1200px) {
+        font-size: .8rem;
+      }
+      @media screen and (max-width: 800px) {
+        font-size: 1rem;
+        padding: .25rem;
+        text-align: center;
+      }
+      .video-slider-text-large-p{
+        font-size: 1.5em;
+        @media screen and (max-width: 1200px) {
+          font-size: 1em;
+        }
+        @media screen and (max-width: 800px) {
+          font-size: 1.2em;
+          text-align: center;
+        }
+    
+      }
     }
   }
   .how-it-works {
     color: white;
-    background: linear-gradient(178deg, #623434 0%, #151414 50%, black 100%);
+    background: #212121;
     width: 100%;
     margin-top: 50px;
     display: flex;

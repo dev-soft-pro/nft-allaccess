@@ -6,6 +6,7 @@ import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
+import Header from 'components/Header';
 import { Context } from 'Context';
 
 import moment from 'moment';
@@ -48,43 +49,34 @@ function DropDetail() {
             <Spinner color='white' />
           ) : (
             <>
-              <div className="drop-left">
-                <h2>{drop.edition}</h2>
-                <div className="drop-image-container">
-                  <img src={drop.image} alt="drop-image" />
-                  <p>{drop.description}</p>
+              <div className="drop-info-inner">
+                <div className="drop-left">
+                  <h2>{drop.edition}</h2>
+                  <div className="drop-image-container">
+                    <img src={drop.image} alt="drop-image" />
+                  </div>
+                </div>
+                <div className="drop-right"> 
+                  <div className="drop-info-detail">
+                    <h2>Early Access</h2>
+                    <p>
+                      {formatDate(drop.presale_start)} ~ {formatDate(drop.presale_end)}<br />
+                    </p>
+                    <h2>Public</h2>
+                    <p>
+                      {formatDate(drop.public_start)}
+                    </p>
+                    <p>1 / 12 Minted</p>
+                  </div>
                 </div>
               </div>
-              <div className="drop-right"> 
-                <div className="drop-info-detail">
-                  <h2>Early Access</h2>
-                  <p>
-                    {formatDate(drop.presale_start)} ~ {formatDate(drop.presale_end)}<br />
-                  </p>
-                  <h2>Public</h2>
-                  <p>
-                    {formatDate(drop.public_start)}
-                  </p>
-                  <p>1 / 12 Minted</p>
-                </div>
-                {cookies.isAuth == 'true' && pass && (<div className="buy-button-wrapper">
-                  <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
-                    <div className="button-join">Buy Pass</div>
-                  </Link>
-                </div>)}
+
+              <div className="drop-info-detail-bottom">
+                <h2>Drop Information:</h2>
+                <div dangerouslySetInnerHTML={{__html:drop.description}} className="grabbed-data"></div>
               </div>
             </>
           )}
-        </div>
-        <div className="drop-info-detail-bottom">
-          <h2>Drop Information:</h2>
-
-          <p>Team Pettis collection will include two tiers of collectibles, starring the dynamic duo of world
-champion brothers Anthony “Showtime” Pettis and Sergio Pettis. Known for making a career in
-the most memorable moments in combat sports they form the perfect pair to launch our one of a
-kind NFT collectibles.</p><br /><p>
-● Team Pettis Packs will cost $55
-</p>
         </div>
       </div>
     </Page>

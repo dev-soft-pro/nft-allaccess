@@ -146,6 +146,13 @@ function Signup() {
                   placeholder="Password"
                   onChange={(e) => setPasswordV(e.target.value)} />
               </Form.Group>
+              
+
+
+
+
+
+
             </Form>
             <p>OR</p>
             <div className="button-wrapper">

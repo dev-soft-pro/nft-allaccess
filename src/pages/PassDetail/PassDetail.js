@@ -10,24 +10,16 @@ import { RARITY_TITLES } from 'constants/rarity';
 import Page from 'components/Page'
 
 import moment from 'moment';
-import {
-  Spinner,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper
-} from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const { setPassCheckout } = useContext(Context);
+  const { cookies } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
-  const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -44,11 +36,7 @@ function PassDetail() {
   }, [])
 
   const handleBuy = async () => {
-    setPassCheckout({
-      pass_id: pass_id,
-      amount: amount
-    })
-    navigate(ROUTES.PASS_BUY)
+    navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
   }
   //add ifsold variable here "true or false"
   function checkIfSoldOut(ifsold){
@@ -61,6 +49,7 @@ function PassDetail() {
   return (
     <Page>
       <div className="pass-detail-container">
+        <h1 className="pass-info">Purchase All Access Pass For Access To The Marketplace</h1>
         <div className="pass-info-container">
           {loading ? (
             <Spinner color='white' />
@@ -74,52 +63,44 @@ function PassDetail() {
                 )}
               </video>
               <div className="pass-detail-info">
-                <div className="info-row">
-                  <span>Smart Contract: <a style={{color: '#DC0000'}} href={`https://polygonscan.com/token/${pass.contract}`}>Here</a></span>
-                  </div>
-                <div className="info-row">
+                <div className="info-row header-pass">
+                  <h1>{pass.drop_num.edition}</h1>
                   {/* ADD TOTAL MINTED */}
-                  <span>Mint Number:</span><span>{pass.token_id} / 14</span>
+                  <p>Mint Number:<span>{pass.token_id} / 14</span></p>
+                  <p>Price:<span>${pass.price}</span></p>
                 </div>
-                <div className="info-row">
-                  <span>Price:</span><span>${pass.price}</span>
-                </div>
-                {pass.revealed == 1 && (
+                {pass.revealed == 0 && (
                   <>
                   <div className="info-row">
-                    <span>Rarity:</span><span>{RARITY_TITLES[pass.rarity]}</span>
-                  </div>
-                  <div className="info-row">
-                    <span>Points:</span><span>{pass.points}</span>
+                    <div>
+                      <p>Rarity:<span>{RARITY_TITLES[pass.rarity]}</span></p>
+                      <p>Points:<span>{pass.points}</span></p>
+                    </div>
+                    <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
                   </>
                 )}
-                <div className="info-row">
-                  <span>Amount: </span>
-                  <NumberInput
-                    defaultValue={1}
-                    min={1}
-                    className="input-amount"
-                    onChange={(v) => setAmount(Number(v))} >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </div>
-                <div className="info-row">
-                  <span>Description:</span><span>{pass.drop_num.description}</span>
-                </div>
-                <div className={checkIfSoldOut(true)}>
-                  <div className="link-join" onClick={handleBuy}>
-                    <div className="button-join">Buy Pass</div>
+                {pass.revealed == 1 && (
+                  <>
+                  <div className="info-row">
+                    <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
+                  </>
+                )}               
+                <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
+                  <div className="info-row" onClick={handleBuy}>
+                    <div className="button-join-but">Buy Pass</div>
+                  </div>
+
                 </div>
+              </div>
+              <div className="desc-fix">
+                {<div dangerouslySetInnerHTML={{__html:pass.drop_num.description}} className="grabbed-data"></div>}
               </div>
             </>
           )}
         </div>
+        
       </div>
     </Page>
   )
