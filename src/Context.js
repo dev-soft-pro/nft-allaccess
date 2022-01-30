@@ -159,6 +159,12 @@ const Provider = ({ children }) => {
     updateLoadingStatus: (status) => {
       setLoading(status);
     },
+    setCart: (data) => {
+      setCookies('cartinfo', JSON.stringify(data), { path: '/' });
+    },
+    clearCart: () => {
+      removeCookies('cartinfo', { path: '/' })
+    },
     walletState,
     setWalletState,
     connectWallet,
