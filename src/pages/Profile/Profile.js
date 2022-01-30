@@ -9,11 +9,41 @@ import { Context } from 'Context'
 import { Button } from '@chakra-ui/button';
 import Page from 'components/Page';
 import moment from 'moment';
+import * as API from 'constants/api';
+import * as OPTIONS from 'services/options';
 
 function Profile() {
   const { buyPassCrypto } = useContext(Context)
   const { cookies } = useContext(Context)
   const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
+
+  const [passlist, setPassList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const refreshToken = async () => {
+    const response = await fetch(API.REFRESH, OPTIONS.POST({
+      refresh: cookies.refresh_token
+    }))
+    const data = await response.json();
+    return data.access;
+  }
+
+  const loadPassesCall = async (token) => {
+    const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(token));
+    const data = await response.json();
+    return data;
+  }
+
+  useEffect(() => {
+    const init = async () => {
+      const access_token = await refreshToken();
+      const authPasses = await loadPassesCall(access_token);
+      setPassList(authPasses);
+      setLoading(false);
+    }
+    init();
+  }, []);
+
   return (
     <Page>
       <div className="profile-container">
@@ -30,12 +60,14 @@ function Profile() {
           </div>
         </div>
         <div className="profile-bottom">
-          <PassList />
-          <div className="connect-button-wrapper">
-            <div>
-              <ConnectButton />
-            </div>
-          </div>
+          <PassList
+            title="Revealed Passes"
+            passes={passlist.filter(p => p.revealed == 1)}
+            loading={loading} />
+          <PassList
+            title="Hidden Passes"
+            passes={passlist.filter(p => p.revealed == 0)}
+            loading={loading} />
         </div>
       </div> 
     </Page>

@@ -100,7 +100,7 @@ function DropList() {
       {drops.map(drop =>
       <div className="drop-less-box" key={`drop-${drop.drop_num}`}>
         <img src={drop.image} alt="nft" className="image-nft-drop" />
-        <div class="buttons-wrapper">
+        <div className="buttons-wrapper">
           <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
           {/* <a className={checkBuyingDate(drop)} href="#">Buy Now</a> */}
         </div>

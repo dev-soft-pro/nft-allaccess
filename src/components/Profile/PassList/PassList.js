@@ -29,45 +29,18 @@ const override = css`
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function PassList(props) {
-  const { cookies, updateAuthToken } = useContext(Context);
-
-  const [passlist, setPassList] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const refreshToken = async () => {
-    const response = await fetch(API.REFRESH, OPTIONS.POST({
-      refresh: cookies.refresh_token
-    }))
-    const data = await response.json();
-    return data.access;
-  }
-
-  const loadPassesCall = async (token) => {
-    const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(token));
-    const data = await response.json();
-    return data;
-  }
-
-  useEffect(() => {
-    const init = async () => {
-      const access_token = await refreshToken();
-      const authPasses = await loadPassesCall(access_token);
-      setPassList(authPasses);
-      setLoading(false);
-    }
-    init();
-  }, []);
+  const { title, passes, loading } = props;
 
   return (
     <div className="pass-list">
-      <label className="title">All Access Pass</label>
-      {passlist.length > 0 ? (
+      <label className="title">{title}</label>
+      {passes.length > 0 ? (
         <Swiper
           grabCursor={true}
           slidesPerView="auto"
           className="pass-swiper"
         >
-          {passlist.map(pass =>
+          {passes.map(pass =>
             <SwiperSlide key={`pass-${pass.pass_id}`}>
               <div className="pass-wrapper">
                 <label>Pass ID: {pass.pass_id}</label>
