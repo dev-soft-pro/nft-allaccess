@@ -93,9 +93,9 @@ function Header() {
               <img src={EmptyProfile} alt="Profile Image" id="profile-tiny"/>
               <NavDropdown title={cookies.userinfo.username} id="profile-dropdown" className="header-menu">
                 <NavDropdown.Item onClick={() => navigate(ROUTES.PROFILE)}>Profile</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate(ROUTES.PROFILE_EDIT)}>Edit Profile</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={() => handleLogout()}>Log Out</NavDropdown.Item>
-                
               </NavDropdown>
               <div className="md-1">
                 <p>Points: {cookies.userinfo.points}</p>
@@ -116,7 +116,7 @@ function Header() {
               </div>
             </div>
               <div className="account-actions">
-              <Nav.Link className="header-menu" href="/login    ">
+              <Nav.Link className="header-menu" href="/login">
                   Log In
                 </Nav.Link>
                 <Nav.Link className="header-menu" href="/join">

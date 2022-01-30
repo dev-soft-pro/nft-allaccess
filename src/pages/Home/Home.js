@@ -32,34 +32,21 @@ function Home() {
                 <div className="how-it-works-item">
                     <div className="how-it-works-item-text">
                         <h3>Purchase your collectible</h3>
-                        <p>Purchase Cases/</p>
-                        <p>Packs </p>
-                        <p>to have your</p>
-                        <p>chance at a rare </p>
-                        <p>NFT</p>
+                        <p>Look out for future collections by joining our communities</p>
                     </div>
                     <img src={HowItWorksImage1}/> 
                 </div> 
                 <div className="how-it-works-item">
                     <div className="how-it-works-item-text">
                         <h3>Reveal NFT</h3>
-                        <p>Open your</p>
-                        <p>collectable and </p>
-                        <p>redeem your All</p>
-                        <p>Access Points for</p>
-                        <p>exclusive</p>
-                        <p>experiences</p>
+                        <p>Open your collectable and redeem your All Access Points for exclusive experiences</p>
                     </div>
                     <img src={HowItWorksImage2}/> 
                 </div> 
                 <div className="how-it-works-item">
                     <div className="how-it-works-item-text">
                         <h3>Anticipate the next drop</h3>
-                        <p>Look out for</p>
-                        <p>future</p>
-                        <p>collections by</p>
-                        <p>joining our</p>
-                        <p>communities</p>
+                        <p>Look out for future collections by joining our communities</p>
                     </div>
                     <img src={HowItWorksImage3}/> 
                 </div> 

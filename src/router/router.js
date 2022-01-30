@@ -12,6 +12,7 @@ import PassDetail from 'pages/PassDetail';
 import PassBuy from 'pages/PassBuy';
 import Marketplace from 'pages/Marketplace';
 import About from 'pages/About';
+import ProfileEdit from 'pages/ProfileEdit';
 
 function router() {
   return (
@@ -22,6 +23,7 @@ function router() {
         <Route path={ROUTES.REGISTER} element={<Signup />} />
         <Route path={ROUTES.DROP_DETAIL} element={<DropDetail />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
+        <Route path={ROUTES.PROFILE_EDIT} element={<ProfileEdit />} />
         <Route path={ROUTES.PASS_DETAIL} element={<PassDetail />} />
         <Route path={ROUTES.PASS_BUY} element={<PassBuy />} />
         <Route path={ROUTES.MARKETPLACE} element={<Marketplace />} />

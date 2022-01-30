@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useMemo } from 'react'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, {
@@ -26,31 +26,53 @@ const override = css`
   border-color: red;
 `;
 
+import { Select } from '@chakra-ui/react'
+import { RARITY_TITLES } from 'constants/rarity';
+
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function PassList(props) {
   const { title, passes, loading } = props;
 
+  const [orderBy, setOrderBy] = useState('rarity')
+
+  // const sortedPasses = useMemo(() => {
+  //   if (orderBy === 'rarity') {
+  //     let sPasses = [...passes];
+  //     sPasses.sort((a, b) => a.rarity - b.rarity);
+  //     return sPasses;
+  //   }
+  // }, [passes])
+
   return (
     <div className="pass-list">
       <label className="title">{title}</label>
       {passes.length > 0 ? (
-        <Swiper
-          grabCursor={true}
-          slidesPerView="auto"
-          className="pass-swiper"
-        >
-          {passes.map(pass =>
-            <SwiperSlide key={`pass-${pass.pass_id}`}>
-              <div className="pass-wrapper">
-                <label>Pass ID: {pass.pass_id}</label>
-                <video loop autoPlay={true} muted={true} playsInline={true}>
-                  <source src={pass.revealed ? pass.reveal_vid.reveal_vid : pass.image.image} />
-                </video>
-              </div>
-            </SwiperSlide>
-          )}
-        </Swiper>
+        <>
+          {/* <Select
+            textColor='white'
+            maxWidth={200}
+            onChange={(e) => setOrderBy(e.target.value)}>
+            <option value='rarity'>Rarity</option>
+            <option value='athelete'>Athelte</option>
+          </Select> */}
+          <Swiper
+            grabCursor={true}
+            slidesPerView="auto"
+            className="pass-swiper"
+          >
+            {passes.map(pass =>
+              <SwiperSlide key={`pass-${pass.pass_id}`}>
+                <div className="pass-wrapper">
+                  <label>Pass ID: {pass.pass_id}</label>
+                  <video loop autoPlay={true} muted={true} playsInline={true}>
+                    <source src={pass.revealed ? pass.reveal_vid.reveal_vid : pass.image.image} />
+                  </video>
+                </div>
+              </SwiperSlide>
+            )}
+          </Swiper>
+        </>
         ) : (
           <div>
             <ClipLoader color={'#ffffff'} loading={loading} size={35} />
