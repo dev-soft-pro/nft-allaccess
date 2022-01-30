@@ -28,6 +28,7 @@ function router() {
         <Route path={ROUTES.PASS_BUY} element={<PassBuy />} />
         <Route path={ROUTES.MARKETPLACE} element={<Marketplace />} />
         <Route path={ROUTES.ABOUT} element={<About />} />
+        <Route path={ROUTES.PROFILE_PASS_DETAIL} element={<PassDetail />} />
       </Routes>
     </BrowserRouter>
   )

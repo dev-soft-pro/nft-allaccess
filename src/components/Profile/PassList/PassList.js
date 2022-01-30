@@ -29,10 +29,13 @@ const override = css`
 import { Select } from '@chakra-ui/react'
 import { RARITY_TITLES } from 'constants/rarity';
 
+import { useNavigate } from 'react-router-dom'
+
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function PassList(props) {
   const { title, passes, loading } = props;
+  const navigate = useNavigate()
 
   const [orderBy, setOrderBy] = useState('rarity')
 
@@ -63,7 +66,9 @@ function PassList(props) {
           >
             {passes.map(pass =>
               <SwiperSlide key={`pass-${pass.pass_id}`}>
-                <div className="pass-wrapper">
+                <div
+                  className="pass-wrapper"
+                  onClick={() => navigate(ROUTES.PROFILE_PASS_DETAIL.replace(':pass_id', pass.pass_id))}>
                   <label>Pass ID: {pass.pass_id}</label>
                   <video loop autoPlay={true} muted={true} playsInline={true}>
                     <source src={pass.revealed ? pass.reveal_vid.reveal_vid : pass.image.image} />

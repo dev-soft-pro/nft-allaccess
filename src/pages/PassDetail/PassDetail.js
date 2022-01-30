@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useContext, useMemo } from 'react'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import './styles.scss'
 
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 import { RARITY_TITLES } from 'constants/rarity';
+import ConnectButton from 'components/Buttons/ConnectButton';
 
 import Page from 'components/Page'
 
@@ -17,18 +18,28 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Button
 } from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { cookies, setCart } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [amount, setAmount] = useState(1);
   const [maxAmount, setMaxAmount] = useState(1);
   const [loading, setLoading] = useState(true);
+
+  const detailFrom = useMemo(() => {
+    if (location.pathname.startsWith('/profile')) {
+      return 'profile'
+    } else {
+      return 'buy'
+    }
+  }, [location])
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -105,26 +116,38 @@ function PassDetail() {
                   </div>
                   </>
                 )}
-                <div className="info-row">
-                  <div>Amout: 
-                  <NumberInput
-                    min={1}
-                    max={maxAmount}
-                    defaultValue={1}
-                    onChange={(v) => setAmount(v)} >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
+                {detailFrom == 'profile' && (
+                  <div className="crypto-nft-button-wrapper">
+                    <ConnectButton />
+                    <Button colorScheme="red" type="submit">
+                      Withdraw
+                    </Button>
                   </div>
-                </div>
-                <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
-                  <div className="info-row" onClick={handleBuy}>
-                    <div className="button-join-but">Buy Pass</div>
-                  </div>
-                </div>
+                )}
+                {detailFrom == 'buy' && (
+                  <>
+                    <div className="info-row">
+                      <div>Amout: 
+                      <NumberInput
+                        min={1}
+                        max={maxAmount}
+                        defaultValue={1}
+                        onChange={(v) => setAmount(v)} >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                      </div>
+                    </div>
+                    <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
+                      <div className="info-row" onClick={handleBuy}>
+                        <div className="button-join-but">Buy Pass</div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
               <div className="desc-fix">
                 {<div dangerouslySetInnerHTML={{__html:pass.drop_num.description}} className="grabbed-data"></div>}
