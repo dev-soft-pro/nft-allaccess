@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
 import { Button, Box, Text } from "@chakra-ui/react";
-import { useEthers, useEtherBalance } from "@usedapp/core";
-import { formatEther } from "@ethersproject/units";
-
 import { Context } from "Context";
+import './styles.scss'
 
 export default function ConnectButton() {
   const { walletState, connectWallet, disconnect } = useContext(Context);
   return !walletState.provider ? (
     <Button
+      id="connect-button"
       variant="solid"
       size="md"
       opacity="{1}"
@@ -28,6 +27,7 @@ export default function ConnectButton() {
     </Button>
   ) : (
     <Button
+      id="connect-button"
       variant="solid"
       size="md"
       opacity="{1}"

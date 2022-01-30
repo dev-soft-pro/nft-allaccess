@@ -55,6 +55,13 @@ function DropDetail() {
                   <div className="drop-image-container">
                     <img src={drop.image} alt="drop-image" />
                   </div>
+                  {cookies.isAuth == 'true' && pass && (
+                    <div className="buy-button-wrapper">
+                      <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
+                        <div className="button-join">Buy Pass</div>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
 

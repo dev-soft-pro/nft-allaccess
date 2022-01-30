@@ -74,6 +74,21 @@
           font-size: 1.5rem;
         }
       }
+      .crypto-nft{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.2em;
+        text-align: center;
+        &-button-wrapper {
+          margin-top: 1rem;
+          display: flex;
+          button:first-child {
+            margin-right: 0.5rem;
+          }
+        }
+      }
     }
   }
 }

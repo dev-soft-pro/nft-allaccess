@@ -15,7 +15,13 @@ export const USDC_RECEIVE_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
 // const USDC_CONTRACT_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
 const Provider = ({ children }) => {
-  const [cookies, setCookies, removeCookies] = useCookies(['isAuth', 'userinfo', 'access_token', 'refresh_token'])
+  const [cookies, setCookies, removeCookies] = useCookies([
+    'isAuth', 
+    'userinfo',
+    'cartinfo',
+    'access_token', 
+    'refresh_token'
+  ])
   const [loading, setLoading] = useState(false);
 
   const initialState =
@@ -141,6 +147,11 @@ const Provider = ({ children }) => {
   const value = {
     cookies,
     loading,
+    walletState,
+    setWalletState,
+    connectWallet,
+    disconnect,
+    buyPassCrypto,
     activateAuth: (data) => {
       setCookies('isAuth', true, { path: '/' });
       setCookies('userinfo', JSON.stringify(data.user), { path: '/' });
@@ -159,11 +170,12 @@ const Provider = ({ children }) => {
     updateLoadingStatus: (status) => {
       setLoading(status);
     },
-    walletState,
-    setWalletState,
-    connectWallet,
-    disconnect,
-    buyPassCrypto
+    setCart: (data) => {
+      setCookies('cartinfo', JSON.stringify(data), { path: '/' });
+    },
+    clearCart: () => {
+      removeCookies('cartinfo', { path: '/' })
+    },
   }
 
   return (
