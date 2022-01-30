@@ -10,25 +10,15 @@ import { RARITY_TITLES } from 'constants/rarity';
 import Page from 'components/Page'
 
 import moment from 'moment';
-import {
-  Spinner,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const { cookies, setCart } = useContext(Context);
-  const contexts = useContext(Context);
+  const { cookies } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
-  const [amount, setAmount] = useState(1);
-  const [maxAmount, setMaxAmount] = useState(5);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,11 +27,6 @@ function PassDetail() {
         let response = await fetch(API.PASS_DETAIL.replace('$1', pass_id), OPTIONS.GET);
         let passData = await response.json();
         setPass(passData);
-        response = await fetch(API.PASS_NUM_AVAILABLE, OPTIONS.POST({
-          drop_num: passData.drop_num.drop_num
-        }))
-        let maxData = await response.json();
-        setMaxAmount(maxData.max_available)
         setLoading(false);
       } catch (ex) {
         console.log(ex);
@@ -50,16 +35,8 @@ function PassDetail() {
     fetchDrop();
   }, [])
 
-  useEffect(() => {
-
-  }, [pass_id])
-
   const handleBuy = async () => {
-    setCart({
-      pass_id: pass.pass_id,
-      amount: amount
-    })
-    navigate(ROUTES.PASS_BUY)
+    navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
   }
   //add ifsold variable here "true or false"
   function checkIfSoldOut(ifsold){
@@ -94,13 +71,13 @@ function PassDetail() {
                 </div>
                 {pass.revealed == 0 && (
                   <>
-                    <div className="info-row">
-                      <div>
-                        <p>Rarity:<span>{RARITY_TITLES[pass.rarity]}</span></p>
-                        <p>Points:<span>{pass.points}</span></p>
-                      </div>
-                      <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
+                  <div className="info-row">
+                    <div>
+                      <p>Rarity:<span>{RARITY_TITLES[pass.rarity]}</span></p>
+                      <p>Points:<span>{pass.points}</span></p>
                     </div>
+                    <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
+                  </div>
                   </>
                 )}
                 {pass.revealed == 1 && (
@@ -109,28 +86,12 @@ function PassDetail() {
                     <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
                   </>
-                )}
-                <div className="info-row">
-                  <div>Amout: 
-                  <NumberInput
-                    min={1}
-                    max={maxAmount}
-                    defaultValue={1}
-                    onChange={(v) => setAmount(v)} >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                  </div>
-                </div>
-                <div
-                  style={{width:100+"%"}}
-                  className={checkIfSoldOut(maxAmount > 0 && cookies.isAuth)}>
+                )}               
+                <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
                   <div className="info-row" onClick={handleBuy}>
                     <div className="button-join-but">Buy Pass</div>
                   </div>
+
                 </div>
               </div>
               <div className="desc-fix">

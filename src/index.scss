@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'engschrift';
-	src: local('engschrift'), url('./assets/engschrift.otf') format('opentype');
+	src: local('engschrift'), url('./assets/ReadexPro-VariableFont_wght.ttf') format('openType');
 }
 
 html,
@@ -11,7 +11,7 @@ body,
   margin: 0;
   padding: 0;
   width: 100%;
-  margin-top: 37px;
+  margin-top: 25px;
 }
 #root{
   display: grid;

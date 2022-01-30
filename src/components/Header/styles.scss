@@ -13,10 +13,18 @@
   .logo_svg{
     width:220px;
     height:50px;
+    padding-left: 1em;
     fill:#fff;
     .red_fill{
       fill:#dc0000;
     }
+  }
+  .account-actions{
+    text-align: center;
+    .nav-link{
+      padding: 0em 1em;
+    }
+
   }
 }
 
@@ -42,7 +50,7 @@
     padding-left: 1em;
     padding-right: .2em;
   }
-  background-color: #303030 !important;
+  background-color: #000000 !important;
   .navbar-brand {
     cursor: pointer;
   }
@@ -51,19 +59,42 @@
     align-items: center;
     font-family: "engschrift_header";
   }
-  .social-icons{
+  .social-section{
     display: flex;
-    gap:.5rem;
-    a {
-      img{
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-      }
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    .discord-button{
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      padding: 0.2em 0.9em 0.2em 0.6em;
+      border-radius: 2.5em;
+      background-color: #dc0000;
+      color: white;
+      font-family: "engschrift_header";
+      cursor: pointer;
+      display: flex;
+      align-content: center;
+      align-items: center;
     }
-    a:hover{
-      img{
-        filter: grayscale(100%) brightness(18%) sepia(100%) hue-rotate(-50deg) saturate(700%) contrast(2);
+    .discord-button:hover{
+      filter: grayscale(100%) brightness(18%) sepia(100%) hue-rotate(-50deg) saturate(700%) contrast(2);
+    }
+    .social-icons{
+      display: flex;
+      gap:.5rem;
+      a {
+        img{
+          width: 27px;
+          height: 27px;
+          cursor: pointer;
+        }
+      }
+      a:hover{
+        img{
+          filter: grayscale(100%) brightness(18%) sepia(100%) hue-rotate(-50deg) saturate(700%) contrast(2);
+        }
       }
     }
   }
@@ -89,10 +120,6 @@
         align-items: center;
         padding-top: 1em;
         padding-left: 0;
-      }
-
-      .social-icons{
-        padding-left: 1rem;
       }
     }
   }
@@ -123,4 +150,7 @@
   .navbar-right{
     flex-direction: column;
   }
+}
+.navbar-toggler{
+  margin-right: 1rem;
 }

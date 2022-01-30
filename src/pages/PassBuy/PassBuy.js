@@ -35,7 +35,6 @@ import openPGP from 'services/openpgp'
 import './styles.scss'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 import Page from 'components/Page';
-import ConnectButton from 'components/Buttons/ConnectButton';
 
 function PassBuy() {
   const provinces = {
@@ -43,13 +42,13 @@ function PassBuy() {
     'CA': usCanada,
   }
 
+  const { pass_id } = useParams();
   const navigate = useNavigate();
   const {
     cookies,
     walletState,
     connectWallet,
-    updateLoadingStatus,
-    clearCart
+    updateLoadingStatus
   } = useContext(Context);
   const toast = useToast();
 
@@ -69,12 +68,13 @@ function PassBuy() {
     email: ''
   })
 
+  //if (pass != undefined) {
+  //  console.log(pass);
+  //}
+
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [pass_id, setPassId] = useState('');
-  const [amount, setAmount] = useState(1);
-  const [buyPassIds, setBuyPassIds] = useState([]);
 
   const refreshToken = async () => {
     const response = await fetch(API.REFRESH, OPTIONS.POST({
@@ -98,23 +98,17 @@ function PassBuy() {
     }
   }
 
-  const setPending = async (id, amount, token) => {
+  const setPending = async (id, token) => {
     const response = await fetch(API.PASS_SET_PENDING, OPTIONS.POST_AUTH(
-      {
-        drop_num: id,
-        num_requested: amount.toString(),
-      }, token
+      { pass_id: id }, token
     ))
     const result = await response.json();
-    if (result.result == 'success') {
-      setBuyPassIds(result.pass_ids);
-    }
     return result;
   }
 
-  const releasePending = async (pass_list, token) => {
+  const unsetPending = async (id, token) => {
     const response = await fetch(API.PASS_UNSET_PENDING, OPTIONS.POST_AUTH(
-      { pass_ids: pass_list.map(p => p.toString()) }, token
+      { pass_id: id }, token
     ))
     const result = await response.json();
     return result;
@@ -129,25 +123,20 @@ function PassBuy() {
   }
 
   useEffect(() => {
-    if (!cookies.cartinfo) {
-      return;
-    }
-    const init = async (id, amount) => {
+    const init = async () => {
       try {
-        const passData = await fetchDrop(id);
+        const passData = await fetchDrop(pass_id);
         setPass(passData);
         setIsRevealed(passData.revealed != 0)
         const auth_token = await refreshToken();
-        setPending(passData.drop_num.drop_num, amount, auth_token);
+        setPending(pass_id, auth_token);
       } catch (ex) {
         console.log(ex);
       }
       setLoading(false);
     }
-    setPassId(cookies.cartinfo.pass_id)
-    setAmount(cookies.cartinfo.amount)
-    init(cookies.cartinfo.pass_id, cookies.cartinfo.amount)
-  }, [cookies])
+    init();
+  }, [])
 
   const makeCreateCardCall = async () => {
     const payload = {
@@ -203,7 +192,7 @@ function PassBuy() {
 
   const makeChargeCall = async (card_id) => {
     const amountDetail = {
-      amount: pass.price * amount,
+      amount: pass.price,
       currency: 'USD',
     }
     const sourceDetails = {
@@ -237,16 +226,15 @@ function PassBuy() {
     return payment;
   }
 
-  const processSuccess = async () => {
+  const purchasePass = async () => {
     const token = await refreshToken();
     let response = await fetch(API.PURCHASE_PASS, OPTIONS.POST_AUTH(
-      { pass_ids: buyPassIds }, token
+      { pass_id: pass_id }, token
     ))
     const result = await response.json();
     updateLoadingStatus(false)
     if (result.result == "success") {
       setIsFinished(true);
-      clearCart();
     } else {
       processFailure()
     }
@@ -267,8 +255,7 @@ function PassBuy() {
   const processFailure = async () => {
     updateLoadingStatus(false)
     const token = await refreshToken();
-    releasePending(buyPassIds, token);
-    clearCart();
+    unsetPending(pass_id, token);
     navigate(ROUTES.HOME, { replace: true });
   }
 
@@ -280,7 +267,7 @@ function PassBuy() {
       if (card && card.id) {
         const payment = await makeChargeCall(card.id);
         if (payment.data.source) {
-          processSuccess();
+          purchasePass();
         } else {
           processFailure();
         }
@@ -314,10 +301,10 @@ function PassBuy() {
           price * 10 ^ 18
         ).call().then(res => {
           if (res === true) {
-            contract.methods.transfer(USDC_RECEIVE_ADDRESS, price * amount * 10 ^ 18)
+            contract.methods.transfer(USDC_RECEIVE_ADDRESS, price * 10 ^ 18)
             .call()
             .then(res => {
-              processSuccess();
+              purchasePass();
             })
             .catch(err => {
               console.log(err, 1)
@@ -466,7 +453,6 @@ function PassBuy() {
                     </Form>
                     <div>
                     <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
-                    <p className="nft_name">Total: ${amount * pass.price} ({amount} passes)</p>
                     <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
                     <Cards
                       cvc={cardInfo.cvc}
@@ -481,14 +467,19 @@ function PassBuy() {
                 <TabPanel>
                   <div className="crypto-nft">
                       <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
-                      <p className="nft_name">Total: ${amount * pass.price} ({amount} passes)</p>
                       <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
-                      <div className="crypto-nft-button-wrapper">
-                        <ConnectButton />
+                    
+
+
+                      {!walletState.provider ? (
+                        <Button colorScheme="red" type="submit" onClick={() => connectWallet()}>
+                          Connect Wallet
+                        </Button>
+                      ) : (
                         <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
                           Pay Now
                         </Button>
-                      </div>
+                      )}
                   </div>
                 </TabPanel>
               </TabPanels>

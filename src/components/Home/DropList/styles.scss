@@ -1,123 +1,41 @@
-.drop-swiper {
-  margin-top: 50px;
-  position: relative;
-  .swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: 640px;
-    height: 360px;
-    justify-content: center;
-    display: flex;
-    .image-nft-drop {
-      display: block;
-      height: 100%;
-    }
-    .drop-desc {
-      color: white;
-      position: absolute;
-      bottom: 1rem;
-      font-weight: bold;
-    }
-    .buttons-wrapper{
-      position:absolute;
-      bottom:0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 0 70px;
-      align-items: center;
-      padding: 0;
-      margin: 0;
-      z-index: 90;
-      a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 30px;
-        width: fit-content;
-        cursor: pointer;
-        background: transparent;
-        border: solid 2px #fff;
-        transition: .3s ease-in-out;
-        font-size: 1rem;
-        border-radius: 6px;
-        box-shadow: none;
-      }
-      a:hover {
-        box-shadow: 4px 2px 15px rgba(255,255,255,1);
-      }
-      .btn_carrousel_buy_disabled{
-        display: none;
-      }
-    }
-  }
-}
-
-.drop-less-wrapper{
+.slider-home-page{
   width: 100%;
-  padding:1.5rem .75rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 0;
   position: relative;
-  gap:.5rem;
-  flex-wrap: wrap;
-  cursor: auto;
-  .drop-less-box{
-    width: 400px;
-    height: 270px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    img{
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      cursor: auto;
+  background: transparent;
+  height:400px;
+  overflow: hidden;
+  img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    z-index:-1;
+  }
+  .buttons-wrapper{
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    a{
+      padding: .75rem 1.5rem;
+      border-radius: 30px;
+      border: 2px solid #fff;
+      background: #000;
+      color: #fff;
+      font-size: 1.2rem;
+      transition: .3s ease-in-out;
+      cursor: pointer;
     }
-    .drop-desc {
-      color: white;
-      font-weight: bold;
-      position: absolute;
-      top: .5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      font-size: 1.5rem;
-      text-shadow: 1px 1px 1px black;
-    }
-    .buttons-wrapper{
-      position:absolute;
-      bottom:0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 0 70px;
-      align-items: center;
-      padding: 0;
-      margin: 0;
-      z-index: 90;
-      a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 30px;
-        width: fit-content;
-        cursor: pointer;
-        background: transparent;
-        border: solid 2px #fff;
-        transition: .3s ease-in-out;
-        font-size: 1rem;
-        border-radius: 6px;
-        box-shadow: none;
-      }
-      a:hover {
-        box-shadow: 0 0 15px 4px rgba(255,255,255,1);
-      }
-      .btn_carrousel_buy_disabled{
-        display: none;
-      }
+    a:hover{
+      transform:scale(.9);
     }
   }
 }

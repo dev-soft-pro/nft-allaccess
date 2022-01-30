@@ -23,6 +23,21 @@
       .card-wrapper {
         display: flex;
         min-width: 640px;
+        .crypto-nft{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-size: 2.2em;
+          text-align: center;
+
+        }
+
+
+
+
+
+
         @media only screen and (max-width: 640px) {  
           flex-direction: column-reverse;
           min-width: 100%;
@@ -57,21 +72,6 @@
           text-align: left;
           margin-left: 1rem;
           font-size: 1.5rem;
-        }
-      }
-      .crypto-nft{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-size: 2.2em;
-        text-align: center;
-        &-button-wrapper {
-          margin-top: 1rem;
-          display: flex;
-          button:first-child {
-            margin-right: 0.5rem;
-          }
         }
       }
     }

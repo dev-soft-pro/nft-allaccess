@@ -13,10 +13,11 @@ import {
   Container,
 } from 'react-bootstrap'
 
-import FacebookIco from 'assets/images/social/facebook.png'
+import redditIco from 'assets/images/social/reddit.png'
 import InstagramIco from 'assets/images/social/instagram.png'
 import TwitterIco from 'assets/images/social/twitter.png'
 import DiscordIco from 'assets/images/social/discord.png'
+import DiscordWhite from 'assets/images/social/discord-white.png'
 import EmptyProfile from 'assets/images/profile-empty-tiny.png'
 
 let styletag = "width:300px;height:50px; fill:#DC9000;";
@@ -32,7 +33,6 @@ function Header() {
 
   return (
     <Navbar expand="lg" className="header-wrapper" variant="dark">
-      <Container>
         <Navbar.Brand onClick={() => navigate(ROUTES.HOME)}>
           <div>
             <svg className="logo_svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1032.03 250.97">
@@ -68,18 +68,27 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav" >
           <div className="navbar-left">
             <Nav.Link className="header-menu" href="/marketplace">
-              Marketplace
+              Shop
             </Nav.Link>
             <Nav.Link className="header-menu" href="/community">
-              Community
-            </Nav.Link>
-            <Nav.Link className="header-menu" href="/about-us">
-              About Us
+              Resources
             </Nav.Link>
           </div>
           <div className="navbar-right">
           {cookies.isAuth == 'true' && cookies.userinfo ? (
             <>
+            
+            <div className="social-section">
+              <a target="_blank" href="#" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
+              
+              <div className="social-icons">
+                <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
+                <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
+                <a target="_blank" href="#"><img src={redditIco} alt="reddit"/></a>
+                
+              </div>
+            </div>
+
             <div className="user-info">
               <img src={EmptyProfile} alt="Profile Image" id="profile-tiny"/>
               <NavDropdown title={cookies.userinfo.username} id="profile-dropdown" className="header-menu">
@@ -93,26 +102,27 @@ function Header() {
               </div>
               
             </div>
-              <div className="social-icons">
-                <a target="_blank" href="#"><img src={FacebookIco} alt="Facebook"/></a>
-                <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
-                <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
-                <a target="_blank" href="#"><img src={DiscordIco} alt="Discord"/></a>
-              </div>
             </>
           ) : (
             <>
-              <Nav.Link className="header-menu" href="/join">
-                Sign Up
-              </Nav.Link>
-              <Nav.Link className="header-menu" href="/login    ">
-                Log In
-              </Nav.Link>
+            <div className="social-section">
+              <a target="_blank" href="#" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
+              
               <div className="social-icons">
-                <a target="_blank" href="#"><img src={FacebookIco} alt="Facebook"/></a>
                 <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
                 <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
-                <a target="_blank" href="#"><img src={DiscordIco} alt="Discord"/></a>
+                <a target="_blank" href="#"><img src={redditIco} alt="reddit"/></a>
+                
+              </div>
+            </div>
+              <div className="account-actions">
+              <Nav.Link className="header-menu" href="/login    ">
+                  Log In
+                </Nav.Link>
+                <Nav.Link className="header-menu" href="/join">
+                  Sign Up
+                </Nav.Link>
+               
               </div>
             </>
             
@@ -120,7 +130,6 @@ function Header() {
           </div>
         </Navbar.Collapse>
         
-      </Container>
     </Navbar>
   )
 }

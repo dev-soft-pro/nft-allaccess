@@ -1,41 +1,45 @@
 import React from 'react'
 import './styles.scss'
 
-import FacebookIcon from 'assets/images/social/facebook.png'
+import redditIcon from 'assets/images/social/reddit.png'
 import TwitterIcon from 'assets/images/social/twitter.png'
 import discordIcon from 'assets/images/social/discord.png'
 import InstagramIcon from 'assets/images/social/instagram.png'
-import JoinDiscordImage from 'assets/images/join_discord.png'
 
 
 function Footer() {
   return (
     <footer className="footer">
-      {/* Join Discord */}
-      <div className="join-discord-wrapper">
-        <img src={JoinDiscordImage} alt="join-discord" />
-      </div>
-      <div className="footer-menu">
-        <a href="#">Privacy Policy</a>
-        <a href="#">TOS</a>
-        <a href="#">FaQ</a>
+    
+
+      <div className="footer-top">
+          <a href="https://discord.com" className="discord-footer">
+            <img src={discordIcon} alt='instagram' />
+            Join Discord
+          </a>
+        <div className="footer-menu">
+          <a href="#">About</a>
+          <a href="#">FAQ</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms Of Service</a>
+          <a href="#">Contact Us</a> 
+        </div>
+
+        <div className="footer-social-right">
+          <a href="https://instagram.com">
+            <img src={InstagramIcon} alt='instagram' />
+          </a>
+          <a href="https://twitter.com">
+            <img src={TwitterIcon} alt='twitter' />
+          </a>
+          <a href="https://reddit.com">
+            <img src={redditIcon} alt='reddit' />
+          </a>
+        </div>
       </div>
 
-      <div className="footer-social">
-        <a href="https://facebook.com">
-          <img src={FacebookIcon} alt='facebook' />
-        </a>
-        <a href="https://twitter.com">
-          <img src={TwitterIcon} alt='twitter' />
-        </a>
-        <a href="https://discord.com">
-        <img src={discordIcon} alt='discord' />
-        </a>
-        <a href="https://instagram.com">
-          <img src={InstagramIcon} alt='instagram' />
-        </a>
-      </div>
-      <span>©All Access NFT 2022</span>
+      <hr/>
+      <span>Copyright @ 2022 All Access</span>
     </footer>
   )
 }

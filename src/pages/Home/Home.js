@@ -3,17 +3,19 @@ import { Link as RouterLink } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
 import './styles.scss'
 
-import { Container } from 'react-bootstrap'
-
-import JoinDiscordImage from 'assets/images/join_discord.png'
-
-import Header from 'components/Header'
 import DropList from 'components/Home/DropList'
-import ArtistList from 'components/Home/ArtistList'
-import SetList from 'components/Home/SetList'
+
+
+
 
 import { Context } from 'Context'
-import Page from 'components/Page';
+import Page from 'components/Page'; 
+import Placeholder from 'assets/images/profile-empty.png'
+
+import HowItWorksImage1 from 'assets/images/how-it-works/1.png'
+import HowItWorksImage2 from 'assets/images/how-it-works/2.png'
+import HowItWorksImage3 from 'assets/images/how-it-works/3.png'
+import background_image from 'assets/images/Roadmap-background.png'
 
 function Home() {
   const { cookies, removeAuth } = useContext(Context);
@@ -21,34 +23,122 @@ function Home() {
   return (
     <Page>
       <div className="home-container">
-        <Container>
-          <div className="video-slider">
-            <video src="https://storage.googleapis.com/all_access_nft_bucket/assets/Copy%20of%20Logo%20trailer%20official%20-%20HD%201080p.mov" loop={true} autoPlay={true} muted={true} alt="Video"></video>
-            <div className="video-slider-text">
-             <p className="video-slider-text-large-p">It’s a new era for unique collectables and we are about to change the way people collect, invest and redeem real world rewards. All Access provides premium NFT collectibles and brings the latest in collectable NFT’s to life.</p>
-             <p>All Access will bridge the gap between blockchain and real world utility.</p>
-            </div>
-          </div>
-          <DropList />          
-          <div className="how-it-works">
+        <DropList />  
+        <div className="new-background">
+        <img className="background-image" src={background_image}/>        
+        <div className="how-it-works">
+            <h2>How It Works</h2>
             <div className="how-it-works-container">
-              <h2>How It Works</h2>
-              <p>Buy cases and packs to earn All Access Points(AAPs)</p>
-              <p>Crack open your case or pack to redeem more AAPs</p>
-              <p>Redeem AAPs in the All Access Zone for crazy merch and unique experiences</p>
-              <p>Maintain your collection on our platform or transfer to your favorite Polygon wallet</p>
-              <p>Buy and sell on the marketplace(coming soon)</p>
-              {!(cookies.isAuth == 'true') && (
-                <div className="button-wrapper">
-                  <RouterLink className="link-join" to={ROUTES.REGISTER}>
-                    <div className="button-join">GET STARTED</div>
-                  </RouterLink>
+                <div className="how-it-works-item">
+                    <div className="how-it-works-item-text">
+                        <h3>Purchase your collectible</h3>
+                        <p>Purchase Cases/</p>
+                        <p>Packs </p>
+                        <p>to have your</p>
+                        <p>chance at a rare </p>
+                        <p>NFT</p>
+                    </div>
+                    <img src={HowItWorksImage1}/> 
+                </div> 
+                <div className="how-it-works-item">
+                    <div className="how-it-works-item-text">
+                        <h3>Reveal NFT</h3>
+                        <p>Open your</p>
+                        <p>collectable and </p>
+                        <p>redeem your All</p>
+                        <p>Access Points for</p>
+                        <p>exclusive</p>
+                        <p>experiences</p>
+                    </div>
+                    <img src={HowItWorksImage2}/> 
+                </div> 
+                <div className="how-it-works-item">
+                    <div className="how-it-works-item-text">
+                        <h3>Anticipate the next drop</h3>
+                        <p>Look out for</p>
+                        <p>future</p>
+                        <p>collections by</p>
+                        <p>joining our</p>
+                        <p>communities</p>
+                    </div>
+                    <img src={HowItWorksImage3}/> 
+                </div> 
+            </div>   
+        </div>
+
+        <div className="roadmap-desktop">
+        <div className="roadmap">
+            <h2>Roadmap</h2>
+        
+            <div className="roadmap-top">
+        
+                <div className="roadmap-item">
+                    <h3>1. Research and Development</h3>
+                    <p> Combining the experience of our allstar devleopment team, we formed a first of its kind collectibles company. With the announcement of key partnerships we plan to connect fans, collectors and investors like never before. </p>
                 </div>
-              )}
+        
+                <div className="roadmap-item">
+                    <h3>3. All Access Case/Pass Launch</h3>
+                    <p> Target date to launch is beggining of February. Hosting an exclusive private sale 48 hours prior to launch, this ensures community members are rewarded. NFT's will have an affordable price point of $50-$100 USD. </p>
+                </div>
+        
+                <div className="roadmap-item">
+                    <h3>5. All Access Pass/Card Launch</h3>
+                    <p>Target date to launch is middle of February. All Access pass holders will have the ability to purchase limited inventory 48 hours prior to launch. These Collectable Cards will hold they keys to the high tier rewards being offered. </p>
+                </div>
             </div>
-          </div>
-        </Container>
+            <hr/>
+            <div className="roadmap-bottom">
+                <div className="roadmap-item">
+                    <h3>2. Creating Quality</h3>
+                    <p>Working with top artists to create highly desirable collectibles to ensure we remains one of a kind. All Access collectibles will range from a variety of Cases, Packs, Passes and Cards.  </p>
+                </div>
+        
+                <div className="roadmap-item">
+                    <h3>4. Marketplace &amp; All Access Zone</h3>
+                    <p>The peer to peer marketplace and All Access Zone will be launched shortly after the Case/Pass Launch. This allows users to buy/sell from each other along with a store to purchase experiences and redeem rewards. </p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div className="mobile-roadmap">
+        <div className="roadmap">
+            <h2>Roadmap</h2>
+        
+            <div className="roadmap-top">
+        
+                <div className="roadmap-item">
+                    <h3>1. Research and Development</h3>
+                    <p> Combining the experience of our allstar devleopment team, we formed a first of its kind collectibles company. With the announcement of key partnerships we plan to connect fans, collectors and investors like never before. </p>
+                </div>
+        
+                <div className="roadmap-item">
+                    <h3>2. Creating Quality</h3>
+                    <p>Working with top artists to create highly desirable collectibles to ensure we remains one of a kind. All Access collectibles will range from a variety of Cases, Packs, Passes and Cards.  </p>
+                </div>
+
+                <div className="roadmap-item">
+                    <h3>3. All Access Case/Pass Launch</h3>
+                    <p> Target date to launch is beggining of February. Hosting an exclusive private sale 48 hours prior to launch, this ensures community members are rewarded. NFT's will have an affordable price point of $50-$100 USD. </p>
+                </div>
+        
+                <div className="roadmap-item">
+                    <h3>4. Marketplace &amp; All Access Zone</h3>
+                    <p>The peer to peer marketplace and All Access Zone will be launched shortly after the Case/Pass Launch. This allows users to buy/sell from each other along with a store to purchase experiences and redeem rewards. </p>
+                </div>
+        
+                <div className="roadmap-item">
+                    <h3>5. All Access Pass/Card Launch</h3>
+                    <p>Target date to launch is middle of February. All Access pass holders will have the ability to purchase limited inventory 48 hours prior to launch. These Collectable Cards will hold they keys to the high tier rewards being offered. </p>
+                </div>
+            
+            </div>
+        </div>
+        </div>
+        </div>
       </div>
+
+
     </Page>
   )
 }

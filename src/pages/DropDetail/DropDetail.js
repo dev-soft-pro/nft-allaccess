@@ -56,26 +56,6 @@ function DropDetail() {
                     <img src={drop.image} alt="drop-image" />
                   </div>
                 </div>
-                <div className="drop-right"> 
-                  <div className="drop-info-detail">
-                    <h2>Early Access</h2>
-                    <p>
-                      {formatDate(drop.presale_start)} ~ {formatDate(drop.presale_end)}<br />
-                    </p>
-                    <h2>Public</h2>
-                    <p>
-                      {formatDate(drop.public_start)}
-                    </p>
-                    <p>1 / 12 Minted</p>
-                  </div>
-                  {cookies.isAuth == 'true' && pass && (
-                    <div className="buy-button-wrapper">
-                      <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
-                        <div className="button-join">Buy Pass</div>
-                      </Link>
-                    </div>
-                  )}
-                </div>
               </div>
 
               <div className="drop-info-detail-bottom">
