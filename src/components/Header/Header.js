@@ -14,11 +14,11 @@ import {
   Container,
 } from 'react-bootstrap'
 
-import redditIco from 'assets/images/social/Reddit.png'
+import redditIco from 'assets/images/social/reddit.png'
 import InstagramIco from 'assets/images/social/instagram.png'
 import TwitterIco from 'assets/images/social/twitter.png'
 import DiscordIco from 'assets/images/social/discord.png'
-import DiscordWhite from 'assets/images/social/Discord-white.png'
+import DiscordWhite from 'assets/images/social/discord-white.png'
 import EmptyProfile from 'assets/images/profile-empty-tiny.png'
 
 let styletag = "width:300px;height:50px; fill:#DC9000;";

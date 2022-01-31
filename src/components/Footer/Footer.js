@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.scss'
 
-import redditIcon from 'assets/images/social/Reddit.png'
+import redditIcon from 'assets/images/social/reddit.png'
 import TwitterIcon from 'assets/images/social/twitter.png'
 import discordIcon from 'assets/images/social/discord.png'
 import InstagramIcon from 'assets/images/social/instagram.png'
