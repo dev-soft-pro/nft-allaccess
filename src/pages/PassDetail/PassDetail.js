@@ -26,7 +26,7 @@ function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { cookies, setCart } = useContext(Context);
+  const { cookies, walletState, setCart } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [amount, setAmount] = useState(1);
@@ -74,6 +74,12 @@ function PassDetail() {
     }
     return "buynow";
   }
+
+  const checkWithdrawDisable = async () => {
+    const wa_date = new Date(pass.withdraw_after)
+    const current_date = new Date()
+    return wa_date > current_date && walletState.provider;
+  }
   
   return (
     <Page>
@@ -119,7 +125,7 @@ function PassDetail() {
                 {detailFrom == 'profile' && (
                   <div className="crypto-nft-button-wrapper">
                     <ConnectButton />
-                    <Button colorScheme="red" type="submit">
+                    <Button colorScheme="red" type="submit" disabled={checkWithdrawDisable()}>
                       Withdraw
                     </Button>
                   </div>

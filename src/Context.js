@@ -2,6 +2,7 @@ import React, { createContext, useState, useCallback, useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import WalletLink from "walletlink";
 import Web3Modal from 'web3modal';
 import Web3 from "web3";
 
@@ -52,6 +53,17 @@ const Provider = ({ children }) => {
         chainId: 80001
       },
     },
+    walletlink: {
+      package: WalletLink, // Required
+      options: {
+        appName: "My Awesome App", // Required
+        infuraId: "INFURA_ID", // Required unless you provide a JSON RPC url; see `rpc` below
+        rpc: "", // Optional if `infuraId` is provided; otherwise it's required
+        chainId: 1, // Optional. It defaults to 1 if not provided
+        appLogoUrl: null, // Optional. Application logo image URL. favicon is used if unspecified
+        darkMode: false // Optional. Use dark theme, defaults to false
+      }
+    }
   };
   const web3Modal = new Web3Modal(
   {
