@@ -55,27 +55,11 @@ function Signup() {
       if (response.status === 201) {
         activateAuth(data);
         navigate(ROUTES.HOME, { replace: true });
-      } else if (response.status === 406) {
-        Object.keys(data.error).map(key => {
-          console.log(data.error[key])
-        })
-        data.error.map(err => {
-          const key = Object.keys(err)[0];
-          const message = err[key];
-          toast({
-            position: 'top',
-            title: key,
-            description: message,
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-          })
-        })
       } else {
         toast({
           position: 'top',
-          title: 'Unknown Error',
-          description: '',
+          title: 'Authentication Error',
+          description: data.detail,
           status: 'error',
           duration: 9000,
           isClosable: true,
@@ -120,7 +104,6 @@ function Signup() {
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter username"
                   onChange={(e) => setUsername(e.target.value)} />
               </Form.Group>
 
@@ -128,7 +111,6 @@ function Signup() {
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="email"
-                  placeholder="Enter email"
                   onChange={(e) => setEmail(e.target.value)} />
               </Form.Group>
 
@@ -136,15 +118,13 @@ function Signup() {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Re Enter Password</Form.Label>
+                <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   type="password"
-                  placeholder="Password"
-                  onChange={(e) => setPasswordV(e.target.value)} />
+                  onChange={(e) => setPasswordv(e.target.value)} />
               </Form.Group>
               
 
@@ -168,13 +148,16 @@ function Signup() {
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
               />
-              <Form.Group className="mb-3 confirm-check" controlId="agreeCheckbox">
+              
+              <Form.Group className="mb-3 confirm-check" controlId="formBasicCheckbox">
                 <Form.Check
                   type="checkbox"
+                  label={(
+                  <Form.Label htmlFor="formBasicCheckbox">
+                    I agree to the <Link to="/" className="link"><strong>Terms of Service</strong></Link> and acknowledge the <Link to="/" className="link"><strong>Privacy Policy</strong></Link>.
+                  </Form.Label>
+                  )} 
                   onChange={(e) => setAgreed(e.target.checked) } />
-                <Form.Label>
-                  I agree to the <Link to="/" className="link"><strong>Terms of Service</strong></Link> and acknowledge the <Link to="/" className="link"><strong>Privacy Policy</strong></Link>.
-                </Form.Label>
               </Form.Group>
               <div className="continue-button" onClick={() => handleJoin()}>
                 <span>Continue</span>

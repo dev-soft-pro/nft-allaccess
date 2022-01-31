@@ -1,5 +1,138 @@
-.coming-soon {
-  color: white;
-  font-size: 30px;
-  text-align: center;
+.main-wrapper{
+    align-items:center;
+}
+
+.about-container{
+    
+    color: white;
+    padding: 4em 0;
+    width: 80%;
+    
+
+
+    h1{
+        font-size:2rem;
+    }
+    h2{
+        font-size:1.5rem;
+    }
+    p{
+        font-size:1.2rem;
+    }
+
+    hr{
+        color: #dc0000;
+        height:3px !important;
+    }
+
+    .about-top{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 1em 4em 2em 4em;
+
+        h1{
+            padding-bottom: 2em;
+        }
+
+    }
+
+    .about-person{
+        padding: 5em 0;
+        display:flex;
+
+        .p-title-mobile{
+            display:none;
+        }
+        
+    }
+
+   
+
+
+    .about-person-image{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    
+
+    .about-person-info-top{
+        display: flex;
+        justify-content: space-between;
+
+        .person-social{
+            display: flex;
+            img{
+                height: 35px;
+                width: 35px;
+                gap: 0.5em;
+            }
+            .margin-fix{
+                margin-right: 1em   ;
+            }
+        }
+    }
+    
+
+     //mobile fix
+     @media screen and (max-width: 1200px){
+        .about-person{
+            flex-wrap:wrap;
+            justify-content: center;
+            .p-title-mobile{
+                display:block;
+            }.p-title-desktop{
+                display:none;
+            }    
+            .about-person-image{
+
+                width:75%;
+
+            }   
+            .about-person-info-top{
+                flex-direction: column;
+            
+                .person-social{
+                    justify-content: center;
+                }
+            }   
+        }
+        h1{
+            text-align: center;
+        }
+    }   
+
+    @media screen and (max-width: 990px){
+        .about-top{
+            padding: 0 0 2em 0;
+        }
+        .about-person{
+            text-align: center;
+
+
+            
+
+            
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

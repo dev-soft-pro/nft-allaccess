@@ -10,7 +10,6 @@ import DropList from 'components/Home/DropList'
 
 import { Context } from 'Context'
 import Page from 'components/Page'; 
-import Placeholder from 'assets/images/profile-empty.png'
 
 import HowItWorksImage1 from 'assets/images/how-it-works/1.png'
 import HowItWorksImage2 from 'assets/images/how-it-works/2.png'
@@ -54,14 +53,14 @@ function Home() {
         </div>
 
         <div className="roadmap-desktop">
+        <h2>Roadmap</h2>
         <div className="roadmap">
-            <h2>Roadmap</h2>
         
             <div className="roadmap-top">
         
                 <div className="roadmap-item">
                     <h3>1. Research and Development</h3>
-                    <p> Combining the experience of our allstar devleopment team, we formed a first of its kind collectibles company. With the announcement of key partnerships we plan to connect fans, collectors and investors like never before. </p>
+                    <p> Combining the experience of our allstar development team, we formed a first of its kind collectibles company. With the announcement of key partnerships we plan to connect fans, collectors and investors like never before. </p>
                 </div>
         
                 <div className="roadmap-item">
@@ -74,7 +73,7 @@ function Home() {
                     <p>Target date to launch is middle of February. All Access pass holders will have the ability to purchase limited inventory 48 hours prior to launch. These Collectable Cards will hold they keys to the high tier rewards being offered. </p>
                 </div>
             </div>
-            <hr/>
+            <div className="height-line"></div>
             <div className="roadmap-bottom">
                 <div className="roadmap-item">
                     <h3>2. Creating Quality</h3>
@@ -89,8 +88,8 @@ function Home() {
         </div>
         </div>
         <div className="mobile-roadmap">
+        <h2>Roadmap</h2>
         <div className="roadmap">
-            <h2>Roadmap</h2>
         
             <div className="roadmap-top">
         

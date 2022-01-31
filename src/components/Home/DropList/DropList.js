@@ -99,7 +99,7 @@ function DropList() {
     <div className="slider-home-page">
       {drops.map(drop =>
       <div className="drop-less-box" key={`drop-${drop.drop_num}`}>
-        <img src={drop.image} alt="nft" className="image-nft-drop" />
+        <video src={drop.image} autoPlay={true} muted={true} loop={true} alt="nft" className="image-nft-drop"></video>
         <div className="buttons-wrapper">
           <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
           {/* <a className={checkBuyingDate(drop)} href="#">Buy Now</a> */}
@@ -108,18 +108,6 @@ function DropList() {
     </div>
   )
 }
-  //return loading ? (
-    //  <Spinner color='white' />
-    //) : (
-    //  drops.map(drop =>
-    //        <div className="no_carrousel_slider">
-    //          <img src={drop.image} alt="nft" className="image-nft-drop" />
-    //          <div className="drop-desc">{drop.description}</div>
-    //          <a className="btn_carrousel" href="#">Learn More</a>
-    //          <a className="btn_carrousel_buy" href="#">Buy Now</a>
-    //        </div>
-    //    )
-    //)
 }
 
 export default DropList;

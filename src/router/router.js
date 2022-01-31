@@ -10,7 +10,6 @@ import DropDetail from 'pages/DropDetail';
 import Profile from 'pages/Profile';
 import PassDetail from 'pages/PassDetail';
 import PassBuy from 'pages/PassBuy';
-import Marketplace from 'pages/Marketplace';
 import About from 'pages/About';
 import ProfileEdit from 'pages/ProfileEdit';
 
@@ -26,7 +25,6 @@ function router() {
         <Route path={ROUTES.PROFILE_EDIT} element={<ProfileEdit />} />
         <Route path={ROUTES.PASS_DETAIL} element={<PassDetail />} />
         <Route path={ROUTES.PASS_BUY} element={<PassBuy />} />
-        <Route path={ROUTES.MARKETPLACE} element={<Marketplace />} />
         <Route path={ROUTES.ABOUT} element={<About />} />
         <Route path={ROUTES.PROFILE_PASS_DETAIL} element={<PassDetail />} />
       </Routes>

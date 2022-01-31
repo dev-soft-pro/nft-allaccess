@@ -95,8 +95,11 @@
   .roadmap{
     color:white;
     padding: 2em 4em;
-    margin-top: 75px;
-  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    gap:0 2rem;
     h2{
       margin-bottom: 1.25rem;
       @media screen and (max-width: 990px) {
@@ -115,6 +118,7 @@
     .roadmap-top{
       display: flex;
       justify-content: space-between;
+      flex-direction: column;
       margin-bottom: 1rem;
       .roadmap-item{
         text-align: center;
@@ -126,16 +130,17 @@
       }
     }
 
-    hr{
-      height: 5px;
-      background: linear-gradient(90deg, rgb(255 6 6) 0%, rgba(0, 0, 0) 100%);
-      border-radius: 10px;
+    .height-line{
+      height: 800px;
+      width: 5px;
+      background: linear-gradient(180deg, rgb(255 6 6) 0%, rgba(0, 0, 0) 100%);
     }
     
 
     .roadmap-bottom{
       display: flex;
       justify-content: space-around;
+      flex-direction: column;
       margin-bottom: 1rem;
       margin-top: 1rem;
       .roadmap-item{
@@ -163,7 +168,11 @@
 }
 .mobile-roadmap{
   display: block;
-  @media screen and (min-width: 1199px) {
+  h2{
+    text-align: center;
+    color: #fff;
+  }
+  @media screen and (min-width: 800px) {
     display:none !important;
   }
   .roadmap-top{
@@ -175,7 +184,11 @@
 }
 .roadmap-desktop{
   display: none;
-  @media screen and (min-width: 1199px) {
+  h2{
+    margin-left: 4rem;
+    color: #fff;
+  }
+  @media screen and (min-width: 800px) {
     display:block !important;
   }
 }

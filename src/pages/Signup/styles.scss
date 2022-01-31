@@ -11,11 +11,19 @@
     font-size:1.2rem;
     .auth-panel {
       color: white;
-      width: auto;
       min-width: 360px;
+      background: #1a1a1a;
+      padding: 2em;
       text-align: center;
+      width: auto;
+      p{
+        margin: 1.3em 0; 
+      }
       form {
         text-align: left;
+      }
+      .form-control{
+        height: 1.6rem;
       }
       .button-wrapper {
         display: inline-flex;
@@ -43,16 +51,26 @@
         }
         .confirm-check {
           margin-top: 30px;
-          display: flex;
-          label {
-            margin: 0 0 0 10px;
+          
+          .form-check{
+            display: flex;
+            align-items: center;
+            align-content: center;
+            .form-check-input:checked {
+              background-color: #dc0000;
+              border-color: #dc0000;
           }
-          #agreeCheckbox {
-            margin: 0;
+            label{
+              font-size: .8em;
+            }
+            input{
+              height:28px;
+              width:28px;
+            }
+            .form-label{
+              margin: 0 0 0 0.3em;
+            }
           }
-        }
-        strong:hover{
-          color:#dc0000;
         }
         strong:hover{
           color:#dc0000;

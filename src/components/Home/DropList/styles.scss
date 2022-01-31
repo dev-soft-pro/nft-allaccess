@@ -6,7 +6,7 @@
   background: transparent;
   height:400px;
   overflow: hidden;
-  img{
+  video{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -25,13 +25,13 @@
     align-items: center;
     gap: 1em;
     a{
-      padding: .75rem 1.5rem;
+      padding: 0.75rem 2.5rem;
       border-radius: 30px;
       border: 2px solid #fff;
-      background: #000;
+      background: #00000060;
       color: #fff;
       font-size: 1.2rem;
-      transition: .3s ease-in-out;
+      transition: 0.3s ease-in-out;
       cursor: pointer;
     }
     a:hover{

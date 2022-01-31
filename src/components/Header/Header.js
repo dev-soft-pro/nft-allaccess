@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './styles.scss'
 
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
-
+import * as API from 'constants/api';
+import * as OPTIONS from 'services/options';
 import { Context } from 'Context'
 
 import {
@@ -13,24 +14,41 @@ import {
   Container,
 } from 'react-bootstrap'
 
-import redditIco from 'assets/images/social/reddit.png'
+import redditIco from 'assets/images/social/Reddit.png'
 import InstagramIco from 'assets/images/social/instagram.png'
 import TwitterIco from 'assets/images/social/twitter.png'
 import DiscordIco from 'assets/images/social/discord.png'
-import DiscordWhite from 'assets/images/social/discord-white.png'
+import DiscordWhite from 'assets/images/social/Discord-white.png'
 import EmptyProfile from 'assets/images/profile-empty-tiny.png'
 
 let styletag = "width:300px;height:50px; fill:#DC9000;";
 
 function Header() {
+
   const { cookies, removeAuth } = useContext(Context);
   const navigate = useNavigate();
+  const [drops, setDrops] = useState();
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchDropList = async () => {
+      const response = await fetch(API.DROP_LIST, OPTIONS.GET);
+      const data = await response.json();
+      setDrops(data);
+      setLoading(false);
+    }
+    
+    fetchDropList();
+  }, [])
   const handleLogout = () => {
     removeAuth();
     navigate(ROUTES.HOME, { replace: true });
   }
-
+  var checkDrops;
+  if (drops != undefined) {
+    checkDrops = drops;
+  }
+  if (drops != undefined) {
   return (
     <Navbar expand="lg" className="header-wrapper" variant="dark">
         <Navbar.Brand onClick={() => navigate(ROUTES.HOME)}>
@@ -67,12 +85,16 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" >
           <div className="navbar-left">
-            <Nav.Link className="header-menu" href="/marketplace">
+            {checkDrops.map(drop => (
+            <Nav.Link className="header-menu" key={`pass-${drop.drop_num}`} href={`/pass/${drop.drop_num}`}>
               Shop
             </Nav.Link>
-            <Nav.Link className="header-menu" href="/community">
-              Resources
-            </Nav.Link>
+            ))}
+            <NavDropdown title="Resources" className="header-menu">
+              <NavDropdown.Item onClick={() => navigate("#")}>FAQ</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate(ROUTES.ABOUT)}>About US</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate("#")}>Contact US</NavDropdown.Item> 
+            </NavDropdown>
           </div>
           <div className="navbar-right">
           {cookies.isAuth == 'true' && cookies.userinfo ? (
@@ -132,6 +154,11 @@ function Header() {
         
     </Navbar>
   )
+}else{
+  return (
+    <div></div>
+  )
+}
 }
 
 export default Header;

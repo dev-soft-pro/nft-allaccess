@@ -10,11 +10,19 @@
     padding: 2rem 0;
     .auth-panel {
       color: white;
+      background: #1a1a1a;
+      padding: 2em;
       width: auto;
       min-width: 360px;
       text-align: center;
+      p{
+        margin: 1.3em 0; 
+      }
       form {
         text-align: left;
+      }
+      .form-control{
+        height: 1.6rem;
       }
       .button-wrapper {
         display: flex;

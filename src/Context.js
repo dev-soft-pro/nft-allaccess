@@ -42,7 +42,8 @@ const Provider = ({ children }) => {
   const rpc = 'https://rpc-mumbai.maticvigil.com/';
   const providerOptions =
   {
-    walletconnect: {
+    walletconnect:
+    {
       package: WalletConnectProvider,
       options:
       {
