@@ -35,31 +35,6 @@
         min-width: 200px;
         margin: 1rem auto;
       }
-      .buy-button-wrapper {
-        display: flex;
-        flex-direction: row;
-        margin: 1rem 0;
-        justify-content: center;
-        .link-join {
-          color: white;
-          text-decoration: none;
-        }
-        .button-join {
-          display: inline-flex;
-          padding: 5px 20px;
-          background: #DC0000;
-          cursor: pointer;
-          border-radius: 6px;
-          font-size: 22px;
-          font-weight: bold;
-          margin-top:1em;
-        }
-  
-        .button-join:hover{
-          color: white;
-          background: #b60000;
-        }
-      }
       .table-wrapper{
         display: grid;
         grid-template-columns: 1fr 1fr;

@@ -12,6 +12,14 @@ import moment from 'moment';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
+import E1 from 'assets/placeholder/e1.png'
+import E2 from 'assets/placeholder/e2.png'
+import E3 from 'assets/placeholder/e3.png'
+import E4 from 'assets/placeholder/e4.png'
+import E5 from 'assets/placeholder/e5.png'
+import E6 from 'assets/placeholder/e6.png'
+
+
 function Profile() {
   const { buyPassCrypto } = useContext(Context)
   const { cookies } = useContext(Context)
@@ -47,27 +55,67 @@ function Profile() {
   return (
     <Page>
       <div className="profile-container">
-        <div className="profile-slider">
-          <div className="profile-image">
-            <img src={ProfileImgEmpty} alt="Profile Image"/>
-          </div>
-          <div className="textFix">
+        <div className="profile-top">
+          <div className="profile-info">
+            <div className="profile-image">
+              <img src={ProfileImgEmpty} alt="Profile Image"/>
+            </div>
             <h2>{cookies.userinfo.username}</h2>
-           
-            <p>Email: <span>{cookies.userinfo.email}</span></p>
-            <p>Date Created: <span>{formatDate(cookies.userinfo.created)}</span></p>
-            <p>Points: <span>{cookies.userinfo.points}</span></p>
+            <div className="points-container">
+              <p>All Access Points</p>
+              <p>{cookies.userinfo.points}</p>
+            </div>
           </div>
+
+          <button className="edit-profile-button" >
+            <a href="/profile/edit">Edit Profile</a>
+          </button>
+
+
+
         </div>
+        <hr/>
         <div className="profile-bottom">
-          <PassList
-            title="Revealed Passes"
-            passes={passlist.filter(p => p.revealed == 1)}
-            loading={loading} />
-          <PassList
-            title="Hidden Passes"
-            passes={passlist.filter(p => p.revealed == 0)}
-            loading={loading} />
+          <div className="profile-bottom-top-bar">
+            <h1>My Collection</h1>
+            <a className="sort-by">Sort By</a>
+          </div>
+          <div className="profile-bottom-collection">
+            
+            <div className="profile-bottom-collection-inner">
+              <h3>Item Name</h3>
+              <img src={E1}/>
+            </div>
+            <div className="profile-bottom-collection-inner">
+              <h3>Item Name</h3>
+              <img src={E2}/>
+            </div>
+            <div className="profile-bottom-collection-inner">
+              <h3>Item Name</h3>
+              <img src={E3}/>
+            </div>
+            <div className="profile-bottom-collection-inner">
+              <h3>Item Name</h3>
+              <img src={E4}/>
+            </div>
+            <div className="profile-bottom-collection-inner">
+              <h3>Item Name</h3>
+              <img src={E5}/>
+            </div>
+            <div className="profile-bottom-collection-inner">
+              <h3>Item Name</h3>
+              <img src={E6}/>
+            </div>
+            {/*<PassList
+              passes={passlist.filter(p => p.revealed == 1)}
+              loading={loading} />
+            <PassList
+              passes={passlist.filter(p => p.revealed == 0)}
+            loading={loading} />*/}
+
+
+            
+          </div>
         </div>
       </div> 
     </Page>

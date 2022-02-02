@@ -1,7 +1,138 @@
 .profile-edit-container {
+  
   display: flex;
   justify-content: center;
+  background: #161616;
+  padding: 1em 3em;
+  color:white;
+  text-align:center;
+  min-width: 460px;
+  flex-direction: column;
+
+  .profile-image{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    img{
+      max-width: 130px;
+      height: auto;
+    }
+
+    .change-image{
+      border: 1px solid #fff7f7;
+      border-radius: .3em;
+      padding: .3rem;
+    }
+    .change-image:hover{
+      color: #dc0000;
+      border: 1px solid  #dc0000;
+    }
+
+
+  }
+
+
+  h2{
+    font-size: 1.3em;
+  }
+  h3{
+    text-align:left;
+  }
+  input{
+    height: 1.2em;
+    background: white;
+    color: black; 
+    width: 20em;
+  }
+  .profile-edit-item{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    .profile-edit-button{
+      border: 1px solid #fff7f7;
+      background: black;
+      border-radius: 0.3em;
+      margin-left: 1em;
+      font-weight: 300;
+      font-size: 0.8em;
+      padding: 0.5em 2em;
+      height: 1.4em;
+    }
+    .profile-edit-button:hover{
+      color: #dc0000;
+      border: 1px solid  #dc0000;
+    }
+  
+  }
+  
+
+
+
+  // Toggle Switch
+  .display-toggle{
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5em 0;
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+  .toggle-switch input[type="checkbox"] {
+    display: none;
+  }
+  .toggle-switch .switch {
+    position: absolute;
+    cursor: pointer;
+    background-color: #dc0000;
+    border-radius: 25px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: background-color 0.2s ease;
+  }
+  .toggle-switch .switch::before {
+    position: absolute;
+    content: "";
+    left: 2px;
+    top: 2px;
+    width: 21px;
+    height: 21px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  .toggle-switch input[type="checkbox"]:checked + .switch::before {
+    transform: translateX(25px);
+    background-color: #ffffff;
+  }
+  .toggle-switch input[type="checkbox"]:checked + .switch {
+    background-color: rgb(167, 1, 1);
+  }
+
+  // End Toggle Switch
+
+
+
+
+
+
   .profile-edit-wrapper {
     max-width: 300px;
+  }
+}
+
+//mobile 460px break
+@media screen and (max-width: 460px) {
+  .profile-edit-container {
+    width: 100%;
+    padding: 1em;
+    
   }
 }

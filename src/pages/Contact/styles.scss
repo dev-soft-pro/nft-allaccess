@@ -1,0 +1,53 @@
+.contact-container{
+
+    color: #fff;
+
+    //panel
+    .contact-panel{
+        background:rgb(27, 27, 27);
+        padding:3em;
+
+        h2{
+            font-size:1.5em;
+            text-align: center;
+
+        }
+
+    }
+
+
+    //input boxes
+    .form-control{
+        height: 1.4em;
+    }
+
+    .details-box{
+        height: 8em;
+    }
+
+
+    //submit button
+    .continue-button {
+        cursor: pointer;
+        margin-top: 10px;
+        background: #DC0000;
+        border-radius: 4px;
+        padding: 3px 12px;
+        height: 46px;
+        justify-content: center;
+        display: flex;
+        span {
+          align-self: center;
+          font-weight: bold;
+        }
+    }
+
+    //recaptcha
+
+    .reCaptcha{
+        max-width: 20em;
+    }
+
+
+
+}

@@ -1,45 +1,25 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react'
-import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import './styles.scss'
 
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 import { RARITY_TITLES } from 'constants/rarity';
-import ConnectButton from 'components/Buttons/ConnectButton';
 
 import Page from 'components/Page'
 
 import moment from 'moment';
-import {
-  Spinner,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Button
-} from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { cookies, walletState, setCart } = useContext(Context);
+  const { cookies } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
-  const [amount, setAmount] = useState(1);
-  const [maxAmount, setMaxAmount] = useState(1);
   const [loading, setLoading] = useState(true);
-
-  const detailFrom = useMemo(() => {
-    if (location.pathname.startsWith('/profile')) {
-      return 'profile'
-    } else {
-      return 'buy'
-    }
-  }, [location])
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -47,11 +27,6 @@ function PassDetail() {
         let response = await fetch(API.PASS_DETAIL.replace('$1', pass_id), OPTIONS.GET);
         let passData = await response.json();
         setPass(passData);
-        response = await fetch(API.PASS_NUM_AVAILABLE, OPTIONS.POST({
-          drop_num: passData.drop_num.drop_num
-        }))
-        let maxData = await response.json();
-        setMaxAmount(maxData.max_available)
         setLoading(false);
       } catch (ex) {
         console.log(ex);
@@ -59,38 +34,38 @@ function PassDetail() {
     }
     fetchDrop();
   }, [])
+  if (pass != undefined) {
+    console.log(pass);
+  }
 
   const handleBuy = async () => {
-    setCart({
-      pass_id: pass.pass_id,
-      amount: amount
-    })
     navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
   }
   //add ifsold variable here "true or false"
   function checkIfSoldOut(ifsold){
     if(!ifsold){
-      return "buynow_disabled";
+      return "buynow_button_disabled";
     }
-    return "buynow";
+    return "buynow_button";
   }
-
-  const checkWithdrawDisable = async () => {
-    const wa_date = new Date(pass.withdraw_after)
-    const current_date = new Date()
-    return wa_date > current_date && walletState.provider;
+  function createOptionQuantity(quantity){
+    let options = [];
+    for(let i = 0; i < quantity+1; i++){
+      options.push(i)
+    }
+    return options;
   }
   
   return (
     <Page>
       <div className="pass-detail-container">
-        <h1 className="pass-info">Purchase All Access Pass For Access To The Marketplace</h1>
         <div className="pass-info-container">
           {loading ? (
             <Spinner color='white' />
           ) : (
             <>
-              <video loop autoPlay={true} muted={true} playsInline={true}>
+            <div className="pass-info-wrapper">
+              <video loop={true} playsInline={true} autoPlay={true} muted={true} playsInline={true}>
                 {pass.revealed == 0 ? (
                   <source src={pass.image.image} />
                 ) : (
@@ -98,65 +73,148 @@ function PassDetail() {
                 )}
               </video>
               <div className="pass-detail-info">
-                <div className="info-row header-pass">
-                  <h1>{pass.drop_num.edition}</h1>
-                  {/* ADD TOTAL MINTED */}
-                  <p>Mint Number:<span>{pass.token_id} / 14</span></p>
-                  <p>Price:<span>${pass.price}</span></p>
-                </div>
-                {pass.revealed == 0 && (
+                <div className="header-pass">
+                  <h2>{pass.drop_num.edition}</h2>
+                  <hr className="line-description"/>
+                  
+                  <div className="buybox">
+                    <p>Price:<span>${pass.price}</span></p>
+                    <select>
+                      {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
+                      {createOptionQuantity(20).map(i => (
+                        <option key={i} value={i}>{i}</option>
+                      ))}
+                    </select>
+                    <div className={checkIfSoldOut(true)}>
+                      <div className="info-row" onClick={handleBuy}>
+                        <div className="button-join-but">Buy Pass</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pass-description">
+                    <p>Team Pettis Case can be opened to reveal a Team Pettis Collectible Pass</p>
+                    <h2>Rewards:</h2>
+                    <ul>
+                      <li>100 All Access Points</li>
+                      <li>1 Collectible Pass NFT</li>
+                    </ul>
+                    <p>Total Purchased: <span>{pass.token_id} / 1000</span></p>
+                    <p>Smart Contract: {pass.contract}</p>
+
+                {pass.revealed == 1 && (
                   <>
                   <div className="info-row">
                     <div>
                       <p>Rarity:<span>{RARITY_TITLES[pass.rarity]}</span></p>
                       <p>Points:<span>{pass.points}</span></p>
                     </div>
-                    <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
                   </div>
                   </>
                 )}
-                {pass.revealed == 1 && (
-                  <>
-                  <div className="info-row">
-                    <div className="button-join" href={`https://polygonscan.com/token/${pass.contract}`}>Smart Contract</div>
-                  </div>
-                  </>
-                )}
-                {detailFrom == 'profile' && (
-                  <div className="crypto-nft-button-wrapper">
-                    <ConnectButton />
-                    <Button colorScheme="red" type="submit" disabled={checkWithdrawDisable()}>
-                      Withdraw
-                    </Button>
-                  </div>
-                )}
-                {detailFrom == 'buy' && (
-                  <>
-                    <div className="info-row">
-                      <div>Amout: 
-                      <NumberInput
-                        min={1}
-                        max={maxAmount}
-                        defaultValue={1}
-                        onChange={(v) => setAmount(v)} >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
-                      </div>
-                    </div>
-                    <div style={{width:100+"%"}} className={checkIfSoldOut(true)}>
-                      <div className="info-row" onClick={handleBuy}>
-                        <div className="button-join-but">Buy Pass</div>
-                      </div>
-                    </div>
-                  </>
-                )}
+                </div>
+                </div>
               </div>
-              <div className="desc-fix">
-                {<div dangerouslySetInnerHTML={{__html:pass.drop_num.description}} className="grabbed-data"></div>}
+              </div>
+              <div className="description-wrapper">
+              <hr className="line-description"/>
+              <div className="description-passdetail">
+              <div className="table-wrapper">
+                <table className="table-item">
+                  <thead>
+                    <tr>
+                      <th>Unsigned - {pass.drop_num.description.rarities.table.unsigned.quantity}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pass.drop_num.description.rarities.table.unsigned.rows.map(
+                      (row,index) =>
+                        <tr>
+                          <td>{row.rarity} - {row.quantity}</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
+                <table className="table-item">
+                  <thead>
+                    <tr>
+                      <th>Signed - {pass.drop_num.description.rarities.table.signed.quantity}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pass.drop_num.description.rarities.table.signed.rows.map(
+                      (row,index) =>
+                        <tr>
+                          <td>{row.rarity} - {row.quantity}</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
+              </div>
+              <div className="table-wrapper">
+                <table className="table-item">
+                  <thead>
+                    <tr>
+                      <th>Unsigned - Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pass.drop_num.description.points.table.unsigned.map(
+                      (row,index) =>
+                        <tr>
+                          <td>{row.rarity} - {row.quantity} Points</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
+                <table className="table-item">
+                  <thead>
+                    <tr>
+                      <th>Signed - Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pass.drop_num.description.points.table.signed.map(
+                      (row,index) =>
+                        <tr>
+                          <td>{row.rarity} - {row.quantity} Points</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
+              </div>
+              <div className="table-wrapper">
+                <table className="table-item">
+                  <thead>
+                    <tr>
+                      <th>Unsigned - Right To Buy</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pass.drop_num.description.points.redemptions.table.unsigned.map(
+                      (row,index) =>
+                        <tr>
+                          <td>{row.rarity} - {row.quantity}</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
+                <table className="table-item">
+                  <thead>
+                    <tr>
+                      <th>Signed - Right To Buy</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pass.drop_num.description.points.redemptions.table.signed.map(
+                      (row,index) =>
+                        <tr>
+                          <td>{row.rarity} - {row.quantity}</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
+              </div>
+              </div>
               </div>
             </>
           )}

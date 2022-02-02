@@ -1,144 +1,124 @@
 .pass-detail-container {
-  padding: 0 1rem;
-
-  .pass-info{
-    font-size:2rem;
-    color:white;
-    text-align: center;
+ width: 100%;
+ padding: 1em 10%;
+ .pass-info-wrapper{
+  width: 100%;
+  display: flex;
+  padding: 3rem;
+  justify-content: center;
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    padding:1rem;
+    align-items: center;
   }
-
-
-  .pass-info-container {
-    margin-top: 5rem;
-    color: white;
-    background-color: #212121;
-    margin:2em 3em;
-    padding: 1rem 2rem;;   
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    place-items: center;
-    gap:1rem;
-    @media only screen and (max-width: 1060px) {  
-      display:flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+  video{
+    max-width: 600px;
+    height: auto;
+  }
+  .pass-detail-info{
+    width: 50%;
+    @media screen and (max-width: 1200px) {
+      width: 100%;
     }
-    video {
-      max-width: 360px;
-      border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 400px;
+    color: #fff;
+    h2{
+      text-align: center;
+      font-size: 1.5em;
     }
-    .pass-detail-info {
-      padding: 0 1rem;
-      background-color: #212121 ;
+    .buybox{
+      width: 100%;
       display: grid;
-      place-items: center;
-      h1{
-        font-size: 2em;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding:.75rem;
+      P{
+        font-size: 1.3rem;
+        font-weight: 300;
       }
-      .pass-detail-info{
-        display:grid;
-        place-items: center;
+      select{
+        color:#000;
+        background: #fff;
+        width: 70%;
+        padding:.25rem;
       }
-      .header-pass{
-        background:#383838 !important;
+      .buynow_button{
         width: 100%;
-        padding: 2rem;
-
-      }
-      .info-row {
-        margin-top: 0.5rem;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        gap: 1rem;
-        width: 100%;
-        span {
-          margin-left: 0.25rem;
-          color: #DC0000;
-        }
-      }
-      .crypto-nft{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-size: 2.2em;
-        text-align: center;
-        &-button-wrapper {
-          margin-top: 1rem;
-          display: flex;
-          button:first-child {
-            margin-right: 0.5rem;
+        .button-join-but{
+          background: #dc0000;
+          border: none;
+          color: #fff;
+          padding: .5rem;
+          font-size: 1.2rem;
+          font-weight: 300;
+          border-radius: .3em;
+          text-align: center;
+          transition: .3s ease-in-out;
+          cursor: pointer;
+          &:hover{
+            transform: scale(.95);
           }
         }
       }
-      .button-join {
-        z-index: 1;
-        display: inline-flex;
-        padding: 5px 20px;
-        background: #DC0000; 
-        cursor: pointer;
-        border-radius: 6px;
-        font-size: 22px;
-        font-weight: bold;
-      }   
-      .button-join:hover {
-        background: #b60101;
-        color: white;
+    }
+    .pass-description{
+      width: 100%;
+      padding: 2rem 1rem;
+      h2{
+        text-align: left;
+        margin-top: 1rem;
       }
+      ul{
+        padding:0rem 1.5rem 1rem 1.5rem;
+      }
+      p{
+        font-size: 1.2rem;
+      }
+    }
+  }
+ }
+}
 
-      .button-join-but{
-        width: 100%;
-        padding: 1rem;
-        text-align: center;
-        background: #DC0000 !important;
-        color: #fff;
-        border-radius: 6px;
-        transition: .3s ease-in-out;
-        font-size: 1.7rem;
-        font-weight: bold;
-        cursor: pointer;
-        &:hover{
-          background: #b60101 !important;
-          color: #fff;
-        }
+.line-description{
+  width: 100%;
+  background: #DC0000;
+  border: solid 3px #DC0000;
+  margin-block: 1rem;
+}
+.description-wrapper{
+  grid-column: 1/3;
+.description-passdetail{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  gap: 1rem 5%;
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    align-items: center;
+    gap:2rem 1rem;
+  }
+  .table-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    .table-item{
+      padding: .25rem;
+      width: 100%;
+      tr{
+        border:solid 2px white;
+        color:white;
       }
-
-      .buynow {
-        display: flex;
-        flex-direction: row;
-        margin-top: 0.5rem;
-        .link-join {
-          color: white;
-          text-decoration: none;
-        }
-        
+      th,td{
+        padding: .25rem;
       }
-      .buynow_disabled{
-        display: none;
-      }
-      .bottom-wrapper {
-        display: flex;
-        justify-content: space-between;
-      }
-      .grabbed-data{
-        z-index: 0;
+      td{
+        font-size: .9rem;
       }
     }
   }
 }
-
-.desc-fix{
-  position: relative;
-  width: 100%;
-  height: fit-content;
-  padding: 1rem;
-  color: #fff !important;
-  grid-column: 1/3;
-  @media screen and (max-width: 1060px) {
-    grid-column: none;
-  }
-  
 }

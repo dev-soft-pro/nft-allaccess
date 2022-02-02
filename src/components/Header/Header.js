@@ -14,11 +14,11 @@ import {
   Container,
 } from 'react-bootstrap'
 
-import redditIco from 'assets/images/social/reddit.png'
+import redditIco from 'assets/images/social/Reddit.png'
 import InstagramIco from 'assets/images/social/instagram.png'
 import TwitterIco from 'assets/images/social/twitter.png'
 import DiscordIco from 'assets/images/social/discord.png'
-import DiscordWhite from 'assets/images/social/discord-white.png'
+import DiscordWhite from 'assets/images/social/Discord-white.png'
 import EmptyProfile from 'assets/images/profile-empty-tiny.png'
 
 let styletag = "width:300px;height:50px; fill:#DC9000;";
@@ -91,9 +91,9 @@ function Header() {
             </Nav.Link>
             ))}
             <NavDropdown title="Resources" className="header-menu">
-              <NavDropdown.Item onClick={() => navigate("#")}>FAQ</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate(ROUTES.FAQ)}>FAQ</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate(ROUTES.ABOUT)}>About US</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => navigate("#")}>Contact US</NavDropdown.Item> 
+              <NavDropdown.Item onClick={() => navigate(ROUTES.CONTACT)}>Contact US</NavDropdown.Item> 
             </NavDropdown>
           </div>
           <div className="navbar-right">

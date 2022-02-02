@@ -22,11 +22,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Context, USDC_CONTRACT_ADDRESS, USDC_RECEIVE_ADDRESS } from 'Context';
 import abiJson from 'assets/usdc-abi.json'
-
+import Header from 'components/Header';
 import countries from 'assets/countries.json'
 import usProvinces from 'assets/provinces_us.json'
 import usCanada from 'assets/provinces_ca.json'
-
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
@@ -38,6 +37,7 @@ import Page from 'components/Page';
 import ConnectButton from 'components/Buttons/ConnectButton';
 
 function PassBuy() {
+  const { pass_id } = useParams();
   const provinces = {
     'US': usProvinces,
     'CA': usCanada,
@@ -76,7 +76,7 @@ function PassBuy() {
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [pass_id, setPassId] = useState('');
+  //const [pass_id, setPassId] = useState('');
   const [amount, setAmount] = useState(1);
   const [buyPassIds, setBuyPassIds] = useState([]);
 
@@ -448,7 +448,7 @@ function PassBuy() {
                     <div>
                     <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
                     <p className="nft_name">Total: ${amount * pass.price} ({amount} passes)</p>
-                    <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
+                    <video src={pass.image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
                     <Cards
                       cvc={cardInfo.cvc}
                       expiry={cardInfo.expiry}

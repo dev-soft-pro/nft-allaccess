@@ -20,6 +20,14 @@ import { drop } from 'lodash';
 
 function FillDropInfo(drop){
   let fillInfo = drop.description
+  
+
+
+  
+  
+  
+  
+  
   return
 }
 
@@ -68,17 +76,10 @@ function DropDetail() {
               <div className="drop-info-item">
                 <div className="drop-info-inner">
                     <div className="drop-image-container">
-                      <video muted={true} loop={true} autoPlay={true} src={drop.image} alt="drop-image"></video>
+                      <video playsInline={true} muted={true} loop={true} autoPlay={true} src={drop.image} alt="drop-image"></video>
                     </div>
                     <h2>{drop.edition}</h2>
                     <p>{drop.subdescription}</p>
-                    {cookies.isAuth == 'true' && pass && (
-                      <div className="buy-button-wrapper">
-                        <Link className="link-join" to={ROUTES.PASS_DETAIL.replace(':pass_id', pass.pass_id)}>
-                          <div className="button-join">Buy Pass</div>
-                        </Link>
-                      </div>
-                    )}
                 </div>
 
                 <div className="drop-info-inner">
@@ -151,7 +152,7 @@ function DropDetail() {
                   <ul className="bullets-item">
                   {
                     drop.description.points.bullets.map((bullet,index) =>
-                      <li key={`dpb-${index}`}>{bullet}</li>
+                      <li>{bullet}</li>
                     )    
                   }
                   </ul>
@@ -165,7 +166,7 @@ function DropDetail() {
                         <tbody>
                           {drop.description.points.table.unsigned.map(
                             (row,index) =>
-                              <tr key={`dptr-${index}`}>
+                              <tr>
                                 <td>{row.rarity} - {row.quantity}</td>
                               </tr>
                             )}
@@ -180,7 +181,7 @@ function DropDetail() {
                             <tbody>
                               {drop.description.points.table.signed.map(
                                 (row,index) =>
-                                  <tr key={`dptsr-${index}`}>
+                                  <tr>
                                     <td>{row.rarity} - {row.quantity}</td>
                                   </tr>
                               )}

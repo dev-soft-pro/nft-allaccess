@@ -127,64 +127,91 @@ function ProfileEdit() {
     }
   }, [profileImage])
 
+  // Toggle switch for displaying portfolio
+  const [isToggled, setIsToggled] = useState(false);
+  const onToggle = () => setIsToggled(!isToggled);
+
   return (
     <Page>
       <div className="profile-edit-container">
+
+        <div className="profile-image">
+          <img src={profileImageObj} alt="Profile Image" onClick={() => inputFile.current.click()}/>
+          {profileImage && (<Button mt={1} onClick={uploadPhoto}>Update Photo</Button>)}
+          <button onclick={uploadPhoto} className="change-image">
+            Change Profile Image
+          </button>
+        </div>
+
+        <div className="display-toggle">
+          <h2>Display My Collection</h2>
+          <label className="toggle-switch">
+            <input type="checkbox" checked={isToggled} onChange={onToggle} />
+            <span className="switch" />
+          </label>
+        </div>
+
         <div className="profile-edit-wrapper">
-          <div className="profile-image">
-            <img src={profileImageObj} alt="Profile Image" onClick={() => inputFile.current.click()}/>
-            {profileImage && (<Button mt={1} onClick={uploadPhoto}>Update Photo</Button>)}
+   
+          
+          
+          
+          <h3>Username</h3>
+          <div className="profile-edit-item">
+            <Input
+              type='file'
+              ref={inputFile}
+              style={{display: 'none'}}
+              onChange={(e) => setProfileImage(e.target.files[0])}/>
+            <InputGroup size='md' my={2}>
+              <Input
+                pr='4.5rem'
+                type='text'
+                placeholder='Enter Username'
+                textColor='black'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </InputGroup>
+            <Button className="profile-edit-button"onClick={updateUsername}>
+              Edit
+            </Button>
           </div>
-          <Input
-            type='file'
-            ref={inputFile}
-            style={{display: 'none'}}
-            onChange={(e) => setProfileImage(e.target.files[0])}/>
-          <InputGroup size='md' my={2}>
-            <Input
-              pr='4.5rem'
-              type='text'
-              placeholder='Enter Username'
-              textColor='white'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <InputRightElement width='4.5rem'>
-              <Button h='1.75rem' size='sm' onClick={updateUsername}>
-                Update
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-          <InputGroup size='md' my={2}>
-            <Input
-              pr='4.5rem'
-              type='email'
-              placeholder='Enter Email'
-              textColor='white'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <InputRightElement width='4.5rem'>
-              <Button h='1.75rem' size='sm' onClick={updateEmail}>
-                Update
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-          <InputGroup size='md' my={2}>
-            <Input
-              pr='4.5rem'
-              type='password'
-              placeholder='Enter Password'
-              textColor='white'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <InputRightElement width='4.5rem'>
-              <Button h='1.75rem' size='sm' onClick={updatePassword}>
-                Update
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+
+          <h3>Email Address</h3>
+          <div className="profile-edit-item">
+
+            <InputGroup size='md' my={2}>
+              <Input
+                pr='4.5rem'
+                type='email'
+                placeholder='Enter Email'
+                textColor='black'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </InputGroup>
+            <Button className="profile-edit-button"onClick={updateEmail}>
+              Edit
+            </Button>
+          </div>
+
+          <h3>Password</h3>
+          <div className="profile-edit-item">
+            <InputGroup size='md' my={2}>
+              <Input
+                pr='4.5rem'
+                type='password'
+                placeholder='Enter Password'
+                textColor='black'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </InputGroup>
+            <Button className="profile-edit-button"onClick={updatePassword}>
+              Change
+            </Button>
+          </div>
         </div>
       </div>
     </Page>

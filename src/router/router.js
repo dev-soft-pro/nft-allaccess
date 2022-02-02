@@ -12,6 +12,8 @@ import PassDetail from 'pages/PassDetail';
 import PassBuy from 'pages/PassBuy';
 import About from 'pages/About';
 import ProfileEdit from 'pages/ProfileEdit';
+import Faq from 'pages/Faq';
+import CONTACT from 'pages/Contact';
 
 function router() {
   return (
@@ -27,6 +29,8 @@ function router() {
         <Route path={ROUTES.PASS_BUY} element={<PassBuy />} />
         <Route path={ROUTES.ABOUT} element={<About />} />
         <Route path={ROUTES.PROFILE_PASS_DETAIL} element={<PassDetail />} />
+        <Route path={ROUTES.FAQ} element={<Faq />} />
+        <Route path={ROUTES.CONTACT} element={<CONTACT />} />
       </Routes>
     </BrowserRouter>
   )

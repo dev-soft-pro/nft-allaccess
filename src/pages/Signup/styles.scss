@@ -3,6 +3,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .link:hover{
+    color: #dc0000;
+  }
+
+
+
   .auth-panel-wrapper {
     background: linear-gradient(90deg,rgb(0,0,0) 0%,rgb(21,20,20) 50%,rgb(0,0,0) 100%);
     display: flex;
