@@ -46,6 +46,13 @@ function Header() {
     removeAuth();
     navigate(ROUTES.HOME, { replace: true });
   }
+  
+  const handlerSignIf = (id) =>{
+    if (cookies.isAuth == 'true' && cookies.userinfo){
+      return navigate(ROUTES.PASS_DETAIL.replace(':pass_id', id));
+    }
+    return navigate(ROUTES.REGISTER);
+  }
 
   return (
     <Navbar expand="lg" className="header-wrapper" variant="dark">
@@ -84,6 +91,7 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav" >
           <div className="navbar-left">
             {loading ? (<></>):(
+              
               passId.error ? (
                 <Nav.Link className="header-menu" onClick={()=>toast({
                   position: 'top',
@@ -96,11 +104,12 @@ function Header() {
                   Shop
                 </Nav.Link>
   
-              ): (
-                <Nav.Link className="header-menu" key={`pass-${passId.pass_id}`} href={`/pass/${passId.pass_id}`}>
+              ) : (
+                <Nav.Link className="header-menu" onClick={()=> handlerSignIf(passId.pass_id)} key={`pass-${passId.pass_id}`}>
                     Shop
                 </Nav.Link>
-              )
+                ) 
+                  
             )}
 
             <NavDropdown title="Resources" className="header-menu">
@@ -114,7 +123,7 @@ function Header() {
             <>
             
             <div className="social-section">
-              <a target="_blank" href="https:// discord.gg/allaccess" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
+              <a target="_blank" href="https://discord.gg/allaccess" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
               
               <div className="social-icons">
                 <a target="_blank" href="https://instagram.com/allaccessnft"><img src={InstagramIco} alt="Instagram"/></a>
@@ -141,7 +150,7 @@ function Header() {
           ) : (
             <>
             <div className="social-section">
-              <a target="_blank" href="https:// discord.gg/allaccess" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
+              <a target="_blank" href="https://discord.gg/allaccess" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
               
               <div className="social-icons">
                 <a target="_blank" href="https://instagram.com/allaccessnft"><img src={InstagramIco} alt="Instagram"/></a>

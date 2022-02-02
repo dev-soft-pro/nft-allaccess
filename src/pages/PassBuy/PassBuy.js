@@ -536,12 +536,12 @@ function PassBuy() {
             <ModalHeader>Successfully purchased</ModalHeader>
             <ModalBody>
               {pass && isRevealed && (
-                <video loop autoPlay={true} muted={true} playsInline={true}>
+                <video loop={true} autoPlay={true} muted={true} playsInline={true}>
                   <source src={pass.reveal_vid.reveal_vid} />
                 </video>
               )}
               {pass && !isRevealed && (
-                <video loop autoPlay={true} muted={true} playsInline={true}>
+                <video loop={true} autoPlay={true} muted={true} playsInline={true}>
                   <source src={pass.image.image} />
                 </video>
               )}

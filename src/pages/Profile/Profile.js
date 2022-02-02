@@ -12,7 +12,7 @@ import Page from 'components/Page';
 import moment from 'moment';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
-
+import { useToast } from '@chakra-ui/react';
 
 
 function Profile() {
@@ -22,6 +22,8 @@ function Profile() {
   const navigate = useNavigate();
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [passId, setPassId] = useState('');
+  const toast = useToast();
 
   const refreshToken = async () => {
     const response = await fetch(API.REFRESH, OPTIONS.POST({
@@ -36,17 +38,14 @@ function Profile() {
     const data = await response.json();
     return data;
   }
-  const consoleThis = (console) => {
-    alert(console);
-  }
-
-
-
 
   useEffect(() => {
     const init = async () => {
       const access_token = await refreshToken();
       const authPasses = await loadPassesCall(access_token);
+      const response = await fetch(API.PASS_ID, OPTIONS.GET);
+      const passId = await response.json();
+      setPassId(passId);
       setPassList(authPasses);
       setLoading(false);
     }
@@ -54,11 +53,19 @@ function Profile() {
   }, []);
 
   function handleClick(drop) {
-    navigate(ROUTES.DROP_DETAIL.replace(':drop_num', drop.drop_num));
+    if (passId.pass_id) {
+      return navigate(ROUTES.PROFILE_PASS_DETAIL.replace(':pass_id', passId.pass_id));
+    }
+    return toast({
+      position: 'top',
+      title: 'Error',
+      description: passId.error,
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
   }
 
-
-  
   return (
     <Page>
       <div className="profile-container">
