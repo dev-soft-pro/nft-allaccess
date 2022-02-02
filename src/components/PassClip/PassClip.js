@@ -36,7 +36,7 @@ function PassClip(props) {
         autoPlay={true}
         muted={true}
         playsInline={true}>
-        <source src={pass.image.image} />
+        <source src={pass.hidden_image.image} />
       </video>
     );
   } else if (step === 1) {
@@ -53,7 +53,15 @@ function PassClip(props) {
     )
   } else if (step === 2) {
     return (
-      <img src={pass.hidden_image.image} alt="hidden" />
+      <video
+        ref={videoRef}
+        loop={true}
+        playsInline={true}
+        autoPlay={true}
+        muted={true}
+        playsInline={true}>
+        <source src={pass.image.image} />
+      </video>
     )
   } else {
     return null

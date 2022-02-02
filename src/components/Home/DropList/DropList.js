@@ -85,7 +85,7 @@ function DropList() {
   ) : (
     <div className="slider-home-page">
       {drops.map(drop =>
-      <div className="drop-less-box">
+      <div className="drop-less-box" key={`drop-${drop.drop_num}`}>
         <video src={drop.image} autoPlay={true} playsInline={true} muted={true} loop={true} alt="nft" className="image-nft-drop"></video>
         <div className="buttons-wrapper">
           <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>

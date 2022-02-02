@@ -109,7 +109,7 @@ function PassBuy() {
 
   const releasePending = async (id, token) => {
     const response = await fetch(API.PASS_UNSET_PENDING, OPTIONS.POST_AUTH(
-      { pass_ids: pass_list.map(p => p.toString()) }, token
+      { pass_ids: buyPassIds.map(p => p.toString()) }, token
     ))
     const result = await response.json();
     return result;
@@ -262,7 +262,7 @@ function PassBuy() {
   const processFailure = async () => {
     updateLoadingStatus(false)
     const token = await refreshToken();
-    releasePending(pass_id, token);
+    await releasePending(pass_id, token);
     navigate(ROUTES.HOME, { replace: true });
   }
 

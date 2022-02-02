@@ -31,7 +31,7 @@ function PassDetail() {
   const [quantity, setQuantity] = useState(1);
   
   const detailFrom = useMemo(() => {
-    if (location.pathname.startsWith('profile')) {
+    if (location.pathname.startsWith('/profile')) {
       return 'profile';
     } else {
       return 'buy';
@@ -53,7 +53,7 @@ function PassDetail() {
         console.log(ex);
       }
     }
-  fetchDrop();
+    fetchDrop();
   }, [])
 
   const handleBuy = async () => {
@@ -76,8 +76,36 @@ function PassDetail() {
     return navigate(ROUTES.PASS_BUY);
   }
 
+  const loadAuthPasses = async (token) => {
+    const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(token));
+    const data = await response.json();
+    return data;
+  }
+
+  const handleRevealError = () => {
+    toast({
+      position: 'top',
+      title: 'Error',
+      description: "You are trying to reveal unauthorized pass",
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
+  }
+
   const handleReveal = async () => {
     const token = await refreshToken();
+    const authPasses = await loadAuthPasses(token)
+    if (authPasses) {
+      const exist = authPasses.findIndex(ap => ap.pass_id === pass.pass_id)
+      if (exist < 0) {
+        handleRevealError()
+        return;
+      }
+    } else {
+      handleRevealError()
+      return;
+    }
     const response = await fetch(API.REVEAL_PASS, OPTIONS.POST_AUTH({
       pass_id: pass.pass_id.toString(),
       drop_num: pass.drop_num.drop_num.toString()
@@ -134,7 +162,7 @@ function PassDetail() {
                         onChange={(e) => setQuantity(e.target.value)} >
                         {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
                         {createOptionQuantity(maxAmount).map(i => (
-                          <option value={i}>{i}</option>
+                          <option key={`quantity-option-${i}`} value={i}>{i}</option>
                         ))}
                       </select>
                       <div className="buynow_button">
@@ -186,7 +214,7 @@ function PassDetail() {
                   <tbody>
                     {pass.drop_num.description.rarities.table.unsigned.rows.map(
                       (row,index) =>
-                        <tr>
+                        <tr key={`ddrtur-${index}`}>
                           <td>{row.rarity} - {row.quantity}</td>
                         </tr>
                       )}
@@ -201,7 +229,7 @@ function PassDetail() {
                   <tbody>
                     {pass.drop_num.description.rarities.table.signed.rows.map(
                       (row,index) =>
-                        <tr>
+                        <tr key={`ddrtsr-${index}`}>
                           <td>{row.rarity} - {row.quantity}</td>
                         </tr>
                       )}
@@ -218,7 +246,7 @@ function PassDetail() {
                   <tbody>
                     {pass.drop_num.description.points.table.unsigned.map(
                       (row,index) =>
-                        <tr>
+                        <tr key={`ddptu-${index}`}>
                           <td>{row.rarity} - {row.quantity} Points</td>
                         </tr>
                       )}
@@ -233,7 +261,7 @@ function PassDetail() {
                   <tbody>
                     {pass.drop_num.description.points.table.signed.map(
                       (row,index) =>
-                        <tr>
+                        <tr key={`ddpts-${index}`}>
                           <td>{row.rarity} - {row.quantity} Points</td>
                         </tr>
                       )}
@@ -250,7 +278,7 @@ function PassDetail() {
                   <tbody>
                     {pass.drop_num.description.points.redemptions.table.unsigned.map(
                       (row,index) =>
-                        <tr>
+                        <tr key={`ddprtu-${index}`}>
                           <td>{row.rarity} - {row.quantity}</td>
                         </tr>
                       )}
@@ -265,7 +293,7 @@ function PassDetail() {
                   <tbody>
                     {pass.drop_num.description.points.redemptions.table.signed.map(
                       (row,index) =>
-                        <tr>
+                        <tr key={`ddprts-${index}`}>
                           <td>{row.rarity} - {row.quantity}</td>
                         </tr>
                       )}
