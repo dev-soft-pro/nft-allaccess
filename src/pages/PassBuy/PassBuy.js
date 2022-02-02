@@ -461,16 +461,36 @@ function PassBuy() {
                           onChange={(e) => setCardInfo(prev => ({...prev, city: e.target.value}))} />
                       </Form.Group>
                       <Form.Group className="mb-3">
-                        <Form.Control
-                          type="text"
-                          placeholder="District"
-                          onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))} />
+                        {(cardInfo.country == 'US' || cardInfo.country == 'CA') ? (
+                          <Form.Select
+                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
+                            value={cardInfo.district}>
+                            <option value="">Select District</option>
+                            {provinces[cardInfo.country].map(ct => 
+                              <option value={ct.value} key={`district-${ct.value}`}>{ct.text}</option>
+                            )}
+                          </Form.Select>
+                        ) : (
+                          <Form.Control
+                            type="text"
+                            placeholder="District"
+                            onChange={(e) => setCardInfo(prev => ({...prev, district: e.target.value}))}
+                            disabled={cardInfo.country == ''} />
+                        )}
                       </Form.Group>
                       <Form.Group className="mb-3">
-                        <Form.Control
-                          type="text"
-                          placeholder="Country Code"
-                          onChange={(e) => setCardInfo(prev => ({...prev, country: e.target.value}))} />
+                        <Form.Select
+                          aria-label="Default select example"
+                          onChange={(e) => setCardInfo(prev => ({
+                            ...prev,
+                            country: e.target.value,
+                            district: e.target.value == 'US' || e.target.value == 'US' ? '' : prev.district
+                          }))}>
+                          <option value="">Select Country</option>
+                          {countries.map(ct => 
+                            <option key={`country-${ct.value}`} value={ct.value}>{ct.text}</option>
+                          )}
+                        </Form.Select>
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Control

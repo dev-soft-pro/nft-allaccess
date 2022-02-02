@@ -55,6 +55,9 @@ function DropList() {
   } 
 
   const handlerBuyClick = () => {
+    if (cookies.isAuth === 'false') {
+      return navigate(ROUTES.REGISTER);
+    }
     if (passId.pass_id != undefined){
       let pass_id = passId.pass_id;
       return navigate(ROUTES.PASS_DETAIL.replace(':pass_id', pass_id));
