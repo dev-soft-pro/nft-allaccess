@@ -98,5 +98,9 @@
   } 
   .profile-bottom-collection-inner{
     width: 350px;
+    video{
+      width: 100%;
+      cursor: pointer;
+    }
   }
 }

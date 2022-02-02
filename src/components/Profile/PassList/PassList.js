@@ -70,7 +70,7 @@ function PassList(props) {
                   className="pass-wrapper"
                   onClick={() => navigate(ROUTES.PROFILE_PASS_DETAIL.replace(':pass_id', pass.pass_id))}>
                   <label>Pass ID: {pass.pass_id}</label>
-                  <video loop autoPlay={true} muted={true} playsInline={true}>
+                  <video muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
                     <source src={pass.revealed ? pass.reveal_vid.reveal_vid : pass.image.image} />
                   </video>
                 </div>

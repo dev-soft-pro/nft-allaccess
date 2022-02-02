@@ -13,7 +13,8 @@ import {
   ModalOverlay,
   ModalContent,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  ModalCloseButton
 } from '@chakra-ui/react'
 import { Form } from 'react-bootstrap'
 import Cards from 'react-credit-cards';
@@ -37,7 +38,6 @@ import Page from 'components/Page';
 import ConnectButton from 'components/Buttons/ConnectButton';
 
 function PassBuy() {
-  const { pass_id } = useParams();
   const provinces = {
     'US': usProvinces,
     'CA': usCanada,
@@ -70,14 +70,12 @@ function PassBuy() {
     email: ''
   })
 
-  //if (pass != undefined) {
-  //  console.log(pass);
-  //}
-
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
-  //const [pass_id, setPassId] = useState('');
+  const [isCard, setIsCard] = useState(false);
+  const [isCrypto, setIsCrypto] = useState(false);
+  const [pass_id, setPassId] = useState('');
   const [amount, setAmount] = useState(1);
   const [buyPassIds, setBuyPassIds] = useState([]);
 
@@ -339,6 +337,8 @@ function PassBuy() {
   const skipRevealPass = () => {
     navigate(ROUTES.PROFILE, {replace: true});
   }
+
+    
   
   return (
     <Page>
@@ -346,15 +346,64 @@ function PassBuy() {
         <div className="tab-wrapper">
           {loading ? (
             <Spinner color="white" />
-          ) : (
-            <Tabs>
-              <TabList>
-                <Tab>Card</Tab>
-                <Tab>Crypto</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
+          ) : ( 
+
+
+            
+            <div className="checkout-container">
+              <div className="checkout-top">
+                <div className="checkout-left">
+                  <video className="NFT" src={pass.image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
+                  <p>{pass.drop_num.edition}</p>
+                  <p>Recipient: {cookies.userinfo.username}</p>
+                  <p>Smart Contract: {pass.contract}</p>
+                </div>
+
+                <div className="checkout-right">
+                  <h1>Select Payment Method</h1>
+                  
+
+                  <Button className="white-button" onClick={() => setIsCard(true)}>Pay With New Credit Card</Button>
+                  <Button className="white-button" onClick={() => setIsCrypto(true)}> Pay With Cryptocurrency</Button>
+                  <hr/>
+                  <div className="price-box">
+                    {/* Double check the price math please */}
+                    <div className="total-price">
+                      <h2>Total ▽</h2>
+                      <h2>${amount * pass.price} ({amount} passes)</h2>
+                    </div>
+                    <div className="sub-total">
+                      <h3>Subtotal</h3>
+                      <h3>${amount * pass.price} ({amount} passes)</h3>
+                    </div>
+                    <div className="service-fee">
+                      <h3>Service Fee</h3>
+                      <h3>$0.00</h3>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              
+              <hr/>
+
+              <Button className="red-button">Continue</Button>
+
+
+
+
+              <Modal isOpen={isCard}>
+                <ModalOverlay />
+                <ModalContent className="card-modal">
                   <div className="card-wrapper">
+                  <Cards
+                      cvc={cardInfo.cvc}
+                      expiry={cardInfo.expiry}
+                      focused={focus}
+                      name={cardInfo.name}
+                      number={cardInfo.number}
+                    />
                     <Form className="input-wrapper">
                       <Form.Group className="mb-3">
                         <Form.Control
@@ -374,7 +423,7 @@ function PassBuy() {
                           onFocus={(e) => setFocus(e.target.name)} />
                       </Form.Group>
 
-                      <Form.Group className="mb-3 split">
+                      <Form.Group className="mb-3">
                         <Form.Control
                           type="tel"
                           name="expire"
@@ -382,6 +431,8 @@ function PassBuy() {
                           maxLength={5}
                           onChange={(e) => setCardInfo(prev => ({...prev, expiry: e.target.value.replace('/', '')}))}
                           onFocus={(e) => setFocus(e.target.name)} />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
                         <Form.Control
                           type="tel"
                           name="cvc"
@@ -434,39 +485,49 @@ function PassBuy() {
                           onChange={(e) => setCardInfo(prev => ({...prev, phone: e.target.value}))} />
                       </Form.Group>
 
-                      <Button colorScheme="red" type="submit" onClick={handleBuy}>
+                      
+                    </Form>
+                  </div>
+
+                    <div className="button-footer">
+                      <Button className="red-button" type="submit" onClick={handleBuy}>
                         Submit
                       </Button>
-                    </Form>
-                    <div>
-                    <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
-                    <p className="nft_name">Total: ${amount * pass.price} ({amount} passes)</p>
-                    <video src={pass.image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
-                    <Cards
-                      cvc={cardInfo.cvc}
-                      expiry={cardInfo.expiry}
-                      focused={focus}
-                      name={cardInfo.name}
-                      number={cardInfo.number}
-                    />
-                    </div>
-                  </div>
-                </TabPanel>
-                <TabPanel>
+
+                    <Button className="red-button" onClick={() => setIsCard(false)}>Close</Button>
+                    </div> 
+                </ModalContent>
+              </Modal>
+
+
+
+              <Modal isOpen={isCrypto}>
+                <ModalOverlay />
+              
+                <ModalContent className="crypto-modal">
+                <ModalHeader>Pay With Cryptocurrency</ModalHeader>
+                    
+                <ModalBody>
                   <div className="crypto-nft">
                     <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
                     <p className="nft_name">Total: ${amount * pass.price} ({amount} passes)</p>
-                    <video src={pass.image.image} muted={true} autoPlay={true} muted={true} alt="NFT"></video>
+                    <video src={pass.image.image} src={pass.image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
                     <div className="crypto-nft-button-wrapper">
                       <ConnectButton />
-                      <Button colorScheme="red" type="submit" onClick={handleCryptoBuy}>
-                        Pay Now
-                      </Button>
+                      <div className="button-footer">
+                        <Button className="red-button" type="submit" onClick={handleCryptoBuy}>
+                          Pay Now
+                        </Button>
+                        <Button className="red-button" onClick={() => setIsCrypto(false)}>Close</Button>
+                      </div>
                     </div>
                   </div>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+                </ModalBody>
+
+                </ModalContent>
+              </Modal>
+            </div>
+
           )}
         </div>
         <Modal isOpen={isFinished}>
@@ -488,11 +549,11 @@ function PassBuy() {
             <ModalFooter>
               {!isRevealed ? (
                 <>
-                  <Button colorScheme='red' mr={3} onClick={confirmRevealPass}>Reveal</Button>
-                  <Button variant='ghost' onClick={skipRevealPass}>Skip</Button>
+                  <Button className="red-button" mr={3} onClick={confirmRevealPass}>Reveal</Button>
+                  <Button variant='ghost' className="red-button" onClick={skipRevealPass}>Skip</Button>
                 </>
               ) : (
-                <Button variant='ghost' onClick={skipRevealPass}>Close</Button>
+                <Button variant='ghost' className="red-button" onClick={skipRevealPass}>Close</Button>
               )}
             </ModalFooter>
           </ModalContent>

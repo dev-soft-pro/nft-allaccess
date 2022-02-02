@@ -76,7 +76,7 @@ function DropDetail() {
               <div className="drop-info-item">
                 <div className="drop-info-inner">
                     <div className="drop-image-container">
-                      <video playsInline={true} muted={true} loop={true} autoPlay={true} src={drop.image} alt="drop-image"></video>
+                      <video muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false} src={drop.image} alt="drop-image"></video>
                     </div>
                     <h2>{drop.edition}</h2>
                     <p>{drop.subdescription}</p>

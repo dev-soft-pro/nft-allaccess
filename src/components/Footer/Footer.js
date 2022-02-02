@@ -15,7 +15,7 @@ function Footer() {
     
 
       <div className="footer-top">
-          <a href="https://discord.com" className="discord-footer">
+          <a href="https:// discord.gg/allaccess" className="discord-footer">
             <img src={discordIcon} alt='instagram' />
             Join Discord
           </a>
@@ -31,13 +31,13 @@ function Footer() {
         
 
         <div className="footer-social-right">
-          <a href="https://instagram.com">
+          <a href="https://instagram.com/allaccessnft">
             <img src={InstagramIcon} alt='instagram' />
           </a>
-          <a href="https://twitter.com">
+          <a href="https://twitter.com/allaccessnft">
             <img src={TwitterIcon} alt='twitter' />
           </a>
-          <a href="https://reddit.com">
+          <a href="https://www.reddit.com/r/AllAccessNFT/">
             <img src={redditIcon} alt='reddit' />
           </a>
         </div>

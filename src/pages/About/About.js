@@ -30,8 +30,8 @@ function About() {
             <div className="about-person">
                 <h2 className="person-title p-title-mobile">Anthony “Showtime” Pettis - MMA Legend | Co-Foundeer</h2>
                 <div className="about-person-image">
-                    <video className="person-video">
-                        <source src="https://storage.googleapis.com/all_access_nft_bucket/assets/An.%20ID%20.mp4" type="video/mp4"/>
+                    <video className="person-video" muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
+                        <source src={'https://storage.googleapis.com/all_access_nft_bucket/assets/An.%20ID%20.mp4'} type="video/mp4"/>
                     </video>
                     <h3>Anthony Pettis<br/>MMA Legend</h3>
                 </div>
@@ -57,8 +57,8 @@ function About() {
                 <div className="about-person-image">
                     <h2 className="person-title p-title-mobile">Leo Rodriguez – Chief Technology Officer | Co-Founder</h2>
                         
-                    <video className="person-video">
-                        <source src="https://storage.googleapis.com/all_access_nft_bucket/assets/Leo.mp4" type="video/mp4"/>
+                    <video className="person-video" muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
+                        <source src={"https://storage.googleapis.com/all_access_nft_bucket/assets/Leo.mp4"} type="video/mp4"/>
                     </video>
                     
                     <h3>Leo Rodriguez<br/>CTO</h3>
@@ -85,8 +85,8 @@ function About() {
                 <h2 className="person-title p-title-mobile">Altay Ertan – Chief Operating Officer | Co-Founder</h2>
                         
                 <div className="about-person-image">
-                    <video className="person-video">
-                        <source src="https://storage.googleapis.com/all_access_nft_bucket/assets/Altay.mp4" type="video/mp4"/>
+                    <video className="person-video" muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
+                        <source src={"https://storage.googleapis.com/all_access_nft_bucket/assets/Altay.mp4"} type="video/mp4"/>
                     </video>
                     <h3>Altay Ertan<br/>COO</h3>
                 </div>
@@ -112,8 +112,8 @@ function About() {
                 <h2 className="person-title p-title-mobile">Daniel Silva – Chief Experience Officer | Co-Founder</h2>
                         
                 <div className="about-person-image">
-                    <video className="person-video">
-                        <source src="https://storage.googleapis.com/all_access_nft_bucket/assets/Daniel.mp4" type="video/mp4"/>
+                    <video className="person-video" muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
+                        <source src={"https://storage.googleapis.com/all_access_nft_bucket/assets/Daniel.mp4"} type="video/mp4"/>
                     </video>
                     <h3>Daniel Silva<br/>CXO</h3>
                 </div>
@@ -139,8 +139,8 @@ function About() {
                 <h2 className="person-title p-title-mobile">Rahul Patel – Chief Financial Officer | Co-Founder</h2>
                         
                 <div className="about-person-image">
-                    <video className="person-video">
-                        <source src="https://storage.googleapis.com/all_access_nft_bucket/assets/Rahul.mp4" type="video/mp4"/>
+                    <video className="person-video" muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
+                        <source src={"https://storage.googleapis.com/all_access_nft_bucket/assets/Rahul.mp4"} type="video/mp4"/>
                     </video>
                     <h3>Rahul Patel<br/>CFO</h3>
                 </div>

@@ -44,10 +44,7 @@
           max-width: 360px;
         }
         .rccs {
-          margin: 0 1rem;
-          @media only screen and (max-width: 640px) { 
-            margin: 0 0 1rem 0;
-          }
+          margin: 2rem 1rem;
         }
         .input-wrapper {
           .split {
@@ -91,4 +88,140 @@
       }
     }
   }
+}
+
+.red-button{
+  color:white !important;
+  font-weight: bold !important;
+  background:#dc0000  !important;
+  padding: 0.5rem 2rem !important;
+  border-radius: 0.5rem  !important;
+  margin: 1rem 0  !important;
+  width:40% !important;
+}
+
+.red-button:hover{
+  background:#c00000  !important;
+}
+
+.rccs{
+  margin-bottom: 2rem;
+}
+.button-footer{
+  display: flex;
+   justify-content: space-evenly;
+}
+.checkout-container{
+  color: white;
+  background: #111111;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  padding:3rem 10%;
+  width: 100%;
+  max-width:1200px;
+  
+
+  h1{
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  hr{
+    margin: 1rem 0;
+  }
+
+  //stype buttons
+
+  .white-button{
+    color:black;
+    font-weight: bold;
+    background:white;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .white-button:hover{
+    background:#dc0000;
+    color:white;
+  }
+
+ 
+  .checkout-top{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .checkout-right{
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem; 
+  }
+
+  .checkout-left{
+    padding: 0 2rem;
+    width:40%;
+  }
+  
+ 
+    
+
+
+  .price-box{
+    width:60%;
+    h2{
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    h3{
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .total-price{
+      display:flex;
+      justify-content: space-between;
+    }
+    .sub-total{
+      display:flex;
+      justify-content: space-between;
+    }
+    .service-fee{
+      display:flex;
+      justify-content: space-between;
+    }
+  }
+ //mobile fix
+ @media screen and (max-width: 1116px) {
+   text-align: center;
+  .checkout-left{
+    width:100%;
+    padding:0;
+  }
+  .checkout-right{
+    width:100%;
+  }
+  .red-button{
+    width:100%;
+  }
+  .price-box{
+    width:100%;
+  }
+}
+}
+
+.card-modal{
+  background: #111111 !important;
+  padding: 3rem !important;
+  color:white !important;
+}
+
+.crypto-modal{
+  background: #111111 !important;
+  padding: 3rem !important;
+  color:white !important;
 }

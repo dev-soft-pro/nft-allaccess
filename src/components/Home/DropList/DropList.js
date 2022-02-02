@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -14,14 +14,14 @@ import 'swiper/css/effect-coverflow'
 
 import moment from 'moment';
 
-import TestImage from 'assets/images/test.jfif'
-
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
 import './styles.scss'
-import { Spinner, useControllableState } from '@chakra-ui/react';
+import { Context } from 'Context'
+import { Spinner, toast, useControllableState } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 SwiperCore.use([EffectCoverflow,Pagination]);
 
@@ -30,12 +30,20 @@ function DropList() {
 
   const [drops, setDrops] = useState();
   const [loading, setLoading] = useState(true);
+  const { cookies, walletState, setCart } = useContext(Context);
+  const [passId, setPassId] = useState();
+  const toast = useToast();
+
+
 
   useEffect(() => {
     const fetchDropList = async () => {
       const response = await fetch(API.DROP_LIST, OPTIONS.GET);
       const data = await response.json();
       setDrops(data);
+      const response1 = await fetch(API.PASS_ID, OPTIONS.GET);
+      const passId = await response1.json();
+      setPassId(passId);
       setLoading(false);
     }
     
@@ -45,10 +53,19 @@ function DropList() {
   const handleDropClick = (drop) => {
     navigate(ROUTES.DROP_DETAIL.replace(':drop_num', drop.drop_num));
   } 
- 
-  let tester = 0;
-  if (drops != undefined) {
-    tester++;
+
+  const handlerBuyClick = () => {
+    if (passId.pass_id != undefined){
+      let pass_id = passId.pass_id;
+      return navigate(ROUTES.PASS_DETAIL.replace(':pass_id', pass_id));
+    }
+    toast({
+      position: 'top',
+      title: 'Error',
+      description: passId.error,
+      status: 'error',
+      duration: 9000,
+      isClosable: true,})
   }
 
   const checkBuyingDate = (drop) => {
@@ -56,43 +73,13 @@ function DropList() {
     const startdropDate = moment(drop.presale_start);
     const enddropDate = moment(drop.presale_end);
     if (now.isBetween(startdropDate, enddropDate)) {
-      return "btn_carrousel_buy";
-    } else {
-      return "btn_carrousel_buy_disabled";
+      if (passId.pass_id != undefined){
+        return "btn_carrousel_buy";
+      }
     }
+    return "btn_carrousel_buy_disabled";
   }
-  if (tester > 3) {
-  return loading ? (
-    <Spinner color='white' />
-  ) : (
-    <Swiper
-      effect="coverflow"
-      grabCursor={true}
-      centeredSlides={true}
-      slidesPerView="auto"
-      coverflowEffect={{
-        rotate: 0,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: true,
-      }}
-      className="drop-swiper"
-      loop={true}
-    >
-    {drops.map(drop =>
-          <SwiperSlide >
-            <img src={drop.image} alt="nft" className="image-nft-drop" />
-            <div className="drop-desc">{drop.title}</div>
-            <div class="buttons-wrapper">
-              <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
-              {/* <a className={checkBuyingDate(drop)} href="#">Buy Now</a> */}
-            </div>
-          </SwiperSlide>
-      )}
-    </Swiper>
-  )
-}else{  
+
   return loading ? (
     <Spinner color='white' />
   ) : (
@@ -102,12 +89,12 @@ function DropList() {
         <video src={drop.image} autoPlay={true} playsInline={true} muted={true} loop={true} alt="nft" className="image-nft-drop"></video>
         <div className="buttons-wrapper">
           <a className="btn_carrousel" key={`drop-${drop.drop_num}`} onClick={() => handleDropClick(drop)}>Learn More</a>
-          {/* <a className={checkBuyingDate(drop)} href="#">Buy Now</a> */}
+          <a className={checkBuyingDate(drop)}  onClick={handlerBuyClick}>Buy Now</a> 
         </div>
       </div>)}
     </div>
+     
   )
-}
 }
 
 export default DropList;

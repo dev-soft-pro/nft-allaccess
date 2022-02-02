@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react'
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import './styles.scss'
+import { useToast } from '@chakra-ui/react';
+
+import ConnectButton from 'components/Buttons/ConnectButton';
 
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
@@ -15,21 +18,23 @@ import { Spinner } from '@chakra-ui/react';
 import { Context } from 'Context'
 
 function PassDetail() {
+  const toast = useToast();
   const { pass_id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { cookies, refreshToken } = useContext(Context);
+
+  const { cookies, walletState, setCart, refreshToken } = useContext(Context);
+  const [ maxAmount, setMaxAmount ] = useState(1);
 
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
-
+  
   const detailFrom = useMemo(() => {
-    if (location.pathname.startsWith('/profile')) {
-      return 'profile'
+    if (location.pathname.startsWith('profile')) {
+      return 'profile';
     } else {
-      return 'buy'
-    }
-  }, [location])
+      return;
+    }}, [location])
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -37,19 +42,46 @@ function PassDetail() {
         let response = await fetch(API.PASS_DETAIL.replace('$1', pass_id), OPTIONS.GET);
         let passData = await response.json();
         setPass(passData);
+
+        response = await fetch(API.PASS_NUM_AVAILABLE, OPTIONS.POST({drop_num:passData.drop_num.drop_num}));
+        let max = await response.json();
+        setMaxAmount(max.max_available);
+
         setLoading(false);
       } catch (ex) {
         console.log(ex);
       }
     }
-    fetchDrop();
+  fetchDrop();
   }, [])
   if (pass != undefined) {
     console.log(pass);
   }
 
+
+  if (pass != undefined) {
+    console.log(pass);
+  }
+
   const handleBuy = async () => {
-    navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
+    let quantity = document.getElementById("select-quantity").value;
+    let pass_id = pass.pass_id;
+    if (quantity == 0) {
+      toast({
+        position: 'top',
+        title: 'Error',
+        description: "No Pass Availible",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+      return;
+    }
+    setCart({
+      pass_id: pass_id,
+      amount: quantity
+    })
+    return navigate(ROUTES.PASS_BUY);
   }
 
   const handleReveal = async () => {
@@ -62,17 +94,25 @@ function PassDetail() {
     setPass(prev => ({...prev, revealed: 1}))
   }
 
-  //add ifsold variable here "true or false"
-  function checkIfSoldOut(ifsold){
-    if(!ifsold){
-      return "buynow_button_disabled";
+  function buyButtomResponse(quantity){
+    if (quantity == 0) {
+      return toast({position: 'top',
+      title: 'Error',
+      description: "There currently are not any passes available for purchase. Please check back later.",
+      status: 'error',
+      duration: 9000,
+      isClosable: true,})
     }
-    return "buynow_button";
+    return handleBuy();
   }
+
   function createOptionQuantity(quantity){
     let options = [];
-    for(let i = 0; i < quantity+1; i++){
-      options.push(i)
+    if (quantity == 0) {
+      return [0];
+    }
+    for(let i = 1; i < quantity+1; i++){
+      options.push(i);
     }
     return options;
   }
@@ -91,18 +131,17 @@ function PassDetail() {
                 <div className="header-pass">
                   <h2>{pass.drop_num.edition}</h2>
                   <hr className="line-description"/>
-                  
                   {detailFrom === 'buy' && (
                     <div className="buybox">
                       <p>Price:<span>${pass.price}</span></p>
-                      <select>
+                      <select id="select-quantity">
                         {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
-                        {createOptionQuantity(20).map(i => (
-                          <option key={i} value={i}>{i}</option>
+                        {createOptionQuantity(maxAmount).map(i => (
+                          <option value={i}>{i}</option>
                         ))}
                       </select>
-                      <div className={checkIfSoldOut(true)}>
-                        <div className="info-row" onClick={handleBuy}>
+                      <div className="buynow_button">
+                        <div className="info-row"  onClick={() => buyButtomResponse(maxAmount)}>
                           <div className="button-join-but">Buy Pass</div>
                         </div>
                       </div>

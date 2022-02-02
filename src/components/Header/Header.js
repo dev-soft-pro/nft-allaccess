@@ -4,7 +4,9 @@ import './styles.scss'
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
 import * as API from 'constants/api';
-import * as OPTIONS from 'services/options';
+import * as OPTIONS from 'services/options'
+
+import { useToast } from '@chakra-ui/react';
 import { Context } from 'Context'
 
 import {
@@ -21,34 +23,30 @@ import DiscordIco from 'assets/images/social/discord.png'
 import DiscordWhite from 'assets/images/social/Discord-white.png'
 import EmptyProfile from 'assets/images/profile-empty-tiny.png'
 
-let styletag = "width:300px;height:50px; fill:#DC9000;";
-
 function Header() {
 
   const { cookies, removeAuth } = useContext(Context);
   const navigate = useNavigate();
-  const [drops, setDrops] = useState();
+  const [passId, setPassIdHeader] = useState();
   const [loading, setLoading] = useState(true);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchDropList = async () => {
-      const response = await fetch(API.DROP_LIST, OPTIONS.GET);
+      const response = await fetch(API.PASS_ID, OPTIONS.GET);
       const data = await response.json();
-      setDrops(data);
+      setPassIdHeader(data);
       setLoading(false);
     }
     
     fetchDropList();
   }, [])
+
   const handleLogout = () => {
     removeAuth();
     navigate(ROUTES.HOME, { replace: true });
   }
-  var checkDrops;
-  if (drops != undefined) {
-    checkDrops = drops;
-  }
-  if (drops != undefined) {
+
   return (
     <Navbar expand="lg" className="header-wrapper" variant="dark">
         <Navbar.Brand onClick={() => navigate(ROUTES.HOME)}>
@@ -85,11 +83,26 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" >
           <div className="navbar-left">
-            {checkDrops.map(drop => (
-            <Nav.Link className="header-menu" key={`pass-${drop.drop_num}`} href={`/pass/${drop.drop_num}`}>
-              Shop
-            </Nav.Link>
-            ))}
+            {loading ? (<></>):(
+              passId.error ? (
+                <Nav.Link className="header-menu" onClick={()=>toast({
+                  position: 'top',
+                  title: 'Error',
+                  description: passId.error,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                })}>
+                  Shop
+                </Nav.Link>
+  
+              ): (
+                <Nav.Link className="header-menu" key={`pass-${passId.pass_id}`} href={`/pass/${passId.pass_id}`}>
+                    Shop
+                </Nav.Link>
+              )
+            )}
+
             <NavDropdown title="Resources" className="header-menu">
               <NavDropdown.Item onClick={() => navigate(ROUTES.FAQ)}>FAQ</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate(ROUTES.ABOUT)}>About US</NavDropdown.Item>
@@ -101,12 +114,12 @@ function Header() {
             <>
             
             <div className="social-section">
-              <a target="_blank" href="#" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
+              <a target="_blank" href="https:// discord.gg/allaccess" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
               
               <div className="social-icons">
-                <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
-                <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
-                <a target="_blank" href="#"><img src={redditIco} alt="reddit"/></a>
+                <a target="_blank" href="https://instagram.com/allaccessnft"><img src={InstagramIco} alt="Instagram"/></a>
+                <a target="_blank" href="https://twitter.com/allaccessnft"><img src={TwitterIco} alt="Twitter"/></a>
+                <a target="_blank" href="https://www.reddit.com/r/AllAccessNFT/"><img src={redditIco} alt="reddit"/></a>
                 
               </div>
             </div>
@@ -128,12 +141,12 @@ function Header() {
           ) : (
             <>
             <div className="social-section">
-              <a target="_blank" href="#" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
+              <a target="_blank" href="https:// discord.gg/allaccess" className="discord-button"><img src={DiscordWhite} alt="Discord"/>Join Discord</a>
               
               <div className="social-icons">
-                <a target="_blank" href="#"><img src={InstagramIco} alt="Instagram"/></a>
-                <a target="_blank" href="#"><img src={TwitterIco} alt="Twitter"/></a>
-                <a target="_blank" href="#"><img src={redditIco} alt="reddit"/></a>
+                <a target="_blank" href="https://instagram.com/allaccessnft"><img src={InstagramIco} alt="Instagram"/></a>
+                <a target="_blank" href="https://twitter.com/allaccessnft"><img src={TwitterIco} alt="Twitter"/></a>
+                <a target="_blank" href="https://www.reddit.com/r/AllAccessNFT/"><img src={redditIco} alt="reddit"/></a>
                 
               </div>
             </div>
@@ -154,11 +167,6 @@ function Header() {
         
     </Navbar>
   )
-}else{
-  return (
-    <div></div>
-  )
-}
 }
 
 export default Header;

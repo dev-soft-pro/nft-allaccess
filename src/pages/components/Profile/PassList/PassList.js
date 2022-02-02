@@ -48,8 +48,11 @@ function PassList(props) {
       setLoading(false);
     }
     init();
+    
   }, []);
 
+
+  console.log(passlist);
   return (
     <div className="pass-list">
       <label className="title">All Access Pass</label>
@@ -62,7 +65,7 @@ function PassList(props) {
           {passlist.map(pass =>
             <SwiperSlide key={`pass-${pass.pass_id}`}>
               <div className="pass-wrapper">
-                <video loop autoPlay>
+                <video muted={true} loop={true} autoPlay={true} playsInLine={true} controls={false}>
                   <source src={pass.image.image} />
                 </video>
                 <label>Pass ID: {pass.pass_id}</label>

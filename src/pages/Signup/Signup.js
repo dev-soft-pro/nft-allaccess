@@ -50,6 +50,7 @@ function Signup() {
       formData.append('username', username);
       formData.append('email', email);
       formData.append('password', password);
+      formData.append('passwordV', passwordV);
       const response = await fetch(API.REGISTER, OPTIONS.POST_FORM_DATA(formData));
       const data = await response.json();
       if (response.status === 201) {
@@ -82,7 +83,7 @@ function Signup() {
        });
        return;
      }
-    joinRequest(username, email, password);
+    joinRequest(username, email, password, passwordV);
   }
 
   const responseGoogle = async (res) => {
@@ -120,19 +121,13 @@ function Signup() {
                   type="password"
                   onChange={(e) => setPassword(e.target.value)} />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Group className="mb-3" controlId="formBasicPasswordv">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   type="password"
-                  onChange={(e) => setPasswordv(e.target.value)} />
+                  onChange={(e) => setPasswordV(e.target.value)} />
               </Form.Group>
               
-
-
-
-
-
-
             </Form>
             <p>OR</p>
             <div className="button-wrapper">
