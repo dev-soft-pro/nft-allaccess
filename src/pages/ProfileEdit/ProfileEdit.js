@@ -93,7 +93,7 @@ function ProfileEdit() {
       method: 'POST',
       body: formData,
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
         'Authorization': `Bearer ${token}`
       }
     })
@@ -129,10 +129,11 @@ function ProfileEdit() {
 
         <div className="profile-image">
           <img src={profileImageObj} alt="Profile Image" onClick={() => inputFile.current.click()}/>
-          {profileImage && (<Button mt={1} onClick={uploadPhoto}>Update Photo</Button>)}
-          <button onclick={uploadPhoto} className="change-image">
-            Change Profile Image
-          </button>
+          {profileImage && (
+            <button onClick={uploadPhoto} className="change-image">
+              Change Profile Image
+            </button>
+          )}
         </div>
 
         <div className="display-toggle">
