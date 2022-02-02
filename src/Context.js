@@ -121,7 +121,7 @@ const Provider = ({ children }) => {
 
       await web3Modal.clearCachedProvider();
       setWalletState(() => (initialState));
-      window.location.reload();
+      // window.location.reload();
     } catch(error) {}
   },[walletState.provider]);
 

@@ -16,14 +16,10 @@ import { useToast } from '@chakra-ui/react';
 
 
 function Profile() {
-  const { buyPassCrypto } = useContext(Context)
   const { cookies } = useContext(Context)
-  const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
   const navigate = useNavigate();
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [passId, setPassId] = useState('');
-  const toast = useToast();
 
   const refreshToken = async () => {
     const response = await fetch(API.REFRESH, OPTIONS.POST({
@@ -43,27 +39,16 @@ function Profile() {
     const init = async () => {
       const access_token = await refreshToken();
       const authPasses = await loadPassesCall(access_token);
-      const response = await fetch(API.PASS_ID, OPTIONS.GET);
-      const passId = await response.json();
-      setPassId(passId);
       setPassList(authPasses);
       setLoading(false);
     }
     init();
   }, []);
 
-  function handleClick(drop) {
-    if (passId.pass_id) {
-      return navigate(ROUTES.PROFILE_PASS_DETAIL.replace(':pass_id', passId.pass_id));
+  function handleClick(pass_id) {
+    if (pass_id) {
+      return navigate(ROUTES.PROFILE_PASS_DETAIL.replace(':pass_id', pass_id));
     }
-    return toast({
-      position: 'top',
-      title: 'Error',
-      description: passId.error,
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    })
   }
 
   return (
@@ -96,7 +81,7 @@ function Profile() {
           </div>
           <div className="profile-bottom-collection">
             { loading ? (<></>) : (passlist.map((pass, index) =>
-              <div onClick={() => handleClick(pass.drop_num)} key={index} className="profile-bottom-collection-inner">
+              <div onClick={() => handleClick(pass.pass_id)} key={index} className="profile-bottom-collection-inner">
                 <h3>{pass.drop_num.edition}</h3>
                 <video muted={true} controls={false} playsInline={true} autoPlay={true} loop={true}>
                   <source src={pass.drop_num.image} type="video/mp4" />
