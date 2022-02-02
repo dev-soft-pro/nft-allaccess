@@ -15,7 +15,7 @@ import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 
 function ProfileEdit() {
-  const { cookies, updateLoadingStatus } = useContext(Context)
+  const { cookies, updateLoadingStatus, refreshToken } = useContext(Context)
   const toast = useToast()
 
   const [username, setUsername] = useState('')
@@ -29,14 +29,6 @@ function ProfileEdit() {
       setEmail(cookies.userinfo.email)
     }
   }, [cookies])
-
-  const refreshToken = async () => {
-    const response = await fetch(API.REFRESH, OPTIONS.POST({
-      refresh: cookies.refresh_token
-    }))
-    const data = await response.json();
-    return data.access;
-  }
 
   const updateUsername = async () => {
     updateLoadingStatus(true);

@@ -49,7 +49,8 @@ function PassBuy() {
     walletState,
     connectWallet,
     updateLoadingStatus,
-    clearCart
+    clearCart,
+    refreshToken
   } = useContext(Context);
   const toast = useToast();
 
@@ -79,14 +80,6 @@ function PassBuy() {
   //const [pass_id, setPassId] = useState('');
   const [amount, setAmount] = useState(1);
   const [buyPassIds, setBuyPassIds] = useState([]);
-
-  const refreshToken = async () => {
-    const response = await fetch(API.REFRESH, OPTIONS.POST({
-      refresh: cookies.refresh_token
-    }))
-    const data = await response.json();
-    return data.access;
-  }
 
   const fetchDrop = async (id) => {
     try {

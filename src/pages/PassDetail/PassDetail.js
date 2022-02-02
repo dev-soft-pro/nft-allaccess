@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useContext, useMemo, useRef } from 'react'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import './styles.scss'
 
 import * as ROUTES from 'constants/routes';
@@ -8,6 +8,7 @@ import * as OPTIONS from 'services/options';
 import { RARITY_TITLES } from 'constants/rarity';
 
 import Page from 'components/Page'
+import PassClip from 'components/PassClip';
 
 import moment from 'moment';
 import { Spinner } from '@chakra-ui/react';
@@ -16,10 +17,19 @@ import { Context } from 'Context'
 function PassDetail() {
   const { pass_id } = useParams();
   const navigate = useNavigate();
-  const { cookies } = useContext(Context);
+  const location = useLocation();
+  const { cookies, refreshToken } = useContext(Context);
 
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
+
+  const detailFrom = useMemo(() => {
+    if (location.pathname.startsWith('/profile')) {
+      return 'profile'
+    } else {
+      return 'buy'
+    }
+  }, [location])
 
   useEffect(() => {
     const fetchDrop = async () => {
@@ -41,6 +51,17 @@ function PassDetail() {
   const handleBuy = async () => {
     navigate(ROUTES.PASS_BUY.replace(':pass_id', pass.pass_id))
   }
+
+  const handleReveal = async () => {
+    const token = await refreshToken();
+    const response = await fetch(API.REVEAL_PASS, OPTIONS.POST_AUTH({
+      pass_id: pass.pass_id.toString(),
+      drop_num: pass.drop_num.drop_num.toString()
+    }, token));
+    const data = await response.json();
+    setPass(prev => ({...prev, revealed: 1}))
+  }
+
   //add ifsold variable here "true or false"
   function checkIfSoldOut(ifsold){
     if(!ifsold){
@@ -65,32 +86,33 @@ function PassDetail() {
           ) : (
             <>
             <div className="pass-info-wrapper">
-              <video loop={true} playsInline={true} autoPlay={true} muted={true} playsInline={true}>
-                {pass.revealed == 0 ? (
-                  <source src={pass.image.image} />
-                ) : (
-                  <source src={pass.reveal_vid.reveal_vid} />
-                )}
-              </video>
+              <PassClip pass={pass} />
               <div className="pass-detail-info">
                 <div className="header-pass">
                   <h2>{pass.drop_num.edition}</h2>
                   <hr className="line-description"/>
                   
-                  <div className="buybox">
-                    <p>Price:<span>${pass.price}</span></p>
-                    <select>
-                      {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
-                      {createOptionQuantity(20).map(i => (
-                        <option key={i} value={i}>{i}</option>
-                      ))}
-                    </select>
-                    <div className={checkIfSoldOut(true)}>
-                      <div className="info-row" onClick={handleBuy}>
-                        <div className="button-join-but">Buy Pass</div>
+                  {detailFrom === 'buy' && (
+                    <div className="buybox">
+                      <p>Price:<span>${pass.price}</span></p>
+                      <select>
+                        {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
+                        {createOptionQuantity(20).map(i => (
+                          <option key={i} value={i}>{i}</option>
+                        ))}
+                      </select>
+                      <div className={checkIfSoldOut(true)}>
+                        <div className="info-row" onClick={handleBuy}>
+                          <div className="button-join-but">Buy Pass</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+                  {pass.revealed === 0 && (
+                    <div className="revealbox" onClick={handleReveal}>
+                      <div className="button-reveal">Reveal</div>
+                    </div>
+                  )}
                   <div className="pass-description">
                     <p>Team Pettis Case can be opened to reveal a Team Pettis Collectible Pass</p>
                     <h2>Rewards:</h2>

@@ -8,7 +8,9 @@ import Web3 from "web3";
 
 export const Context = createContext()
 import abiJson from 'assets/usdc-abi.json'
-// import abiJson from 'assets/matic-abi.json'
+
+import * as API from 'constants/api';
+import * as OPTIONS from 'services/options';
 
 export const USDC_CONTRACT_ADDRESS = '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e'
 export const USDC_RECEIVE_ADDRESS = '0x5AAD2BB0762D13C04D11176bbCb834aEdaF26021'
@@ -189,6 +191,13 @@ const Provider = ({ children }) => {
     clearCart: () => {
       removeCookies('cartinfo', { path: '/' })
     },
+    refreshToken: async () => {
+      const response = await fetch(API.REFRESH, OPTIONS.POST({
+        refresh: cookies.refresh_token
+      }))
+      const data = await response.json();
+      return data.access;
+    }
   }
 
   return (

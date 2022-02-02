@@ -22,19 +22,11 @@ import E6 from 'assets/placeholder/e6.png'
 
 function Profile() {
   const { buyPassCrypto } = useContext(Context)
-  const { cookies } = useContext(Context)
+  const { cookies, refreshToken } = useContext(Context)
   const formatDate = (date) => moment(date).format('MM/DD/YYYY HH:mm:ss')
 
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const refreshToken = async () => {
-    const response = await fetch(API.REFRESH, OPTIONS.POST({
-      refresh: cookies.refresh_token
-    }))
-    const data = await response.json();
-    return data.access;
-  }
 
   const loadPassesCall = async (token) => {
     const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(token));

@@ -29,18 +29,10 @@ const override = css`
 SwiperCore.use([EffectCoverflow,Pagination]);
 
 function PassList(props) {
-  const { cookies, updateAuthToken } = useContext(Context);
+  const { cookies, updateAuthToken, refreshToken } = useContext(Context);
 
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const refreshToken = async () => {
-    const response = await fetch(API.REFRESH, OPTIONS.POST({
-      refresh: cookies.refresh_token
-    }))
-    const data = await response.json();
-    return data.access;
-  }
 
   const loadPassesCall = async (token) => {
     const response = await fetch(API.AUTH_PASS, OPTIONS.GET_AUTH(token));
