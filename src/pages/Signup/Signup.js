@@ -94,7 +94,7 @@ function Signup() {
   }
 
   return (
-    <Page>
+    <Page checkLocation>
       <div className="signup-container">
         <div className="auth-panel-wrapper">
           <div className="auth-panel">

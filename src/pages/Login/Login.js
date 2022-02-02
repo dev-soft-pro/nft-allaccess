@@ -72,7 +72,7 @@ function Login() {
   }
 
   return (
-    <Page>
+    <Page checkLocation>
       <div className="auth-container">
         <div className="auth-panel-wrapper">
           <div className="auth-panel">

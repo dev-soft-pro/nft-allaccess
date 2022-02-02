@@ -15,19 +15,8 @@ import Page from 'components/Page';
 import background_image from 'assets/images/Roadmap-background.png'
 import { drop } from 'lodash';
 
-
-
-
 function FillDropInfo(drop){
   let fillInfo = drop.description
-  
-
-
-  
-  
-  
-  
-  
   return
 }
 
@@ -88,7 +77,7 @@ function DropDetail() {
                   {
                       drop.description.how_much.bullets.map((bullet,index) =>
                           <li>{bullet}</li>
-                      )     
+                      )
                   }
                   </ul>
                   <hr className="white-line"/>

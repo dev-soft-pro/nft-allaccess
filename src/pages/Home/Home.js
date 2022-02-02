@@ -20,7 +20,7 @@ function Home() {
   const { cookies, removeAuth } = useContext(Context);
 
   return (
-    <Page>
+    <Page checkLocation>
       <div className="home-container">
         <DropList />  
         <div className="new-background">

@@ -341,7 +341,7 @@ function PassBuy() {
     
   
   return (
-    <Page>
+    <Page checkLocation>
       <div className="buy-detail-container">
         <div className="tab-wrapper">
           {loading ? (

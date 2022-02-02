@@ -28,12 +28,13 @@ function PassDetail() {
 
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
   
   const detailFrom = useMemo(() => {
     if (location.pathname.startsWith('profile')) {
       return 'profile';
     } else {
-      return;
+      return 'buy';
     }}, [location])
 
   useEffect(() => {
@@ -54,17 +55,8 @@ function PassDetail() {
     }
   fetchDrop();
   }, [])
-  if (pass != undefined) {
-    console.log(pass);
-  }
-
-
-  if (pass != undefined) {
-    console.log(pass);
-  }
 
   const handleBuy = async () => {
-    let quantity = document.getElementById("select-quantity").value;
     let pass_id = pass.pass_id;
     if (quantity == 0) {
       toast({
@@ -94,14 +86,16 @@ function PassDetail() {
     setPass(prev => ({...prev, revealed: 1}))
   }
 
-  function buyButtomResponse(quantity){
+  function buyButtonResponse(){
     if (quantity == 0) {
-      return toast({position: 'top',
-      title: 'Error',
-      description: "There currently are not any passes available for purchase. Please check back later.",
-      status: 'error',
-      duration: 9000,
-      isClosable: true,})
+      return toast({
+        position: 'top',
+        title: 'Error',
+        description: "There currently are not any passes available for purchase. Please check back later.",
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      })
     }
     return handleBuy();
   }
@@ -134,20 +128,23 @@ function PassDetail() {
                   {detailFrom === 'buy' && (
                     <div className="buybox">
                       <p>Price:<span>${pass.price}</span></p>
-                      <select id="select-quantity">
+                      <select
+                        id="select-quantity"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)} >
                         {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
                         {createOptionQuantity(maxAmount).map(i => (
                           <option value={i}>{i}</option>
                         ))}
                       </select>
                       <div className="buynow_button">
-                        <div className="info-row"  onClick={() => buyButtomResponse(maxAmount)}>
+                        <div className="info-row"  onClick={() => buyButtonResponse()}>
                           <div className="button-join-but">Buy Pass</div>
                         </div>
                       </div>
                     </div>
                   )}
-                  {pass.revealed === 0 && (
+                  {detailFrom === 'profile' && pass.revealed === 0 && (
                     <div className="revealbox" onClick={handleReveal}>
                       <div className="button-reveal">Reveal</div>
                     </div>
