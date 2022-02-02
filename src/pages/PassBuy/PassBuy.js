@@ -353,7 +353,7 @@ function PassBuy() {
             <div className="checkout-container">
               <div className="checkout-top">
                 <div className="checkout-left">
-                  <video className="NFT" src={pass.image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
+                  <video className="NFT" src={pass.hidden_image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
                   <p>{pass.drop_num.edition}</p>
                   <p>Recipient: {cookies.userinfo.username}</p>
                   <p>Smart Contract: {pass.contract}</p>

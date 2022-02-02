@@ -29,6 +29,7 @@ function PassDetail() {
   const [pass, setPass] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [whitelistCode, setWhiteListCode] = useState('')
   
   const detailFrom = useMemo(() => {
     if (location.pathname.startsWith('/profile')) {
@@ -114,6 +115,15 @@ function PassDetail() {
     setPass(prev => ({...prev, revealed: 1}))
   }
 
+  const handleWLCode = async() => {
+    const token = await refreshToken();
+    const response = await fetch(API.USE_WHITELIST_CODE, OPTIONS.POST_AUTH({
+      code: whitelistCode,
+      drop_num: pass.drop_num.drop_num
+    }, token))
+    const data = await response.json();
+  }
+
   function buyButtonResponse(){
     if (quantity == 0) {
       return toast({
@@ -154,23 +164,38 @@ function PassDetail() {
                   <h2>{pass.drop_num.edition}</h2>
                   <hr className="line-description"/>
                   {detailFrom === 'buy' && (
-                    <div className="buybox">
-                      <p>Price:<span>${pass.price}</span></p>
-                      <select
-                        id="select-quantity"
-                        value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)} >
-                        {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
-                        {createOptionQuantity(maxAmount).map(i => (
-                          <option key={`quantity-option-${i}`} value={i}>{i}</option>
-                        ))}
-                      </select>
-                      <div className="buynow_button">
-                        <div className="info-row"  onClick={() => buyButtonResponse()}>
-                          <div className="button-join-but">Buy Pass</div>
+                    <>
+                      <div className="buybox">
+                        <p>Whitelist</p>
+                        <input
+                          type="text"
+                          className="whitelist-input"
+                          value={whitelistCode}
+                          onChange={e => setWhiteListCode(e.target.value)} />
+                        <div className="buynow_button">
+                          <div className="info-row" >
+                            <div className="button-join-but" onClick={handleWLCode}>Submit</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                      <div className="buybox">
+                        <p>Price:<span>${pass.price}</span></p>
+                        <select
+                          id="select-quantity"
+                          value={quantity}
+                          onChange={(e) => setQuantity(e.target.value)} >
+                          {/* createOptionQuantity(ProductQuantity) it will map whatever quantity a client can buy*/}
+                          {createOptionQuantity(maxAmount).map(i => (
+                            <option key={`quantity-option-${i}`} value={i}>{i}</option>
+                          ))}
+                        </select>
+                        <div className="buynow_button">
+                          <div className="info-row"  onClick={() => buyButtonResponse()}>
+                            <div className="button-join-but">Buy Pass</div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
                   )}
                   {detailFrom === 'profile' && pass.revealed === 0 && (
                     <div className="revealbox" onClick={handleReveal}>

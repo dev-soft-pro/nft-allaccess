@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import {useNavigate} from 'react-router-dom'
 import './styles.scss';
 import * as ROUTES from 'constants/routes';
@@ -13,13 +13,15 @@ import moment from 'moment';
 import * as API from 'constants/api';
 import * as OPTIONS from 'services/options';
 import { useToast } from '@chakra-ui/react';
-
+import { Select } from '@chakra-ui/react'
+import { RARITY_TITLES } from 'constants/rarity';
 
 function Profile() {
   const { cookies } = useContext(Context)
   const navigate = useNavigate();
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [orderBy, setOrderBy] = useState('rarity')
 
   const refreshToken = async () => {
     const response = await fetch(API.REFRESH, OPTIONS.POST({
@@ -34,6 +36,16 @@ function Profile() {
     const data = await response.json();
     return data;
   }
+
+  const sortedPasses = useMemo(() => {
+    if (orderBy === 'rarity') {
+      let sPasses = [...passlist];
+      sPasses.sort((a, b) => a.rarity - b.rarity);
+      return sPasses;
+    } else {
+      return passlist
+    }
+  }, [passlist])
 
   useEffect(() => {
     const init = async () => {
@@ -77,12 +89,20 @@ function Profile() {
         <div className="profile-bottom">
           <div className="profile-bottom-top-bar">
             <h1>My Collection</h1>
-            <a className="sort-by">Sort By</a>
+            {/* <a className="sort-by">Sort By</a> */}
+            <Select
+              className="sort-by"
+              textColor='white'
+              maxWidth={200}
+              onChange={(e) => setOrderBy(e.target.value)}>
+              <option value=''>Sort by</option>
+              <option value='rarity'>Rarity</option>
+            </Select>
           </div>
           <div className="profile-bottom-collection">
-            { loading ? (<></>) : (passlist.map((pass, index) =>
+            { loading ? (<></>) : (sortedPasses.map((pass, index) =>
               <div onClick={() => handleClick(pass.pass_id)} key={index} className="profile-bottom-collection-inner">
-                <h3>{pass.drop_num.edition}</h3>
+                <h3>{pass.drop_num.edition} ({RARITY_TITLES[pass.rarity]})</h3>
                 <video muted={true} controls={false} playsInline={true} autoPlay={true} loop={true}>
                   <source src={pass.drop_num.image} type="video/mp4" />
                 </video>
