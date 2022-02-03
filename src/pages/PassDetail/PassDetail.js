@@ -122,6 +122,16 @@ function PassDetail() {
       drop_num: pass.drop_num.drop_num
     }, token))
     const data = await response.json();
+    if (data.error) {
+      return toast({
+        position: 'top',
+        title: 'Error',
+        description: data.error,
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      })
+    }
   }
 
   function buyButtonResponse(){

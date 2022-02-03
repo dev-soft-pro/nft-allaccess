@@ -24,7 +24,7 @@ function About() {
                 <p>It's a new era for unique collectables and we are about to change the way people collect, invest and redeem real world rewards. All Access provides premium NFT collectibles and brings the latest in collectable NFT’s to life. With partnerships throughout the sports world, history will be made and we are here to take you to the next level. Supporting your favorite athlete or just collecting sets for a once in a lifetime experience. All Access will bridge the gap between blockchain and real world utility.</p>
                 
             </div>
-            <h1>Founders</h1>
+            <h7>Founders</h7>
             <hr/>
 
             <div className="about-person">

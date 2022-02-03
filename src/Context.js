@@ -110,7 +110,7 @@ const Provider = ({ children }) => {
       const account = await web3.eth.getAccounts();
 
       setWalletState(previousData => ({...previousData, provider, web3Provider:web3, chainId:80001, address: account[0]}));
-    } catch(error) {}
+    } catch(error) {console.log(error)}
   },[]);
 
   const disconnect = useCallback(async () =>
@@ -122,7 +122,7 @@ const Provider = ({ children }) => {
       await web3Modal.clearCachedProvider();
       setWalletState(() => (initialState));
       // window.location.reload();
-    } catch(error) {}
+    } catch(error) {console.log(error)}
   },[walletState.provider]);
 
   useEffect(() => {

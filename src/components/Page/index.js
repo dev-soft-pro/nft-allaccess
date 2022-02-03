@@ -7,7 +7,6 @@ export default function Page(props) {
   const { checkLocation } = props
   const [isForbidden, setIsForbidden] = useState(false)
   const forbiddenCountries = [
-    'United States',
     'Afghanistan',
     'Central African Republic',
     'Democratic Republic of the Congo',

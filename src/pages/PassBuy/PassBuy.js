@@ -531,7 +531,7 @@ function PassBuy() {
                   <div className="crypto-nft">
                     <p className="nft_name">{pass.drop_num.edition} - Price: ${pass.price}</p>
                     <p className="nft_name">Total: ${amount * pass.price} ({amount} passes)</p>
-                    <video src={pass.image.image} src={pass.image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
+                    <video src={pass.hidden_image.image} muted={true} autoPlay={true} playsInline={true} loop={true} alt="NFT"></video>
                     <div className="crypto-nft-button-wrapper">
                       <ConnectButton />
                       <div className="button-footer">
