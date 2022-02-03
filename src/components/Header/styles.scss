@@ -9,7 +9,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  font-family: "engschrift_header";
+  font-family: "Helvetica";
   
   .logo_svg{
     width:220px;
@@ -36,13 +36,13 @@
   p{
     color:white;
     font-size:1.1em;
-    font-family: "engschrift_header";
+    font-family: "Helvetica";
 
   }
   #profile-dropdown{
     color:white;
     padding-left: 0;
-    font-family: "engschrift_header";
+    font-family: "Helvetica";
   }
   #profile-dropdown:hover{
     color: #dc0000;
@@ -58,7 +58,7 @@
   .user-info{
     display: flex;
     align-items: center;
-    font-family: "engschrift_header";
+    font-family: "Helvetica";
 
   }
   .social-section{
@@ -74,7 +74,7 @@
       border-radius: 2.5em;
       background-color: #dc0000;
       color: white;
-      font-family: "engschrift_header";
+      font-family: "Helvetica";
       cursor: pointer;
       display: flex;
       align-content: center;
@@ -103,7 +103,7 @@
   .header-menu {
     color: white;
     font-size: 1.3rem;
-    font-family: "engschrift_header";
+    font-family: "Helvetica";
     .link {
       text-decoration: none;
     }
@@ -136,13 +136,13 @@
   .dropdown{
     a{
       color:white;
-      font-family: "engschrift_header";
+      font-family: "Helvetica";
     }
     a:hover{
       color: #dc0000;
     }
     .dropdown-item{
-      font-family: "engschrift_header";
+      font-family: "Helvetica";
       color: black;
     }
     

@@ -104,7 +104,7 @@ function Profile() {
               <div onClick={() => handleClick(pass.pass_id)} key={index} className="profile-bottom-collection-inner">
                 <h3>{pass.drop_num.edition} ({RARITY_TITLES[pass.rarity]})</h3>
                 <video muted={true} controls={false} playsInline={true} autoPlay={true} loop={true}>
-                  <source src={pass.drop_num.image} type="video/mp4" />
+                  <source src={pass.revealed === 1 ? pass.image.image : pass.hidden_image.image} type="video/mp4" />
                 </video>
               </div>
             ))}

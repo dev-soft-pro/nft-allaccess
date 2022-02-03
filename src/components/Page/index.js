@@ -7,6 +7,7 @@ export default function Page(props) {
   const { checkLocation } = props
   const [isForbidden, setIsForbidden] = useState(false)
   const forbiddenCountries = [
+    'United States',
     'Afghanistan',
     'Central African Republic',
     'Democratic Republic of the Congo',
@@ -43,19 +44,7 @@ export default function Page(props) {
           <p className="present-message">
             You appear to be accessing All Access from a prohibited region. 
             At this time, we are unable to grant access to residents in the following regions: 
-            Afghanistan, Central African Republic (The)
-            , Congo (The Democratic Republic of)
-            , Cuba, Guinea-Bissau
-            , Iran (Islamic Republic of)
-            , Iraq, Korea (The Democratic People's Republic of)
-            , Libya, Mali
-            , Somalia
-            , South Sudan
-            , Sudan (The)
-            , Syrian Arab Republic
-            , Ukraine
-            , Venezuela (Bolivarian Republic of)
-            , Yemen.
+            {` ${forbiddenCountries.join(', ')}`}.
           </p>
         ) : (
           props.children
