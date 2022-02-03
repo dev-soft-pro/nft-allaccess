@@ -1,7 +1,7 @@
 .footer {
   display: flex;
   flex-direction: column;
-  padding: 4em 4em 1em 4em;
+  padding: 4em 150px 1em 150px;
   background: #000000;
   width: 100% !important;
   text-align: center;
@@ -51,7 +51,7 @@
 
   .footer-menu{
     color: white;
-    font-size: 1.3rem;
+    font-size: 1rem;
     display: flex;
     flex-wrap: wrap;
     align-content: center;

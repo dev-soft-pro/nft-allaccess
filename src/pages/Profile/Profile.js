@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext, useMemo, useRef } from 'react';
 import {useNavigate} from 'react-router-dom'
 import './styles.scss';
 import * as ROUTES from 'constants/routes';
@@ -16,12 +16,52 @@ import { useToast } from '@chakra-ui/react';
 import { Select } from '@chakra-ui/react'
 import { RARITY_TITLES } from 'constants/rarity';
 
+function PassVideo(props) {
+  const { pass } = props
+  const videoRef = useRef();
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, [pass])
+
+  if (pass.revealed === 0) {
+    return (
+      <video
+        ref={videoRef}
+        loop={true}
+        playsInline={true}
+        autoPlay={true}
+        muted={true}
+        playsInline={true}>
+        <source src={pass.hidden_image.image} />
+      </video>
+    );
+  } else if (pass.revealed === 1) {
+    return (
+      <video
+        ref={videoRef}
+        loop={true}
+        playsInline={true}
+        autoPlay={true}
+        muted={true}
+        playsInline={true}>
+        <source src={pass.image.image} />
+      </video>
+    )
+  } else {
+    return null
+  }
+}
+
+
 function Profile() {
   const { cookies } = useContext(Context)
   const navigate = useNavigate();
   const [passlist, setPassList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [orderBy, setOrderBy] = useState('rarity')
+  const [orderBy, setOrderBy] = useState('')
 
   const refreshToken = async () => {
     const response = await fetch(API.REFRESH, OPTIONS.POST({
@@ -38,14 +78,14 @@ function Profile() {
   }
 
   const sortedPasses = useMemo(() => {
-    if (orderBy === 'rarity') {
-      let sPasses = [...passlist];
-      sPasses.sort((a, b) => a.rarity - b.rarity);
-      return sPasses;
+    console.log(orderBy)
+    if (orderBy == 'rarity') {
+      let sPasses = passlist.map(sp => ({...sp, rarity: sp.revealed === 1 ? sp.rarity : 0}));
+      return sPasses.sort((a, b) => b.rarity - a.rarity);
     } else {
       return passlist
     }
-  }, [passlist])
+  }, [passlist, orderBy])
 
   useEffect(() => {
     const init = async () => {
@@ -100,23 +140,15 @@ function Profile() {
             </Select>
           </div>
           <div className="profile-bottom-collection">
-            { loading ? (<></>) : (sortedPasses.map((pass, index) =>
+            {loading ? (<></>) : (sortedPasses.map((pass, index) =>
               <div onClick={() => handleClick(pass.pass_id)} key={index} className="profile-bottom-collection-inner">
-                <h3>{pass.drop_num.edition} ({RARITY_TITLES[pass.rarity]})</h3>
-                <video muted={true} controls={false} playsInline={true} autoPlay={true} loop={true}>
-                  <source src={pass.revealed === 1 ? pass.image.image : pass.hidden_image.image} type="video/mp4" />
-                </video>
+                <h3>
+                  {pass.drop_num.edition}
+                  {pass.revealed === 1 ? `(${RARITY_TITLES[pass.rarity]})` : ''}
+                </h3>
+                <PassVideo pass={pass} />
               </div>
             ))}
-            {/*<PassList
-              passes={passlist.filter(p => p.revealed == 1)}
-              loading={loading} />
-            <PassList
-              passes={passlist.filter(p => p.revealed == 0)}
-            loading={loading} />*/}
-
-
-            
           </div>
         </div>
       </div> 
